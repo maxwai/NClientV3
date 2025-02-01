@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.WillClose;
 
 public class Utility {
     public static final Random RANDOM = new Random(System.nanoTime());
@@ -88,7 +91,7 @@ public class Utility {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LogUtility.d("Unimportant sleep interrupted", e);
         }
     }
 
@@ -113,29 +116,31 @@ public class Utility {
 
     private static void saveImage(@NonNull Bitmap bitmap, @NonNull File output) {
         try {
-            if (!output.exists()) output.createNewFile();
-            FileOutputStream ostream = new FileOutputStream(output);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 95, ostream);
-            ostream.flush();
-            ostream.close();
+            if (!output.exists())
+                //noinspection ResultOfMethodCallIgnored
+                output.createNewFile();
+            try (FileOutputStream ostream = new FileOutputStream(output)) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 95, ostream);
+                ostream.flush();
+            }
         } catch (IOException e) {
             LogUtility.e(e.getLocalizedMessage(), e);
         }
     }
 
-    public static long writeStreamToFile(InputStream inputStream, File filePath) throws IOException {
-        FileOutputStream outputStream = new FileOutputStream(filePath);
-        int read;
-        long totalByte = 0;
-        byte[] bytes = new byte[1024];
-        while ((read = inputStream.read(bytes)) != -1) {
-            outputStream.write(bytes, 0, read);
-            totalByte += read;
+    public static long writeStreamToFile(@WillClose InputStream inputStream, File filePath) throws IOException {
+        try (inputStream;
+             FileOutputStream outputStream = new FileOutputStream(filePath)) {
+            int read;
+            long totalByte = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+                totalByte += read;
+            }
+            outputStream.flush();
+            return totalByte;
         }
-        outputStream.flush();
-        outputStream.close();
-        inputStream.close();
-        return totalByte;
     }
 
     public static void sendImage(Context context, Drawable drawable, String text) {
@@ -163,7 +168,8 @@ public class Utility {
             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(shareIntent);
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtility.e("Error creating temp file", e);
+            Toast.makeText(context, R.string.send_image_error, Toast.LENGTH_SHORT).show();
         }
 
     }

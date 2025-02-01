@@ -68,7 +68,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<GenericAdapter.ViewHol
             galleries[position] = g;
             return g;
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtility.w("Couldn't get gallery From Position", e);
             return null;
         }
     }

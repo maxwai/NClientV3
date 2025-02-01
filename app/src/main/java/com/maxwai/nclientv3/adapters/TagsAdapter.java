@@ -130,7 +130,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
                     try {
                         onlineTagUpdate(ent, !Login.isOnlineTags(ent), holder.imgView);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LogUtility.e("Error setting tag", e);
                     }
                     break;
             }
@@ -157,7 +157,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
             try {
                 onlineTagUpdate(tag, true, imgView);
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtility.w("Error adding to online blacklist", e);
+                Toast.makeText(context, R.string.online_blacklist_add_error, Toast.LENGTH_SHORT).show();
             }
         }).setNegativeButton(R.string.no, null).show();
     }

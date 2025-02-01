@@ -398,5 +398,8 @@
         <item>japanese</item>
         <item>pretty</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 
 </resources>

@@ -67,53 +67,51 @@ public class CreatePDF extends JobIntentService {
         totalPage = gallery.getPageCount();
         preExecute(gallery.getDirectory());
         PdfDocument document = new PdfDocument();
-        File page;
-        for (int a = 1; a <= gallery.getPageCount(); a++) {
-            page = gallery.getPage(a);
-            if (page == null) continue;
-            Bitmap bitmap = BitmapFactory.decodeFile(page.getAbsolutePath());
-            if (bitmap != null) {
-                PdfDocument.PageInfo info = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), a).create();
-                PdfDocument.Page p = document.startPage(info);
-                p.getCanvas().drawBitmap(bitmap, 0f, 0f, null);
-                document.finishPage(p);
-                bitmap.recycle();
-            }
-            notification.setProgress(totalPage - 1, a + 1, false);
-            NotificationSettings.notify(this, getString(R.string.channel2_name), notId, notification.build());
-
-        }
-        notification.setContentText(getString(R.string.writing_pdf));
-        notification.setProgress(totalPage, 0, true);
-        NotificationSettings.notify(this, getString(R.string.channel2_name), notId, notification.build());
         try {
+            File page;
+            for (int a = 1; a <= gallery.getPageCount(); a++) {
+                page = gallery.getPage(a);
+                if (page == null) continue;
+                Bitmap bitmap = BitmapFactory.decodeFile(page.getAbsolutePath());
+                if (bitmap != null) {
+                    PdfDocument.PageInfo info = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), a).create();
+                    PdfDocument.Page p = document.startPage(info);
+                    p.getCanvas().drawBitmap(bitmap, 0f, 0f, null);
+                    document.finishPage(p);
+                    bitmap.recycle();
+                }
+                notification.setProgress(totalPage - 1, a + 1, false);
+                NotificationSettings.notify(this, getString(R.string.channel2_name), notId, notification.build());
 
-            File finalPath = Global.PDFFOLDER;
-            finalPath.mkdirs();
-            finalPath = new File(finalPath, gallery.getTitle() + ".pdf");
-            finalPath.createNewFile();
-            LogUtility.d("Generating PDF at: " + finalPath);
-            FileOutputStream out = new FileOutputStream(finalPath);
-            document.writeTo(out);
-            out.close();
-            document.close();
-            notification.setProgress(0, 0, false);
-            notification.setContentTitle(getString(R.string.created_pdf));
-            notification.setContentText(gallery.getTitle());
-            createIntentOpen(finalPath);
+            }
+            notification.setContentText(getString(R.string.writing_pdf));
+            notification.setProgress(totalPage, 0, true);
             NotificationSettings.notify(this, getString(R.string.channel2_name), notId, notification.build());
-            LogUtility.d(finalPath.getAbsolutePath());
-        } catch (IOException e) {
-            notification.setContentTitle(getString(R.string.error_pdf));
-            notification.setContentText(getString(R.string.failed));
-            notification.setProgress(0, 0, false);
-            NotificationSettings.notify(this, getString(R.string.channel2_name), notId, notification.build());
-            throw new RuntimeException("Error generating file", e);
+            try {
+                File finalPath = Global.PDFFOLDER;
+                finalPath.mkdirs();
+                finalPath = new File(finalPath, gallery.getTitle() + ".pdf");
+                finalPath.createNewFile();
+                LogUtility.d("Generating PDF at: " + finalPath);
+                try (FileOutputStream out = new FileOutputStream(finalPath)) {
+                    document.writeTo(out);
+                }
+                notification.setProgress(0, 0, false);
+                notification.setContentTitle(getString(R.string.created_pdf));
+                notification.setContentText(gallery.getTitle());
+                createIntentOpen(finalPath);
+                NotificationSettings.notify(this, getString(R.string.channel2_name), notId, notification.build());
+                LogUtility.d(finalPath.getAbsolutePath());
+            } catch (IOException e) {
+                notification.setContentTitle(getString(R.string.error_pdf));
+                notification.setContentText(getString(R.string.failed));
+                notification.setProgress(0, 0, false);
+                NotificationSettings.notify(this, getString(R.string.channel2_name), notId, notification.build());
+                throw new RuntimeException("Error generating file", e);
+            }
         } finally {
             document.close();
         }
-
-
     }
 
     private void createIntentOpen(File finalPath) {

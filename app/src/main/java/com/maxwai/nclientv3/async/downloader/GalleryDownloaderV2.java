@@ -262,21 +262,17 @@ public class GalleryDownloaderV2 {
         File filePath = new File(folder, page.getPageName());
         LogUtility.d("Saving into: " + filePath + "," + page.url);
         if (filePath.exists() && !isCorrupted(filePath)) return true;
-        try {
-            Response r = Global.getClient(context).newCall(new Request.Builder().url(page.url).build()).execute();
+        try (Response r = Global.getClient(context).newCall(new Request.Builder().url(page.url).build()).execute()) {
             if (r.code() != 200) {
-                r.close();
                 return false;
             }
             assert r.body() != null;
             long expectedSize = Integer.parseInt(r.header("Content-Length", "-1"));
             long len = r.body().contentLength();
             if (len < 0 || expectedSize != len) {
-                r.close();
                 return false;
             }
             long written = Utility.writeStreamToFile(r.body().byteStream(), filePath);
-            r.close();
             if (written != len) {
                 filePath.delete();
                 return false;
@@ -317,26 +313,29 @@ public class GalleryDownloaderV2 {
 
     private void createFolder() {
         folder = findFolder(Global.DOWNLOADFOLDER, title, id);
-        folder.mkdirs();
+        if (!folder.mkdirs()) {
+            return;
+        }
         try {
             writeNoMedia();
             createIdFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtility.e("Error creating base files", e);
         }
     }
 
     private void createIdFile() throws IOException {
         File idFile = new File(folder, "." + id);
+        //noinspection ResultOfMethodCallIgnored
         idFile.createNewFile();
     }
 
     private void writeNoMedia() throws IOException {
         File nomedia = new File(folder, ".nomedia");
         LogUtility.d("NOMEDIA: " + nomedia + " for id " + id);
-        FileWriter writer = new FileWriter(nomedia);
-        gallery.jsonWrite(writer);
-        writer.close();
+        try (FileWriter writer = new FileWriter(nomedia)) {
+            gallery.jsonWrite(writer);
+        }
     }
 
     @Override
