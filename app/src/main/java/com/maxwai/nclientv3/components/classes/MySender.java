@@ -34,10 +34,9 @@ public class MySender implements ReportSender {
             RequestBody requestBody = new FormBody.Builder().add("json", errorContent.toJSON()).build();
 
             Request.Builder request = new Request.Builder().post(requestBody).url(Utility.PROTOCOL + URL);
-            Response x = Global.getClient().newCall(request.build()).execute();
-
-            LogUtility.d(x.code() + x.body().string());
-            x.close();
+            try (Response x = Global.getClient().newCall(request.build()).execute()) {
+                LogUtility.d(x.code() + x.body().string());
+            }
         } catch (JSONException | IOException e) {
             LogUtility.e(e.getLocalizedMessage(), e);
         }

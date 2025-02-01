@@ -300,9 +300,11 @@ public class InspectorV3 extends Thread implements Parcelable {
                     builder.append(URLEncoder.encode(tt.toQueryTag(), Charset.defaultCharset()));
                 } else {
                     try {
+                        //noinspection CharsetObjectCanBeUsed
                         builder.append(URLEncoder.encode(tt.toQueryTag(), Charset.defaultCharset().name()));
                     } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                        LogUtility.wtf("This should not happen since we used the default charset", e);
+                        return;
                     }
                 }
             }
@@ -324,10 +326,10 @@ public class InspectorV3 extends Thread implements Parcelable {
 
     public boolean createDocument() throws IOException {
         if (htmlDocument != null) return true;
-        Response response = Global.getClient(context.get()).newCall(new Request.Builder().url(url).build()).execute();
-        setHtmlDocument(Jsoup.parse(response.body().byteStream(), "UTF-8", Utility.getBaseUrl()));
-        response.close();
-        return response.code() == HttpURLConnection.HTTP_OK;
+        try (Response response = Global.getClient(context.get()).newCall(new Request.Builder().url(url).build()).execute()) {
+            setHtmlDocument(Jsoup.parse(response.body().byteStream(), "UTF-8", Utility.getBaseUrl()));
+            return response.code() == HttpURLConnection.HTTP_OK;
+        }
     }
 
     public void parseDocument() throws IOException, InvalidResponseException {

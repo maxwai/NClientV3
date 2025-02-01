@@ -40,7 +40,7 @@ public class CSRFGet extends Thread {
         void onResponse(String token) throws IOException;
 
         default void onError(Exception e) {
-            e.printStackTrace();
+            LogUtility.e("Error in response", e);
         }
     }
 }

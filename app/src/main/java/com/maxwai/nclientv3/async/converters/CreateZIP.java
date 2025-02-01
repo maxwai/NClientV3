@@ -58,27 +58,26 @@ public class CreateZIP extends JobIntentService {
         try {
             File file = new File(Global.ZIPFOLDER, gallery.getTitle() + ".zip");
             FileOutputStream o = new FileOutputStream(file);
-            ZipOutputStream out = new ZipOutputStream(o);
-            out.setLevel(Deflater.BEST_COMPRESSION);
-            FileInputStream in;
-            File actual;
-            int read;
-            for (int i = 1; i <= gallery.getPageCount(); i++) {
-                actual = gallery.getPage(i);
-                if (actual == null) continue;
-                ZipEntry entry = new ZipEntry(actual.getName());
-                in = new FileInputStream(actual);
-                out.putNextEntry(entry);
-                while ((read = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, read);
+            try (ZipOutputStream out = new ZipOutputStream(o)) {
+                out.setLevel(Deflater.BEST_COMPRESSION);
+                File actual;
+                int read;
+                for (int i = 1; i <= gallery.getPageCount(); i++) {
+                    actual = gallery.getPage(i);
+                    if (actual == null) continue;
+                    ZipEntry entry = new ZipEntry(actual.getName());
+                    try (FileInputStream in = new FileInputStream(actual)) {
+                        out.putNextEntry(entry);
+                        while ((read = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, read);
+                        }
+                    }
+                    out.closeEntry();
+                    notification.setProgress(gallery.getPageCount(), i, false);
+                    NotificationSettings.notify(this, getString(R.string.channel3_name), notId, notification.build());
                 }
-                in.close();
-                out.closeEntry();
-                notification.setProgress(gallery.getPageCount(), i, false);
-                NotificationSettings.notify(this, getString(R.string.channel3_name), notId, notification.build());
+                out.flush();
             }
-            out.flush();
-            out.close();
             postExecute(true, gallery, null, file);
         } catch (IOException e) {
             LogUtility.e(e.getLocalizedMessage(), e);

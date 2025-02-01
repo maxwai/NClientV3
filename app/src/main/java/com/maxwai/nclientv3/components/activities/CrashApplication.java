@@ -29,7 +29,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
+// TODO: remove or replace this Class
 public class CrashApplication extends MultiDexApplication {
     private static final String SIGNATURE_GITHUB = "ce96fdbcc89991f083320140c148db5f";
 
@@ -68,7 +68,7 @@ public class CrashApplication extends MultiDexApplication {
                 if (SIGNATURE_GITHUB.equals(hash)) return true;
             }
         } catch (NullPointerException | PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LogUtility.e("Error checking the signature", e);
         }
         return false;
     }

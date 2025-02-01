@@ -33,10 +33,9 @@ public class LoadTags extends Thread {
 
     private Elements getScripts(String url) throws IOException {
 
-        Response response = Global.getClient().newCall(new Request.Builder().url(url).build()).execute();
-        Elements x = Jsoup.parse(response.body().byteStream(), null, Utility.getBaseUrl()).getElementsByTag("script");
-        response.close();
-        return x;
+        try (Response response = Global.getClient().newCall(new Request.Builder().url(url).build()).execute()) {
+            return Jsoup.parse(response.body().byteStream(), null, Utility.getBaseUrl()).getElementsByTag("script");
+        }
     }
 
     private String extractArray(Element e) throws StringIndexOutOfBoundsException {
@@ -67,7 +66,7 @@ public class LoadTags extends Thread {
             Elements scripts = getScripts(url);
             analyzeScripts(scripts);
         } catch (IOException | StringIndexOutOfBoundsException e) {
-            e.printStackTrace();
+            LogUtility.e("Error getting blacklisted Tags from website", e);
         }
 
     }
@@ -76,9 +75,9 @@ public class LoadTags extends Thread {
         if (!scripts.isEmpty()) {
             Login.clearOnlineTags();
             String array = Utility.unescapeUnicodeString(extractArray(scripts.last()));
-            JsonReader reader = new JsonReader(new StringReader(array));
-            readTags(reader);
-            reader.close();
+            try (JsonReader reader = new JsonReader(new StringReader(array))) {
+                readTags(reader);
+            }
         }
     }
 }

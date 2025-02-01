@@ -76,19 +76,19 @@ public class CommentActivity extends BaseActivity {
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    JsonReader reader = new JsonReader(response.body().charStream());
-                    Comment comment = null;
-                    reader.beginObject();
-                    while (reader.peek() != JsonToken.END_OBJECT) {
-                        if ("comment".equals(reader.nextName())) {
-                            comment = new Comment(reader);
-                        } else {
-                            reader.skipValue();
+                    try (JsonReader reader = new JsonReader(response.body().charStream())) {
+                        Comment comment = null;
+                        reader.beginObject();
+                        while (reader.peek() != JsonToken.END_OBJECT) {
+                            if ("comment".equals(reader.nextName())) {
+                                comment = new Comment(reader);
+                            } else {
+                                reader.skipValue();
+                            }
                         }
+                        if (comment != null && adapter != null)
+                            adapter.addComment(comment);
                     }
-                    reader.close();
-                    if (comment != null && adapter != null)
-                        adapter.addComment(comment);
                 }
             }).setMethod("POST", body).start();
         });
@@ -103,15 +103,12 @@ public class CommentActivity extends BaseActivity {
     }
 
     private String createRequestString(String text) {
-        try {
-            StringWriter writer = new StringWriter();
-            JsonWriter json = new JsonWriter(writer);
+        try (StringWriter writer = new StringWriter();
+             JsonWriter json = new JsonWriter(writer)) {
             json.beginObject();
             json.name("body").value(text);
             json.endObject();
-            String finalText = writer.toString();
-            json.close();
-            return finalText;
+            return writer.toString();
         } catch (IOException ignore) {
         }
         return "";

@@ -3,6 +3,7 @@ package com.maxwai.nclientv3.async.downloader;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -114,7 +115,7 @@ public class DownloadGalleryV2 extends JobIntentService {
                     try {
                         lock.wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        LogUtility.d("Unimportant wait interrupted", e);
                     }
                 }
                 continue;

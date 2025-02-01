@@ -124,16 +124,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     @SuppressLint("Range")
     private int[] getAllFavoriteIndex() {
-        Cursor c = Queries.GalleryTable.getAllFavoriteCursorDeprecated("%", false);
-        int[] favorites = new int[c.getCount()];
-        int i = 0;
-        if (c.moveToFirst()) {
-            do {
-                favorites[i++] = c.getInt(c.getColumnIndex(Queries.GalleryTable.IDGALLERY));
-            } while (c.moveToNext());
+        try (Cursor c = Queries.GalleryTable.getAllFavoriteCursorDeprecated("%", false)) {
+            int[] favorites = new int[c.getCount()];
+            int i = 0;
+            if (c.moveToFirst()) {
+                do {
+                    favorites[i++] = c.getInt(c.getColumnIndex(Queries.GalleryTable.IDGALLERY));
+                } while (c.moveToNext());
+            }
+            return favorites;
         }
-        c.close();
-        return favorites;
     }
 
     /**
@@ -155,7 +155,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (Gallery g : allGalleries) Queries.GalleryTable.insert(g);
             for (int i : favorites) Queries.FavoriteTable.insert(i);
         } catch (IOException e) {
-            e.printStackTrace();
+            // TODO: remove the possibility of crash
+            LogUtility.e("Error inserting Favorites", e);
         }
     }
 

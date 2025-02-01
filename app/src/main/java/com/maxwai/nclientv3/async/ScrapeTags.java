@@ -38,19 +38,17 @@ public class ScrapeTags extends JobIntentService {
     }
 
     private int getNewVersionCode() throws IOException {
-        Response x = Global.getClient(this).newCall(new Request.Builder().url(VERSION).build()).execute();
-        ResponseBody body = x.body();
-        if (body == null) {
-            x.close();
-            return -1;
-        }
-        try {
-            int k = Integer.parseInt(body.string().trim());
-            LogUtility.d("Found version: " + k);
-            x.close();
-            return k;
-        } catch (NumberFormatException e) {
-            LogUtility.e("Unable to convert", e);
+        try (Response x = Global.getClient(this).newCall(new Request.Builder().url(VERSION).build()).execute()) {
+            ResponseBody body = x.body();
+            if (body != null) {
+                try {
+                    int k = Integer.parseInt(body.string().trim());
+                    LogUtility.d("Found version: " + k);
+                    return k;
+                } catch (NumberFormatException e) {
+                    LogUtility.e("Unable to convert", e);
+                }
+            }
         }
         return -1;
     }
@@ -71,7 +69,8 @@ public class ScrapeTags extends JobIntentService {
             fetchTags();
             for (Tag t : tags) Queries.TagTable.updateStatus(t.getId(), t.getStatus());
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtility.w("Error updating Tags", e);
+            return;
         }
         LogUtility.d("End scraping");
         preferences.edit()
@@ -81,20 +80,18 @@ public class ScrapeTags extends JobIntentService {
     }
 
     private void fetchTags() throws IOException {
-        Response x = Global.getClient(this).newCall(new Request.Builder().url(TAGS).build()).execute();
-        ResponseBody body = x.body();
-        if (body == null) {
-            x.close();
-            return;
+        try (Response x = Global.getClient(this).newCall(new Request.Builder().url(TAGS).build()).execute()) {
+            ResponseBody body = x.body();
+            if (body != null) {
+                try (JsonReader reader = new JsonReader(body.charStream())) {
+                    reader.beginArray();
+                    while (reader.hasNext()) {
+                        Tag tag = readTag(reader);
+                        Queries.TagTable.insertScrape(tag, true);
+                    }
+                }
+            }
         }
-        JsonReader reader = new JsonReader(body.charStream());
-        reader.beginArray();
-        while (reader.hasNext()) {
-            Tag tag = readTag(reader);
-            Queries.TagTable.insertScrape(tag, true);
-        }
-        reader.close();
-        x.close();
     }
 
     private Tag readTag(JsonReader reader) throws IOException {
