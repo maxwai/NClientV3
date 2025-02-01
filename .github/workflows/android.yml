@@ -23,7 +23,7 @@ jobs:
             -   name: Grant execute permission for gradlew
                 run: chmod +x gradlew
             -   name: Add empty keystore.properties
-                run: touch keystore.properties
+                run: echo "storeFile=dummy.jks" > keystore.properties
             -   name: Assemble Debug with Gradle
                 run: ./gradlew assembleDebug
             -   name: Bundle Debug with Gradle
