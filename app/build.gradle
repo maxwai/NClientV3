@@ -20,7 +20,7 @@ android {
         // M: Major, m: minor, P: Patch, b: build
         versionCode 410000
         multiDexEnabled true
-        versionName "4.1.0-pre"
+        versionName "4.1.0_pre1"
         vectorDrawables.useSupportLibrary true
         proguardFiles 'proguard-rules.pro'
     }
