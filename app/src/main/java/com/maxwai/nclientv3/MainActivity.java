@@ -711,6 +711,7 @@ public class MainActivity extends BaseActivity
                 (dialog, which) -> selectedLanguage = OnlyLanguage.values()[which])
             .setPositiveButton(R.string.ok, (dialog, which) -> {
                 Global.updateOnlyLanguage(MainActivity.this, Language.valueOf(selectedLanguage.name()));
+                // wait 250ms to reduce the requests
                 changeLanguageTimeHandler.removeCallbacks(changeLanguageRunnable);
                 changeLanguageTimeHandler.postDelayed(changeLanguageRunnable, CHANGE_LANGUAGE_DELAY);
                 showLanguageIcon(item);
