@@ -3,33 +3,22 @@
 [![Github](https://img.shields.io/github/v/release/maxwai/NClientV3.svg?logo=github)](https://github.com/maxwai/NClientV3/releases/latest)
 
 An unofficial NHentai Android Client. This is a fork (of a fork) of the original Project by [@Dar9586](https://github.com/Dar9586) found [here](https://github.com/Dar9586/NClientV2)
+
 Credits to [@maxwai](https://github.com/maxwai/) for the fork and many thanks for continuing the development of this project.
 
 This app works for devices from API 26 (Android 8) and above.
 
 For Devices Running Android 8 (SDK 26 and 27) there is a separate SDK with `pre28` in the name. Support for this Version of the app will be reduced.
 
-Releases: <https://github.com/maxwai/NClientV3/releases>
+Releases: <https://github.com/ILFforever/NClientV3/releases>
 
-## Migrate from original NClientV2 to NClientV3
-
-Unfortunately, due to Android security features, it is not possible to create an APK that will update the original App since the same signature will not be possible. For that reason a migration is necessary.
-
-1. If not already done, move your download folder to outside the protected folders in `Settings -> Folder location`
-   1. There are a lot of tutorials online on how to access `/storage/emulated/0/Android/data`. For example here from [medium.com](https://medium.com/@naira-nicol/how-to-access-android-data-folder-c0227e0a42ef)
-   2. Be sure to not move it to `/storage/emulated/0/Android/data` but to a folder that your normal file app can see it. (Notice: `/storage/emulated/0/nclient` would work for example for a new path)
-2. Rename the subfolder in the path you set from `NClientV2` to `NClientV3`
-3. Export your data in `Settings -> Export data`
-   1. IMPORTANT: wait for the pop up message saying `Export finished`
-4. Open NClientV3
-5. Set the download folder in `Settings -> Folder location` to the same path as in NClientV2
-6. Import your data in `Settings -> Import data`, choose the zip file you created in Step 3
-   1. IMPORTANT: wait for the pop up message saying `Import finished`
 
 ## STUFF ADDED
 - Favorite Multi page randomizer (Instead of the original which randomizes only entries in current page).
 - Fix for Random button crashing app. (By adding error return on extToString())
+
 (I do not intent to update nor maintain this repo regularly but it does work as of 04/09/2025)
+(This is my first time actually working with Android Studio, so if any functionality breaks I'm super duper sorry)
 
 ## API Features
 
