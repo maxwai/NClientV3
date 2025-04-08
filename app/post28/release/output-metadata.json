@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.Dean.nclientv3",
+  "variantName": "post28Release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 400400,
+      "versionName": "4.0.4-release",
+      "outputFile": "NClientV3_4.0.4.apk"
+    }
+  ],
+  "elementType": "File"
+}

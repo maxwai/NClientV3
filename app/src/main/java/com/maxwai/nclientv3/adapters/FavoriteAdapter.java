@@ -192,7 +192,47 @@ public class FavoriteAdapter extends RecyclerView.Adapter<GenericAdapter.ViewHol
     }
 
     public void randomGallery() {
-        if (cursor == null || cursor.getCount() < 1) return;
-        startGallery(galleryFromPosition(Utility.RANDOM.nextInt(cursor.getCount())));
+        if (cursor == null || cursor.getCount() == 0) {
+            LogUtility.e("randomGallery: cursor is null or empty");
+            return;
+        }
+
+        int randomIndex = Utility.RANDOM.nextInt(cursor.getCount());
+        Gallery g = galleryFromPosition(randomIndex);
+
+        if (g != null) {
+            activity.runOnUiThread(() -> startGallery(g));
+        } else {
+            LogUtility.e("randomGallery: gallery is null at index " + randomIndex);
+        }
     }
+
+    public void randomFromAllFavorites() {
+        new Thread(() -> {
+            int totalFavorites = Queries.FavoriteTable.countFavorite(lastQuery.toString());
+            if (totalFavorites < 1) return;
+
+            int perPage = FavoriteActivity.getEntryPerPage();
+            int totalPages = (int) Math.ceil((double) totalFavorites / perPage);
+            int randomPage = Utility.RANDOM.nextInt(totalPages) + 1;
+
+            Cursor c = Queries.FavoriteTable.getAllFavoriteGalleriesCursor(
+                lastQuery.toString(), sortByTitle, perPage, (randomPage - 1) * perPage);
+
+            if (c != null && c.getCount() > 0) {
+                int randomIndex = Utility.RANDOM.nextInt(c.getCount());
+                c.moveToPosition(randomIndex);
+                try {
+                    Gallery g = Queries.GalleryTable.cursorToGallery(c);
+                    activity.runOnUiThread(() -> startGallery(g));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    c.close();
+                }
+            }
+        }).start();
+    }
+
+
 }

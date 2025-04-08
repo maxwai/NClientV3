@@ -2,7 +2,8 @@
 
 [![Github](https://img.shields.io/github/v/release/maxwai/NClientV3.svg?logo=github)](https://github.com/maxwai/NClientV3/releases/latest)
 
-An unofficial NHentai Android Client. This is a fork of the original Project by [@Dar9586](https://github.com/Dar9586) found [here](https://github.com/Dar9586/NClientV2)
+An unofficial NHentai Android Client. This is a fork (of a fork) of the original Project by [@Dar9586](https://github.com/Dar9586) found [here](https://github.com/Dar9586/NClientV2)
+Credits to [@maxwai](https://github.com/maxwai/) for the fork and many thanks for continuing the development of this project.
 
 This app works for devices from API 26 (Android 8) and above.
 
@@ -24,6 +25,11 @@ Unfortunately, due to Android security features, it is not possible to create an
 5. Set the download folder in `Settings -> Folder location` to the same path as in NClientV2
 6. Import your data in `Settings -> Import data`, choose the zip file you created in Step 3
    1. IMPORTANT: wait for the pop up message saying `Import finished`
+
+## STUFF ADDED
+- Favorite Multi page randomizer (Instead of the original which randomizes only entries in current page).
+- Fix for Random button crashing app. (By adding error return on extToString())
+(I do not intent to update nor maintain this repo regularly but it does work as of 04/09/2025)
 
 ## API Features
 

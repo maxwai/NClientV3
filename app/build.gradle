@@ -15,7 +15,7 @@ android {
     }
     compileSdk 35
     defaultConfig {
-        applicationId "com.maxwai.nclientv3"
+        applicationId "com.Dean.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
         versionCode 400400

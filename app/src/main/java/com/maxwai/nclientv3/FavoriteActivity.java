@@ -138,7 +138,14 @@ public class FavoriteActivity extends BaseActivity {
             adapter.setSortByTitle(sortByTitle);
             item.setTitle(sortByTitle ? R.string.sort_by_latest : R.string.sort_by_title);
         } else if (item.getItemId() == R.id.random_favorite) {
-            adapter.randomGallery();
+            new MaterialAlertDialogBuilder(this)
+                .setTitle("Random from Favorites")
+                .setItems(new String[]{"From current page", "From all favorites"}, (dialog, which) -> {
+                    if (which == 0) adapter.randomGallery();
+                    else adapter.randomFromAllFavorites();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
         }
         return super.onOptionsItemSelected(item);
     }

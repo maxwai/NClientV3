@@ -106,6 +106,7 @@ public class Page implements Parcelable {
     }
 
     public String extToString() {
+        if (imageExt == null) return "unknown_extension";
         return imageExt.getName();
     }
 
