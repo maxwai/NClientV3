@@ -133,7 +133,7 @@ public class GalleryFolder implements Parcelable, Iterable<PageFile> {
 
     private void elaboratePage(File f, Matcher matcher) {
         int page = Integer.parseInt(Objects.requireNonNull(matcher.group(1)));
-        ImageExt ext = Page.charToExt(Objects.requireNonNull(matcher.group(2)).charAt(0));
+        ImageExt ext = Page.stringToExt(Objects.requireNonNull(matcher.group(2)));
         if (ext == null) return;
         pageArray.append(page, new PageFile(ext, f, page));
         if (page > max) max = page;

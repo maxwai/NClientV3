@@ -78,8 +78,8 @@ public class SimpleGallery extends GenericGallery {
         a = e.getElementsByTag("img").first();
         temp = a.hasAttr("data-src") ? a.attr("data-src") : a.attr("src");
         mediaId = Integer.parseInt(temp.substring(temp.indexOf("galleries") + 10, temp.lastIndexOf('/')));
-        String extension = temp.substring(temp.lastIndexOf('.') + 1);
-        thumbnail = Page.charToExt(extension.charAt(0));
+        String extension = temp.substring(temp.indexOf('.', temp.lastIndexOf('/')) + 1);
+        thumbnail = Page.stringToExt(extension);
         title = e.getElementsByTag("div").first().text();
         if (context != null && id > Global.getMaxId()) Global.updateMaxId(context, id);
     }
@@ -95,17 +95,7 @@ public class SimpleGallery extends GenericGallery {
         if (ext == null) {
             return null;
         }
-        switch (ext) {
-            case GIF:
-                return "gif";
-            case PNG:
-                return "png";
-            case JPG:
-                return "jpg";
-            case WEBP:
-                return "webp";
-        }
-        return null;
+        return ext.getName();
     }
 
     public Language getLanguage() {

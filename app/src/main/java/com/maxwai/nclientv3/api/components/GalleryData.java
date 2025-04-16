@@ -48,6 +48,7 @@ public class GalleryData implements Parcelable {
     @NonNull
     private ArrayList<Page> pages = new ArrayList<>();
     private boolean valid = true;
+    private boolean checkedExt = false;
 
     private GalleryData() {
     }
@@ -230,6 +231,10 @@ public class GalleryData implements Parcelable {
         this.pageCount = pageCount;
     }
 
+    public void setCheckedExt() {
+        checkedExt = true;
+    }
+
     public int getMediaId() {
         return mediaId;
     }
@@ -271,6 +276,10 @@ public class GalleryData implements Parcelable {
         return 0;
     }
 
+    public boolean getCheckedExt() {
+        return checkedExt;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(uploadDate.getTime());
@@ -288,14 +297,19 @@ public class GalleryData implements Parcelable {
 
     private void writeInterval(StringWriter writer, int intervalLen, ImageExt referencePage) {
         writer.write(Integer.toString(intervalLen));
-        writer.write(Page.extToChar(referencePage));
+        writer.write(";");
+        writer.write(referencePage.getName());
+        writer.write(";");
     }
 
     public String createPagePath() {
         StringWriter writer = new StringWriter();
         writer.write(Integer.toString(pages.size()));
-        writer.write(cover.getImageExtChar());
-        writer.write(thumbnail.getImageExtChar());
+        writer.write(";");
+        writer.write(cover.extToString());
+        writer.write(";");
+        writer.write(thumbnail.extToString());
+        writer.write(";");
         if (pages.isEmpty()) return writer.toString();
         ImageExt referencePage = pages.get(0).getImageExt(), actualPage;
         int intervalLen = 1;
@@ -311,29 +325,55 @@ public class GalleryData implements Parcelable {
         return writer.toString();
     }
 
+    private void readPagePathNew(String path) {
+        System.out.println(path);
+        String[] parts = path.split(";");
+        cover = new Page(ImageType.COVER, Page.stringToExt(parts[1]));
+        thumbnail = new Page(ImageType.THUMBNAIL, Page.stringToExt(parts[2]));
+        int absolutePage = 0;
+        for (int i = 3; i < parts.length; i += 2) {
+            for (int j = 0; j < Integer.parseInt(parts[i]); j++) {//add pageOfType time a page of actualChar
+                pages.add(new Page(ImageType.PAGE, Page.stringToExt(parts[i+1]), absolutePage++));
+            }
+        }
+    }
+
     private void readPagePath(String path) throws IOException {
+        if (path.contains(";")) {
+            readPagePathNew(path);
+            return;
+        }
         System.out.println(path);
         StringReader reader = new StringReader(path + "e");//flag for the end
         int absolutePage = 0;
         int actualChar;
         int pageOfType = 0;
         boolean specialImages = true;//compability variable
+        String extension = null;
         while ((actualChar = reader.read()) != 'e') {
             switch (actualChar) {
                 case 'p':
+                    extension = "png";
                 case 'j':
+                    if (extension == null)
+                        extension = "jpg";
                 case 'g':
+                    if (extension == null)
+                        extension = "gif";
                 case 'w':
+                    if (extension == null)
+                        extension = "webp";
                     if (specialImages) {
-                        cover = new Page(ImageType.COVER, Page.charToExt(actualChar));
-                        thumbnail = new Page(ImageType.THUMBNAIL, Page.charToExt(actualChar));
+                        cover = new Page(ImageType.COVER, Page.stringToExt(extension));
+                        thumbnail = new Page(ImageType.THUMBNAIL, Page.stringToExt(extension));
                         specialImages = false;
                     } else {
                         for (int j = 0; j < pageOfType; j++) {//add pageOfType time a page of actualChar
-                            pages.add(new Page(ImageType.PAGE, Page.charToExt(actualChar), absolutePage++));
+                            pages.add(new Page(ImageType.PAGE, Page.stringToExt(extension), absolutePage++));
                         }
                     }
                     pageOfType = 0;//reset digits
+                    extension = null;
                     break;
                 case '0':
                 case '1':

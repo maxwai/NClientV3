@@ -85,54 +85,28 @@ public class Page implements Parcelable {
         imageType = ImageType.values()[in.readByte()];
     }
 
-    private static ImageExt stringToExt(String ext) {
-        return charToExt(ext.charAt(0));
-    }
-
-    public static String extToString(ImageExt ext) {
-        switch (ext) {
-            case GIF:
-                return "gif";
-            case PNG:
-                return "png";
-            case JPG:
-                return "jpg";
-            case WEBP:
-                return "webp";
-        }
-        return null;
-    }
-
-    public static char extToChar(ImageExt imageExt) {
-        switch (imageExt) {
-            case GIF:
-                return 'g';
-            case PNG:
-                return 'p';
-            case JPG:
-                return 'j';
-            case WEBP:
-                return 'w';
-        }
-        return '\0';
-    }
-
-    public static ImageExt charToExt(int ext) {
-        switch (ext) {
-            case 'g':
+    public static ImageExt stringToExt(String ext) {
+        switch (ext.toLowerCase()) {
+            case "gif":
                 return ImageExt.GIF;
-            case 'p':
+            case "png":
                 return ImageExt.PNG;
-            case 'j':
+            case "jpg":
                 return ImageExt.JPG;
-            case 'w':
+            case "webp":
                 return ImageExt.WEBP;
+            case "jpg.webp":
+                return ImageExt.JPG_WEBP;
+            case "png.webp":
+                return ImageExt.PNG_WEBP;
+            case "webp.webp":
+                return ImageExt.WEBP_WEBP;
         }
         return null;
     }
 
     public String extToString() {
-        return extToString(imageExt);
+        return imageExt.getName();
     }
 
     @Override
@@ -152,8 +126,8 @@ public class Page implements Parcelable {
         return imageExt;
     }
 
-    public char getImageExtChar() {
-        return extToChar(imageExt);
+    public void setImageExt(ImageExt imageExt) {
+        this.imageExt = imageExt;
     }
 
     public Size getSize() {
