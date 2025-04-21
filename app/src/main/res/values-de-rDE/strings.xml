@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="setting_on_ignore_tags">Andere Tags werden nicht gesucht wenn du einen Tag von einer Galerie auswählst (außer die Sprache)</string>
-    <string name="setting_off_ignore_tags">Andere Tags werden gesucht wenn du einen Tag von einer Galerie auswählst</string>
+    <string name="setting_on_ignore_tags">Andere Tags werden nicht gesucht, wenn du einen Tag von einer Galerie auswählst (außer die Sprache)</string>
+    <string name="setting_off_ignore_tags">Andere Tags werden gesucht, wenn du einen Tag von einer Galerie auswählst</string>
     <string name="setting_on_use_account_tag">Benutze online Tags in deiner Suche (lokale Tags haben Priorität)</string>
     <string name="setting_off_use_account_tag">Online Tags werden bei deiner Suche ignoriert</string>
     <string name="theme_summary">Farbschema wählen</string>
@@ -13,7 +13,7 @@
     <string name="use_account_tag">Benutze Account Tags</string>
     <string name="title_activity_gallery">Galerie</string>
     <string name="title_activity_zoom">Zoom</string>
-    <string name="title_activity_tag_filter">Tagfilter</string>
+    <string name="title_activity_tag_filter">Tag-Filter</string>
     <string name="title_activity_login">Einloggen</string>
     <string name="parodies">Parodien</string>
     <string name="characters">Charaktere</string>
@@ -26,16 +26,17 @@
     <string name="channel1_name">Galerie herunterladen</string>
     <string name="channel2_name">PDF erstellen</string>
     <string name="channel3_name">ZIP erstellen</string>
-    <string name="channel1_description">Benutzt um den Fortschritt beim Download der Galerie anzuzeigen</string>
-    <string name="channel2_description">Benutzt um den Fortschritt beim Erstellen des PDF anzuzeigen</string>
-    <string name="channel3_description">Benutzt um den Fortschritt beim Erstellen des ZIP anzuzeigen</string>
+    <string name="channel1_description">Benutzt, um den Fortschritt beim Download der Galerie anzuzeigen</string>
+    <string name="channel2_description">Benutzt, um den Fortschritt beim Erstellen des PDFs anzuzeigen</string>
+    <string name="channel3_description">Benutzt, um den Fortschritt beim Erstellen des ZIP anzuzeigen</string>
     <string name="channel2_title">Erstelle PDF:</string>
     <string name="channel3_title">Erstelle ZIP:</string>
-    <string name="tags_max_reached" formatted="true">Du kannst ein Maximum von %d Tags haben</string>
+    <string name="tags_max_reached" formatted="true">Du kannst ein Maximum von %d Tags haben.</string>
     <string name="only_english">Nur Englisch</string>
     <string name="only_japanese">Nur Japanisch</string>
     <string name="only_chinese">Nur Chinesisch</string>
     <string name="all_languages">Alle Sprachen</string>
+    <string name="unknown_language">Unbekannte Sprache</string>
     <string name="login">Einloggen</string>
     <string name="login_formatted" formatted="true">Eingeloggt als %s</string>
     <string name="logout">Ausloggen</string>
@@ -44,7 +45,7 @@
     <string name="add_to_online_favorite">Zu online Favoriten hinzufügen</string>
     <string name="remove_from_online_favorites">Von online Favoriten entfernen</string>
     <string name="add_to_online_blacklist">Zur online Blacklist hinzufügen?</string>
-    <string name="tag_already_in_blacklist">Tag ist schon in der Blackist</string>
+    <string name="tag_already_in_blacklist">Tag ist schon in der Blacklist</string>
     <string name="are_you_sure">Bist du dir sicher?</string>
     <string name="thumbnail">Vorschaubild</string>
     <string name="settings">Einstellungen</string>
@@ -59,7 +60,7 @@
     <string name="create_pdf_format" formatted="true">Erstelle PDF von: \"%s\"</string>
     <string name="create_zip_format" formatted="true">Erstelle ZIP von: \"%s\"</string>
     <string name="created_pdf">PDF erfolgreich erstellt</string>
-    <string name="error_pdf">Fehler während des Erstellens der PDF</string>
+    <string name="error_pdf">Fehler während des Erstellens des PDFs</string>
     <string name="parsing_pages">Analysiere Seiten</string>
     <string name="writing_pdf">Schreibe PDF</string>
     <string name="navigation_drawer_open">Öffne Menü</string>
@@ -82,12 +83,12 @@
     <string name="manage_tags">Tags verwalten</string>
     <string name="applied_filters">Angewandte Filter</string>
     <string name="show_related">Zeige ähnliche Galerien</string>
-    <string name="random_manga">Zufallsmanga</string>
+    <string name="random_manga">Zufallsgalerie</string>
     <string name="save_page">Seite speichern</string>
     <string name="page_count_format" formatted="true">%d Seiten</string>
     <string name="upload_date_format" formatted="true">Am %s um %s hochgeladen</string>
     <string name="favorite_count_format" formatted="true">%d Favoriten</string>
-    <string name="favorite_manga">Lieblingsmanga</string>
+    <string name="favorite_manga">Lieblingsgalerien</string>
     <string name="setting_on_remove_ignored">Die Galerie mit ignorierten Tags wird nicht gezeigt</string>
     <string name="setting_off_remove_ignored">Die Galerie mit ignorierten Tags verschwommen angezeigt</string>
     <string name="remove_ignored_galleries">Entferne ignorierte Galerien</string>
@@ -99,7 +100,7 @@
     <string name="new_version_found">Neue Version gefunden</string>
     <string name="update_version_format" formatted="true">Von Version %s auf Version %s updaten?\n\nÄnderungsprotokoll:\n%s</string>
     <string name="clear_this_list">Diese Liste leeren?</string>
-    <string name="set_minimum_count">Setze Minimumanzahl</string>
+    <string name="set_minimum_count">Setze Minimalanzahl</string>
     <string name="sort_by_title">Ordne nach Titeln</string>
     <string name="sort_by_popular">Ordne nach Popularität</string>
     <string name="next_page_volume_up">Wechsel zur nächsten Seite mit Lautstärke Hoch</string>
@@ -111,7 +112,7 @@
     <string name="images_settings">Bilder Einstellungen</string>
     <string name="miscellaneous">Sonstiges</string>
     <string name="update_settings">Update Einstellungen</string>
-    <string name="online_favorite_manga">Online Lieblingsmanga</string>
+    <string name="online_favorite_manga">Online Lieblingsgalerien</string>
     <string name="cache_size_formatted">Cache Größe: %.2f MB</string>
     <string name="cache_cleared">Cache geleert</string>
     <string name="sort_by_latest">Nach Neusten sortieren</string>
@@ -120,10 +121,10 @@
     <string name="keep_history">Verlauf behalten</string>
     <string name="add">Hinzufügen</string>
     <string name="insert_tag_name">Tag Name eingeben:</string>
-    <string name="favorite_count">Favoritenzähler</string>
+    <string name="favorite_count">Favoriten Anzahl</string>
     <string name="comments">Kommentieren</string>
     <string name="send">Senden</string>
-    <string name="send_comment">Sende Kommentar</string>
+    <string name="send_comment">Sende Kommentar…</string>
     <string name="profile_picture">Profilbild</string>
     <string name="send_bug_on_github">Einen Fehler auf Github melden</string>
     <string name="github">Github</string>
@@ -134,14 +135,14 @@
     <string name="manage_bookmarks">Lesezeichen verwalten</string>
     <string name="bookmark_page_format">Seite %d</string>
     <string name="bookmark_description">Lesezeichen Beschreibung</string>
-    <string name="enable_right_to_left">RTL aktivieren</string>
+    <string name="enable_right_to_left">Rechts nach links aktivieren</string>
     <string name="setting_on_use_rtl">Bilder werden von rechts nach links angezeigt</string>
     <string name="setting_off_use_rtl">Bilder werden von links nach rechts angezeigt</string>
-    <string name="volume_change_setting">Seite mit Lautstärketasten wechseln</string>
+    <string name="volume_change_setting">Seite mit Lautstärke Tasten wechseln</string>
     <string name="popular_tag_count">Die Anzahl von populären Tags während der erweiterten Suche</string>
     <string name="show_gallery_titles">Zeige Galerie Titel</string>
-    <string name="use_column_port">Spalten Anzahl während Portrait</string>
-    <string name="use_column_land">Spalten Anzahl während Landscape</string>
+    <string name="use_column_port">Spalten Anzahl im Hochformat</string>
+    <string name="use_column_land">Spalten Anzahl im Querformat</string>
     <string name="change_language">Sprache ändern</string>
     <string name="tag_artist_gallery">Künstler:</string>
     <string name="tag_character_gallery">Charakter:</string>
@@ -157,14 +158,14 @@
     <string name="start_all_downloads">Alle Downloads starten</string>
     <string name="pause_all_downloads">Alle Downloads pausieren</string>
     <string name="cancel_all_downloads">Alle Downloads abbrechen</string>
-    <string name="disable_lock_title">Deaktiviere Bildschirm Standby während des Lesen</string>
+    <string name="disable_lock_title">Deaktiviere Bildschirm Standby während des lesen</string>
     <string name="download_all_galleries_in_this_page">Lade alle Galerien auf dieser Seite herunter</string>
     <string name="download_all_galleries">Lade alle Galerien herunter</string>
     <string name="favorite_column_count">Wähle Favoriten Spaltenanzahl aus</string>
     <string name="download_column_count">Wähle Download Spaltenanzahl aus</string>
     <string name="history_column_count">Wähle Verlauf Spaltenanzahl aus</string>
-    <string name="main_column_count">Wähle Haupseiten Spaltenanzahl aus</string>
-    <string name="navigation_settings">Navigations Einstellungen</string>
+    <string name="main_column_count">Wähle Hauptseite Spaltenanzahl aus</string>
+    <string name="navigation_settings">Navigationseinstellungen</string>
     <string name="stop_download">Herunterladen stoppen</string>
     <string name="start_download">Herunterladen starten</string>
     <string name="create_zip">ZIP erstellen</string>
@@ -186,20 +187,20 @@
     <string name="downloading_format">Lade: %s</string>
     <string name="toggle_favorite">Favoriten umschalten</string>
     <string name="resume">Fortsetzen</string>
-    <string name="pause">Pause</string>
+    <string name="pause">Pausieren</string>
     <string name="title_copied_to_clipboard">Titel in die Zwischenablage kopiert</string>
     <string name="setting_zoom_one_column">Zoom aktivieren wenn im Einspalten Modus in einer Galerie</string>
     <string name="zoom_one_column">Zoom aktivieren</string>
     <string name="insert_pin">PIN eingeben</string>
     <string name="confirm_pin">PIN bestätigen</string>
-    <string name="setting_pin">PIN verlangen um App zu öffnen</string>
+    <string name="setting_pin">PIN verlangen, um App zu öffnen</string>
     <string name="use_pin">PIN benutzen</string>
     <string name="wrong_pin">Falscher PIN</string>
     <string name="rotate_image">Bild drehen</string>
     <string name="toggle_online_favorite">Online Favoriten umschalten</string>
     <string name="data_usage_settings">Datennutzung ändern</string>
     <string name="mobile_data_usage_setting">Mobile Datennutzung Einstellungen</string>
-    <string name="wifi_data_usage_setting">Wifi Datennutzung Einstellungen</string>
+    <string name="wifi_data_usage_setting">WLAN Datennutzung Einstellungen</string>
     <string name="data_usage_thumb">Immer Vorschaubilder herunterladen</string>
     <string name="data_usage_full">Lade Vorschaubilder oder ganze Bilder herunter</string>
     <string name="data_usage_no">Lade keine Bilder herunter</string>
@@ -223,8 +224,8 @@
     <string name="choose_directory">Ordner auswählen</string>
     <string name="bookmark_here">Lesezeichen hier</string>
     <string name="resume_from_page">Mit Seite %d fortsetzen</string>
-    <string name="new_beta_version_found">Neue Beta Version gefunden</string>
-    <string name="check_beta_releases">Nach Beta Versionen suchen</string>
+    <string name="new_beta_version_found">Neue Beta-Version gefunden</string>
+    <string name="check_beta_releases">Nach Beta-Versionen suchen</string>
     <string name="page_range">Seitenbereich:</string>
     <string name="upload_time">Upload Zeit:</string>
     <string name="from_page">Von Seite:</string>
@@ -250,14 +251,14 @@
     <string name="view_statuses">Status ansehen</string>
     <string name="status_column_count">Wähle Status Spaltenanzahl aus</string>
     <string name="status_viewer">Statusansicht</string>
-    <string name="title_hide_multitasking">Verstecke App Inhalt beim Multitasken</string>
+    <string name="title_hide_multitasking">Verstecke App Inhalt beim Multitasking</string>
     <string name="title">Titel</string>
     <string name="download_date">Download Datum</string>
     <string name="page_count">Seitenanzahl</string>
     <string name="size">Größe</string>
     <string name="descending_order">Absteigende Reihenfolge</string>
     <string name="minimum_comment_length" formatted="true">Der Kommentar muss mindestens %d Zeichen haben</string>
-    <string name="change_scroll_type">Ändere Scroll Typ</string>
+    <string name="change_scroll_type">Ändere Scroll-Art</string>
     <string name="exported_backup_file_toast" formatted="true">Backup nach %s exportiert</string>
     <string name="export_data">Exportiere Daten</string>
     <string name="import_data">Importiere Daten</string>
@@ -272,37 +273,37 @@
     <string name="app_name_fake_calculator">Rechner</string>
     <string name="delete_galleries">Lösche Galerien</string>
     <string name="delete">Löschen</string>
-    <string name="pause_selected_downloads">Pausiere ausgewählte downloads</string>
-    <string name="start_selected_downloads">Starte ausgewählte downloads</string>
+    <string name="pause_selected_downloads">Pausiere ausgewählte Downloads</string>
+    <string name="start_selected_downloads">Starte ausgewählte Downloads</string>
     <string name="custom_path">Benutzerdefinierter Pfad</string>
     <string name="insert_path">Pfad:</string>
     <string name="requesting_storage_access">Fordere Berechtigungen für den Gerätespeicher</string>
     <string name="request_storage_manager_summary">Aufgrund einer Einschränkung des Speicherzugriffs in Android 11 erfordert diese App eine zusätzliche Berechtigung zur Verwendung benutzerdefinierter Pfade.\nWenn Sie diese Berechtigung erteilen möchten, aktivieren Sie die Einstellung im nächsten Dialogfeld.</string>
     <string name="summary_beta">Das Aktualisieren auf eine Beta-Version kann dazu führen, dass Sie ohne Deinstallation nicht zu einer stabilen Version zurückkehren können</string>
     <string name="fix_inverted_title">Repariere invertierte Bilder</string>
-    <string name="fix_inverted_summary">Aktivieren wenn Bilder mit invertierten Farben angezeigt werden (Auf manchen Geräten führt das zum ändern des Gerätethemas zu weiß. Deaktivieren der Einstellung wird dies wieder änderen.)</string>
-    <string name="navigation_settings_per_screen">Navigations Einstellungen pro Bild</string>
+    <string name="fix_inverted_summary">Aktivieren, wenn Bilder mit invertierten Farben angezeigt werden (Auf manchen Geräten führt das zum ändern des Gerätethemas zu weiß. Deaktivieren der Einstellung wird dies wieder ändern.)</string>
+    <string name="navigation_settings_per_screen">Navigationseinstellungen pro Bild</string>
     <string name="downloaded_update_at" formatted="true">Update zu %s heruntergeladen</string>
     <string name="summary_offscreen_limit">Anzahl an Seiten die vorgeladen werden beim lesen einer Galerie</string>
     <string name="title_offscreen_limit">Bilder vorladen</string>
     <string name="sort_popoular_month">Populär diesen Monat</string>
     <string name="random">Zufällig</string>
-    <string name="summary_fetch_metadata">Lade Metadaten für Galerien herunter die vor Version 2.3.0 herunter geladen wurden\nDiesen Galerien fehlten die Metadaten</string>
+    <string name="summary_fetch_metadata">Lade Metadaten für Galerien herunter die vor Version 2.3.0 heruntergeladen wurden\nDiesen Galerien fehlten die Metadaten</string>
     <string name="title_fetch_metadata">Metadaten für alte Galerien abrufen</string>
     <string name="title_change_page_buttons">Ändere Seite Klicke auf das Bild</string>
-    <string name="export_finished">Export finished</string>
-    <string name="import_finished">Import finished</string>
-    <string name="download_torrent">Download torrent</string>
+    <string name="export_finished">Export fertig</string>
+    <string name="import_finished">Import fertig</string>
+    <string name="download_torrent">Torrent herunterladen</string>
     <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Invalid response</string>
-    <string name="system_default">System default</string>
-    <string name="clear_cookies">Clear cookies</string>
-    <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
-    <string name="exact_title_match_title">Exact tag match only</string>
-    <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
-    <string name="hide">Hide</string>
-    <string name="title_user_agent">Change User-Agent</string>
-
+    <string name="invalid_response">Ungültige Antwort</string>
+    <string name="system_default">Systemstandard</string>
+    <string name="clear_cookies">Lösche Cookies</string>
+    <string name="fetching_cloudflare_token">Cloudflare Token kriegen…</string>
+    <string name="exact_title_match_title">Nur exakte Tag Übereinstimmung</string>
+    <string name="exact_title_match_summary">Verstecken von Galerien, die auf der Website erscheinen würden, aber nicht alle gesuchten Tags enthalten</string>
+    <string name="hide">Verstecken</string>
+    <string name="title_user_agent">User-Agent ändern</string>
+    <string name="shuffle_contentDescription">Zufällige Galerie Knopf</string>
     <string-array name="scroll_type">
         <item>Horizontal</item>
         <item>Vertikal</item>

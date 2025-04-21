@@ -20,6 +20,12 @@ Releases: <https://github.com/ILFforever/NClientV3/releases>
 (I do not intent to update nor maintain this repo regularly but it does work as of 04/09/2025)
 (This is my first time actually working with Android Studio, so if any functionality breaks I'm super duper sorry)
 
+## Translate App
+
+You can help translate the Project by going to the Crowdin Project [here](https://crowdin.com/project/nclientv3/invite?h=33e3f83681ebaea1bf037ed157d2ea272410538).
+
+If your desired language is missing, write an issue, the language will be added.
+
 ## API Features
 
 - Browse main page
@@ -47,6 +53,7 @@ Releases: <https://github.com/ILFforever/NClientV3/releases>
 ## Contributors
 
 - [shirokun20](https://github.com/shirokun20) for the initial Bug fixes
+- [w0x8m](https://github.com/w0x8m) for the new language picker
 
 ## Contributors of original Project
 

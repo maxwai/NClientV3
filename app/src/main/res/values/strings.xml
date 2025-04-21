@@ -99,6 +99,7 @@
     <string name="only_japanese">Only japanese</string>
     <string name="only_chinese">Only chinese</string>
     <string name="all_languages">All languages</string>
+    <string name="unknown_language">Unknown language</string>
     <string name="login">Log in</string>
     <string name="login_formatted" formatted="true">Logged as %s</string>
     <string name="logout">Logout</string>

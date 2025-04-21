@@ -88,12 +88,16 @@ public class Page implements Parcelable {
     public static ImageExt stringToExt(String ext) {
         switch (ext.toLowerCase()) {
             case "gif":
+            case "g":
                 return ImageExt.GIF;
             case "png":
+            case "p":
                 return ImageExt.PNG;
             case "jpg":
+            case "j":
                 return ImageExt.JPG;
             case "webp":
+            case "w":
                 return ImageExt.WEBP;
             case "jpg.webp":
                 return ImageExt.JPG_WEBP;

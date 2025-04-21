@@ -36,6 +36,7 @@
     <string name="only_japanese">仅日文</string>
     <string name="only_chinese">仅中文</string>
     <string name="all_languages">所有语言</string>
+    <string name="unknown_language">Unknown language</string>
     <string name="login">登录</string>
     <string name="login_formatted" formatted="true">以 %s 身份登录</string>
     <string name="logout">登出</string>
@@ -285,7 +286,7 @@
     <string name="downloaded_update_at" formatted="true">Downloaded update at %s</string>
     <string name="summary_offscreen_limit">Set the number of images to preload offscreen when reading a gallery</string>
     <string name="title_offscreen_limit">Image to preload</string>
-    <string name="sort_popoular_month">Monthly popular</string>
+    <string name="sort_popoular_month">月榜</string>
     <string name="random">Random</string>
     <string name="summary_fetch_metadata">Chinese</string>
     <string name="title_fetch_metadata">Fetch metadata for old galleries</string>
@@ -302,7 +303,7 @@
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">Hide</string>
     <string name="title_user_agent">Change User-Agent</string>
-
+    <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string-array name="scroll_type">
         <item>水平</item>
         <item>垂直</item>

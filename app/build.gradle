@@ -18,9 +18,9 @@ android {
         applicationId "com.Dean.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
-        versionCode 400400
+        versionCode 400500
         multiDexEnabled true
-        versionName "4.0.4"
+        versionName "4.0.5"
         vectorDrawables.useSupportLibrary true
         proguardFiles 'proguard-rules.pro'
     }
