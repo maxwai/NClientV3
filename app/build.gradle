@@ -13,14 +13,14 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdk 35
+    compileSdk 36
     defaultConfig {
         applicationId "com.maxwai.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
-        versionCode 400700
+        versionCode 400800
         multiDexEnabled true
-        versionName "4.0.7"
+        versionName "4.0.8"
         vectorDrawables.useSupportLibrary true
         proguardFiles 'proguard-rules.pro'
     }
@@ -28,6 +28,7 @@ android {
     productFlavors {
         post28 {
             dimension "sdk"
+            targetSdk 36
             minSdkVersion 28
         }
         pre28 {
@@ -88,15 +89,15 @@ android.applicationVariants.configureEach { variant ->
 
 dependencies {
 // AndroidX
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
-    implementation 'androidx.fragment:fragment:1.8.6'
+    implementation 'androidx.fragment:fragment:1.8.8'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.work:work-runtime-ktx:2.10.1'
+    implementation 'androidx.work:work-runtime-ktx:2.10.2'
 
 // Other
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.12.0'//Because of min SDK
