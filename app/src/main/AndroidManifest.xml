@@ -199,28 +199,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service
-            android:name=".async.downloader.DownloadGalleryV2"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".async.converters.CreatePDF"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".async.converters.CreateZIP"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".async.ScrapeTags"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-
         <meta-data
             android:name="com.maxwai.nclientv3.components.classes.integration.OkHttpGlideModule"
             android:value="GlideModule" />

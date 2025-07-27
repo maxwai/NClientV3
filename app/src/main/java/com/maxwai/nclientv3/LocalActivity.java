@@ -15,7 +15,7 @@ import com.maxwai.nclientv3.adapters.LocalAdapter;
 import com.maxwai.nclientv3.api.local.FakeInspector;
 import com.maxwai.nclientv3.api.local.LocalGallery;
 import com.maxwai.nclientv3.api.local.LocalSortType;
-import com.maxwai.nclientv3.async.converters.CreatePDF;
+import com.maxwai.nclientv3.async.converters.CreatePdfOrZip;
 import com.maxwai.nclientv3.async.downloader.GalleryDownloaderV2;
 import com.maxwai.nclientv3.components.activities.BaseActivity;
 import com.maxwai.nclientv3.components.classes.MultichoiceAdapter;
@@ -118,7 +118,7 @@ public class LocalActivity extends BaseActivity {
         menu.findItem(R.id.select_all).setVisible(mode == MultichoiceAdapter.Mode.SELECTING);
         menu.findItem(R.id.pause_all).setVisible(mode == MultichoiceAdapter.Mode.SELECTING && !hasGallery && hasDownloads);
         menu.findItem(R.id.start_all).setVisible(mode == MultichoiceAdapter.Mode.SELECTING && !hasGallery && hasDownloads);
-        menu.findItem(R.id.pdf_all).setVisible(mode == MultichoiceAdapter.Mode.SELECTING && hasGallery && !hasDownloads && CreatePDF.hasPDFCapabilities());
+        menu.findItem(R.id.pdf_all).setVisible(mode == MultichoiceAdapter.Mode.SELECTING && hasGallery && !hasDownloads && CreatePdfOrZip.hasPDFCapabilities());
         menu.findItem(R.id.zip_all).setVisible(mode == MultichoiceAdapter.Mode.SELECTING && hasGallery && !hasDownloads);
     }
 
