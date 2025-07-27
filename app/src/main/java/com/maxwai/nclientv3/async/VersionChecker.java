@@ -30,7 +30,6 @@ import okhttp3.Response;
 public class VersionChecker {
     private static final String RELEASE_API_URL = "https://api.github.com/repos/maxwai/NClientV3/releases";
     private static final String LATEST_RELEASE_URL = "https://github.com/maxwai/NClientV3/releases/latest";
-    private static final String RELEASE_TYPE = BuildConfig.DEBUG ? "Debug" : "Release";
     private static String latest = null;
     private final AppCompatActivity context;
     private String downloadUrl;
@@ -126,7 +125,9 @@ public class VersionChecker {
                             continue;
                         }
                         release.downloadUrl = getDownloadUrl(jr);
-                        if (!release.downloadUrl.contains(RELEASE_TYPE))
+                        //noinspection ConstantValue
+                        if ((BuildConfig.FLAVOR.equals("pre28") && !release.downloadUrl.contains("pre28")) ||
+                            (BuildConfig.FLAVOR.equals("post28") && release.downloadUrl.contains("pre28")))
                             release.downloadUrl = null;
                     }
                     jr.endArray();

@@ -308,7 +308,7 @@ public class GalleryDownloaderV2 {
 
     private void createPages() {
         for (int i = start; i <= end && i < gallery.getPageCount(); i++)
-            urls.add(new PageContainer(i + 1, gallery.getHighPage(i).toString(), gallery.getPageExtension(i)));
+            urls.add(new PageContainer(i + 1, gallery.getHighPage(i).toString(), gallery.getPageExtensionString(i)));
     }
 
     private void createFolder() {

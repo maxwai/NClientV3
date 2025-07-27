@@ -36,6 +36,7 @@
     <string name="only_japanese">Только японский</string>
     <string name="only_chinese">Только китайский</string>
     <string name="all_languages">Все языки</string>
+    <string name="unknown_language">Unknown language</string>
     <string name="login">Войти</string>
     <string name="login_formatted" formatted="true">Вошёл как %s</string>
     <string name="logout">Выйти</string>
@@ -302,7 +303,7 @@
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">Hide</string>
     <string name="title_user_agent">Change User-Agent</string>
-
+    <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string-array name="scroll_type">
         <item>Горизонтальный</item>
         <item>Вертикальный</item>

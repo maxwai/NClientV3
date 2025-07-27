@@ -191,17 +191,32 @@ public class Gallery extends GenericGallery {
     }
 
     public Uri getHighPage(int page) {
-        return Uri.parse(String.format(Locale.US, "https://i1." + Utility.getHost() + "/galleries/%d/%d.%s", getMediaId(), page + 1, getPageExtension(page)));
+        return Uri.parse(String.format(Locale.US, "https://i1." + Utility.getHost() + "/galleries/%d/%d.%s", getMediaId(), page + 1, getPageExtensionString(page)));
     }
 
     public Uri getLowPage(int page) {
         Uri uri = getFileUri(page);
         if (uri != null) return uri;
-        return Uri.parse(String.format(Locale.US, "https://t1." + Utility.getHost() + "/galleries/%d/%dt.%s", getMediaId(), page + 1, getPageExtension(page)));
+        return Uri.parse(String.format(Locale.US, "https://t1." + Utility.getHost() + "/galleries/%d/%dt.%s", getMediaId(), page + 1, getPageExtensionString(page)));
     }
 
-    public String getPageExtension(int page) {
+    public String getPageExtensionString(int page) {
         return getPage(page).extToString();
+    }
+
+    public ImageExt getPageExtension(int page) {
+        return getPage(page).getImageExt();
+    }
+
+    public void setPageExtension(int page, ImageExt ext) {
+        getPage(page).setImageExt(ext);
+    }
+
+    public void setPageExtensionFrom(int page, ImageExt ext) {
+        for (int i = page; i < getPageCount(); i++)
+            getPage(i).setImageExt(ext);
+        galleryData.getThumbnail().setImageExt(ext);
+        galleryData.getCover().setImageExt(ext);
     }
 
     private Page getPage(int index) {

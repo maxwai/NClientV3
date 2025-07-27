@@ -36,6 +36,7 @@
     <string name="only_japanese">僅日文</string>
     <string name="only_chinese">僅中文</string>
     <string name="all_languages">所有語言</string>
+    <string name="unknown_language">未知語言</string>
     <string name="login">登入</string>
     <string name="login_formatted" formatted="true">以 %s 身份登入</string>
     <string name="logout">登出</string>
@@ -126,7 +127,7 @@
     <string name="send_comment">發送評論…</string>
     <string name="profile_picture">頭像</string>
     <string name="send_bug_on_github">在 Github 上提交錯誤報告</string>
-    <string name="github">Github</string>
+    <string name="github">GitHub</string>
     <string name="install">安裝</string>
     <string name="download_update_failed">無法下載新版本</string>
     <string name="copyURL">複製URL</string>
@@ -169,7 +170,7 @@
     <string name="start_download">開始下載</string>
     <string name="create_zip">建立 ZIP</string>
     <string name="created_zip">成功建立 ZIP</string>
-    <string name="failed_zip">無法建立 ZIP：</string>
+    <string name="failed_zip">無法建立 ZIP： </string>
     <string name="start_page">起始頁</string>
     <string name="end_page">結束頁</string>
     <string name="invalid_range_selected">選擇的範圍無效</string>
@@ -237,7 +238,7 @@
     <string name="months">月</string>
     <string name="days">日</string>
     <string name="weeks">周</string>
-    <string name="choose_unit">選擇時間單位:</string>
+    <string name="choose_unit">選擇時間單位：</string>
     <string name="change_status">變更狀態</string>
     <string name="create_new_status">建立新狀態：</string>
     <string name="invalid_color_selected">無法使用黑白顏色</string>
@@ -258,51 +259,51 @@
     <string name="descending_order">降冪排列</string>
     <string name="minimum_comment_length" formatted="true">評論不得少於 %d 個字元</string>
     <string name="change_scroll_type">切換滾動類型</string>
-    <string name="exported_backup_file_toast" formatted="true">Exported backup file in %s</string>
-    <string name="export_data">Export data</string>
-    <string name="import_data">Import data</string>
-    <string name="default_status_1">Reading</string>
-    <string name="default_status_2">Completed</string>
-    <string name="default_status_3">On Hold</string>
-    <string name="default_status_4">Dropped</string>
-    <string name="default_status_5">Plan to read</string>
-    <string name="title_site_mirror">Change site mirror</string>
-    <string name="disguise_app_in_drawer">Disguise app in drawer</string>
-    <string name="summary_disguise_app">The app will be disguised as a calculator (experimental)</string>
-    <string name="app_name_fake_calculator">Calculator</string>
-    <string name="delete_galleries">Delete galleries</string>
-    <string name="delete">Delete</string>
-    <string name="pause_selected_downloads">Pause selected downloads</string>
-    <string name="start_selected_downloads">Start selected downloads</string>
-    <string name="custom_path">Custom path</string>
-    <string name="insert_path">Insert path:</string>
-    <string name="requesting_storage_access">Requesting storage access</string>
-    <string name="request_storage_manager_summary">Due to some restriction in Android 11 to the storage access this app will require you to give additional permission to use custom paths.\nIf you want to give those permission please enable the setting in the next dialog.</string>
-    <string name="summary_beta">Updating to a beta version can make you unable to return to a stable version without uninstalling</string>
-    <string name="fix_inverted_title">Fix inverted images</string>
-    <string name="fix_inverted_summary">Enable if the images are shown with inverted colors (in some devices can cause the system theme to be changed to light, disabling it will fix this issue)</string>
-    <string name="navigation_settings_per_screen">Navigation settings per screen</string>
-    <string name="downloaded_update_at" formatted="true">Downloaded update at %s</string>
-    <string name="summary_offscreen_limit">Set the number of images to preload offscreen when reading a gallery</string>
-    <string name="title_offscreen_limit">Image to preload</string>
-    <string name="sort_popoular_month">Monthly popular</string>
-    <string name="random">Random</string>
-    <string name="summary_fetch_metadata">Download metadata for galleries downloaded before 2.3.0 which didn\'t have metadata like tags included</string>
-    <string name="title_fetch_metadata">Fetch metadata for old galleries</string>
-    <string name="title_change_page_buttons">Change page clicking on the image</string>
-    <string name="export_finished">Export finished</string>
-    <string name="import_finished">Import finished</string>
-    <string name="download_torrent">Download torrent</string>
-    <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Invalid response</string>
-    <string name="system_default">System default</string>
-    <string name="clear_cookies">Clear cookies</string>
-    <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
-    <string name="exact_title_match_title">Exact tag match only</string>
-    <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
-    <string name="hide">Hide</string>
-    <string name="title_user_agent">Change User-Agent</string>
-
+    <string name="exported_backup_file_toast" formatted="true">匯出備份資料於 %s</string>
+    <string name="export_data">匯出設定</string>
+    <string name="import_data">匯入設定</string>
+    <string name="default_status_1">閱讀中</string>
+    <string name="default_status_2">已完成</string>
+    <string name="default_status_3">保留中</string>
+    <string name="default_status_4">已放棄</string>
+    <string name="default_status_5">計劃閱讀</string>
+    <string name="title_site_mirror">切換網站鏡像</string>
+    <string name="disguise_app_in_drawer">在應用程式列表中偽裝應用程式</string>
+    <string name="summary_disguise_app">此應用程式將被偽裝為計算機（實驗性）</string>
+    <string name="app_name_fake_calculator">計算機</string>
+    <string name="delete_galleries">刪除圖庫</string>
+    <string name="delete">刪除</string>
+    <string name="pause_selected_downloads">暫停下載所選項目</string>
+    <string name="start_selected_downloads">開始下載所選項目</string>
+    <string name="custom_path">自定義路徑</string>
+    <string name="insert_path">插入路徑：</string>
+    <string name="requesting_storage_access">正在請求儲存權限</string>
+    <string name="request_storage_manager_summary">由於 Android 11 對儲存空間存取的限制，本應用程式需要額外的權限才能使用自訂路徑。\n若您願意授權，請在接下來的對話框中開啟相關設定。</string>
+    <string name="summary_beta">更新至測試版本將無法回到穩定發布版本，除非重新安裝應用程式</string>
+    <string name="fix_inverted_title">修正倒置的圖片</string>
+    <string name="fix_inverted_summary">圖片顯示為反色時請啟用(若影響系統主題可停用以修正)</string>
+    <string name="navigation_settings_per_screen">設定每個畫面的導航方式</string>
+    <string name="downloaded_update_at" formatted="true">下載更新於 %s</string>
+    <string name="summary_offscreen_limit">設定閱讀圖庫時預先載入的圖片數量</string>
+    <string name="title_offscreen_limit">預先載入圖片</string>
+    <string name="sort_popoular_month">月榜</string>
+    <string name="random">隨機</string>
+    <string name="summary_fetch_metadata">下載 2.3.0 版本之前下載的圖庫後設資料，這些圖庫當時沒有包含標籤等後設資料</string>
+    <string name="title_fetch_metadata">獲得舊圖庫的後設資料</string>
+    <string name="title_change_page_buttons">點選圖片切換頁面</string>
+    <string name="export_finished">匯出完成</string>
+    <string name="import_finished">匯入完成</string>
+    <string name="download_torrent">下載種子檔</string>
+    <string name="title_activity_captcha">驗證碼</string>
+    <string name="invalid_response">無效的回應</string>
+    <string name="system_default">系統預設</string>
+    <string name="clear_cookies">清除 Cookies</string>
+    <string name="fetching_cloudflare_token">獲得 Cloudflare 通行證 …</string>
+    <string name="exact_title_match_title">只顯示完全匹配的標籤</string>
+    <string name="exact_title_match_summary">隱藏網站中會出現但不包含所有搜尋標籤的圖庫</string>
+    <string name="hide">隱藏</string>
+    <string name="title_user_agent">更改使用者代理</string>
+    <string name="shuffle_contentDescription">隨機圖庫按鈕</string>
     <string-array name="scroll_type">
         <item>水準</item>
         <item>垂直</item>

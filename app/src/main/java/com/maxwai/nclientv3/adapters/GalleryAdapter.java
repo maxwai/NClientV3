@@ -27,7 +27,6 @@ import com.maxwai.nclientv3.api.enums.SpecialTagIds;
 import com.maxwai.nclientv3.api.enums.TagType;
 import com.maxwai.nclientv3.api.local.LocalGallery;
 import com.maxwai.nclientv3.async.database.Queries;
-import com.maxwai.nclientv3.components.classes.Size;
 import com.maxwai.nclientv3.components.widgets.CustomGridLayoutManager;
 import com.maxwai.nclientv3.files.GalleryFolder;
 import com.maxwai.nclientv3.github.chrisbanes.photoview.PhotoView;
@@ -54,22 +53,16 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         R.string.tag_language_gallery,
         R.string.tag_category_gallery,
     };
-    private static final int TOLERANCE = 1000;
-    private final Size maxSize;
-    private final Size minSize;
     private final SparseIntArray angles = new SparseIntArray();
     private final GalleryActivity context;
     private final GenericGallery gallery;
     private GalleryFolder directory = null;
-    private Size maxImageSize = null;
     private Policy policy;
     private int colCount;
 
     public GalleryAdapter(GalleryActivity cont, GenericGallery gallery, int colCount) {
         this.context = cont;
         this.gallery = gallery;
-        maxSize = gallery.getMaxSize();
-        minSize = gallery.getMinSize();
         setColCount(colCount);
         try {
             if (gallery instanceof LocalGallery) {
@@ -85,7 +78,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         } catch (IllegalArgumentException ignore) {
             directory = null;
         }
-        LogUtility.d("Max maxSize: " + maxSize + ", min maxSize: " + gallery.getMinSize());
+        LogUtility.d("Max maxSize: " + gallery.getMaxSize() + ", min maxSize: " + gallery.getMinSize());
     }
 
     public Type positionToType(int pos) {
@@ -101,7 +94,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     private void applyProportionPolicy() {
         if (colCount == 1) policy = Policy.FULL;
-        else if (maxSize.getHeight() - minSize.getHeight() < TOLERANCE) policy = Policy.MAX;
         else policy = Policy.PROPORTION;
         LogUtility.d("NEW POLICY: " + policy);
     }
@@ -120,9 +112,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
                 break;
             case PAGE:
                 switch (policy) {
-                    case MAX:
-                        id = R.layout.image_void;
-                        break;
                     case FULL:
                         id = R.layout.image_void_full;
                         break;
@@ -249,11 +238,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     }
 
-    public void setMaxImageSize(Size maxImageSize) {
-        this.maxImageSize = maxImageSize;
-        context.runOnUiThread(() -> notifyItemRangeChanged(0, getItemCount()));
-    }
-
     private void loadPageLayout(ViewHolder holder) {
         final int pos = holder.getBindingAdapterPosition();
         final ImageView imgView = holder.master.findViewById(R.id.image);
@@ -264,26 +248,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         holder.master.setOnLongClickListener(null);
 
         holder.pageNumber.setText(String.format(Locale.US, "%d", pos));
-
-
-        if (policy == Policy.MAX)
-            holder.itemView.post(() -> {//find the max size and apply proportion
-                if (maxImageSize != null) return;
-                int cellWidth = holder.itemView.getWidth();// this will give you cell width dynamically
-                LogUtility.d(String.format(Locale.US, "Setting: %d,%s", cellWidth, maxSize.toString()));
-                if (maxSize.getWidth() > 10 && maxSize.getHeight() > 10) {
-                    int hei = (maxSize.getHeight() * cellWidth) / maxSize.getWidth();
-                    if (hei >= 100)
-                        setMaxImageSize(new Size(cellWidth, hei));
-                }
-            });
-
-        if (policy == Policy.MAX && maxImageSize != null) {
-            ViewGroup.LayoutParams params = imgView.getLayoutParams();
-            params.height = maxImageSize.getHeight();
-            params.width = maxImageSize.getWidth();
-            imgView.setLayoutParams(params);
-        }
 
         if (policy == Policy.FULL) {
             PhotoView photoView = (PhotoView) imgView;
@@ -404,7 +368,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     public enum Type {TAG, PAGE, RELATED}
 
-    public enum Policy {PROPORTION, MAX, FULL}
+    public enum Policy {PROPORTION, FULL}
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final View master;

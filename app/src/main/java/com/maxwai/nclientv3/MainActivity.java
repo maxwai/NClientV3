@@ -62,11 +62,14 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import okhttp3.Cookie;
 
@@ -478,27 +481,6 @@ public class MainActivity extends BaseActivity
         layoutHeader.setBackgroundResource(light ? R.drawable.side_nav_bar_light : R.drawable.side_nav_bar_dark);
     }
 
-    private void changeUsedLanguage() {
-        switch (Global.getOnlyLanguage()) {
-            case ENGLISH:
-                Global.updateOnlyLanguage(this, Language.JAPANESE);
-                break;
-            case JAPANESE:
-                Global.updateOnlyLanguage(this, Language.CHINESE);
-                break;
-            case CHINESE:
-                Global.updateOnlyLanguage(this, Language.ALL);
-                break;
-            case ALL:
-                Global.updateOnlyLanguage(this, Language.ENGLISH);
-                break;
-        }
-        //wait 250ms to reduce the requests
-        changeLanguageTimeHandler.removeCallbacks(changeLanguageRunnable);
-        changeLanguageTimeHandler.postDelayed(changeLanguageRunnable, CHANGE_LANGUAGE_DELAY);
-
-    }
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
@@ -658,8 +640,7 @@ public class MainActivity extends BaseActivity
         if (item.getItemId() == R.id.by_popular) {
             updateSortType(item);
         } else if (item.getItemId() == R.id.only_language) {
-            changeUsedLanguage();
-            showLanguageIcon(item);
+            updateLanguageAndIcon(item);
         } else if (item.getItemId() == R.id.search) {
             if (modeType != ModeType.FAVORITE) {//show textbox or start search activity
                 i = new Intent(this, SearchActivity.class);
@@ -715,6 +696,31 @@ public class MainActivity extends BaseActivity
         });
         builder.setNegativeButton(R.string.cancel, null);
         builder.show();
+    }
+
+    private void updateLanguageAndIcon(MenuItem item) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+
+        adapter.addAll(Arrays.stream(Language.getFilteredValuesArray())
+            .map(lang -> getString(lang.getNameResId()))
+            .collect(Collectors.toList())
+        );
+
+        AtomicReference<Language> selectedLanguage = new AtomicReference<>(Global.getOnlyLanguage());
+        builder.setIcon(R.drawable.ic_world)
+            .setTitle(R.string.change_language)
+            .setSingleChoiceItems(adapter, selectedLanguage.get().ordinal(),
+                (dialog, which) -> selectedLanguage.set(Language.getFilteredValuesArray()[which]))
+            .setPositiveButton(R.string.ok, (dialog, which) -> {
+                Global.updateOnlyLanguage(MainActivity.this, Language.valueOf(selectedLanguage.get().name()));
+                // wait 250ms to reduce the requests
+                changeLanguageTimeHandler.removeCallbacks(changeLanguageRunnable);
+                changeLanguageTimeHandler.postDelayed(changeLanguageRunnable, CHANGE_LANGUAGE_DELAY);
+                showLanguageIcon(item);
+            })
+            .setNegativeButton(R.string.cancel, null)
+            .show();
     }
 
     private void showDialogDownloadAll() {

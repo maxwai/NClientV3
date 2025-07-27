@@ -6,7 +6,7 @@ An unofficial NHentai Android Client. This is a fork of the original Project by 
 
 This app works for devices from API 26 (Android 8) and above.
 
-For Devices Running Android 8 (SDK 26 and 27) there is a separate SDK with `pre28` in the name. Support for this Version of the app will be reduced.
+For Devices Running Android 8 (SDK 26 and 27) there is a separate APK with `pre28` in the name. Support for this Version of the app will be reduced.
 
 Releases: <https://github.com/maxwai/NClientV3/releases>
 
@@ -24,6 +24,12 @@ Unfortunately, due to Android security features, it is not possible to create an
 5. Set the download folder in `Settings -> Folder location` to the same path as in NClientV2
 6. Import your data in `Settings -> Import data`, choose the zip file you created in Step 3
    1. IMPORTANT: wait for the pop up message saying `Import finished`
+
+## Translate App
+
+You can help translate the Project by going to the Crowdin Project [here](https://crowdin.com/project/nclientv3/invite?h=33e3f83681ebaea1bf037ed157d2ea272410538).
+
+If your desired language is missing, write an issue, the language will be added.
 
 ## API Features
 
@@ -52,6 +58,9 @@ Unfortunately, due to Android security features, it is not possible to create an
 ## Contributors
 
 - [shirokun20](https://github.com/shirokun20) for the initial Bug fixes
+- [w0x8m](https://github.com/w0x8m) for the new language picker & Chinese Simplified translation
+- [ananas7](https://github.com/ananas7) for Arabic translation
+- [raymi7066](https://github.com/raymi7066) for Chinese Simplified translation
 
 ## Contributors of original Project
 

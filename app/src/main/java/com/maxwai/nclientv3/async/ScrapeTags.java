@@ -26,7 +26,7 @@ import okhttp3.ResponseBody;
 
 public class ScrapeTags extends JobIntentService {
     private static final int DAYS_UNTIL_SCRAPE = 7;
-    private static final String DATA_FOLDER = "https://raw.githubusercontent.com/maxwai/NClientV3/master/data/";
+    private static final String DATA_FOLDER = "https://raw.githubusercontent.com/maxwai/NClientV3/main/data/";
     private static final String TAGS = DATA_FOLDER + "tags.json";
     private static final String VERSION = DATA_FOLDER + "tagsVersion";
 

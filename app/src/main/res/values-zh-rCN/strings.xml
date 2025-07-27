@@ -36,6 +36,7 @@
     <string name="only_japanese">仅日文</string>
     <string name="only_chinese">仅中文</string>
     <string name="all_languages">所有语言</string>
+    <string name="unknown_language">未知语言</string>
     <string name="login">登录</string>
     <string name="login_formatted" formatted="true">以 %s 身份登录</string>
     <string name="logout">登出</string>
@@ -204,7 +205,7 @@
     <string name="data_usage_full">按需下载缩略图或完整图片</string>
     <string name="data_usage_no">不下载图片</string>
     <string name="enable_network_to_continue">允许下载图片或切换网络以打开图片</string>
-    <string name="id_tag">ID:</string>
+    <string name="id_tag">ID：</string>
     <string name="id_copied_to_clipboard">ID 已复制至剪贴板</string>
     <string name="copied_to_clipboard">复制至剪贴板</string>
     <string name="maximum_notification_count">最大通知数</string>
@@ -279,30 +280,30 @@
     <string name="requesting_storage_access">请求存储权限</string>
     <string name="request_storage_manager_summary">由于 Android 11 中的一些存储权限限制应用将向您请求额外的权限以使用自定义路径。\n如果您想要授予这些权限请在下一对话框中启用此设置。</string>
     <string name="summary_beta">更新到 beta 版将使您无法回到稳定版，除非卸载</string>
-    <string name="fix_inverted_title">Fix inverted images</string>
-    <string name="fix_inverted_summary">Enable if the images are shown with inverted colors (in some devices can cause the system theme to be changed to light, disabling it will fix this issue)</string>
-    <string name="navigation_settings_per_screen">Navigation settings per screen</string>
-    <string name="downloaded_update_at" formatted="true">Downloaded update at %s</string>
-    <string name="summary_offscreen_limit">Set the number of images to preload offscreen when reading a gallery</string>
-    <string name="title_offscreen_limit">Image to preload</string>
-    <string name="sort_popoular_month">Monthly popular</string>
-    <string name="random">Random</string>
-    <string name="summary_fetch_metadata">Chinese</string>
-    <string name="title_fetch_metadata">Fetch metadata for old galleries</string>
-    <string name="title_change_page_buttons">Change page clicking on the image</string>
-    <string name="export_finished">Export finished</string>
-    <string name="import_finished">Import finished</string>
-    <string name="download_torrent">Download torrent</string>
-    <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Invalid response</string>
-    <string name="system_default">System default</string>
-    <string name="clear_cookies">Clear cookies</string>
-    <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
-    <string name="exact_title_match_title">Exact tag match only</string>
-    <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
-    <string name="hide">Hide</string>
-    <string name="title_user_agent">Change User-Agent</string>
-
+    <string name="fix_inverted_title">修复反色图片</string>
+    <string name="fix_inverted_summary">如果图像以反色显示，则启用该功能（在某些设备中，该功能会导致系统主题变为浅色，禁用该功能可解决此问题）</string>
+    <string name="navigation_settings_per_screen">每个界面的导航设置</string>
+    <string name="downloaded_update_at" formatted="true">下载更新 %s</string>
+    <string name="summary_offscreen_limit">设置阅读图库时要在屏幕外预载的图像数量</string>
+    <string name="title_offscreen_limit">要预载的图像</string>
+    <string name="sort_popoular_month">月榜</string>
+    <string name="random">随机</string>
+    <string name="summary_fetch_metadata">为 2.3.0 之前下载的图库下载元数据，这些图库不包含标签等元数据</string>
+    <string name="title_fetch_metadata">获取旧图库的元数据</string>
+    <string name="title_change_page_buttons">点击图片更改页面</string>
+    <string name="export_finished">导出完成</string>
+    <string name="import_finished">导入完成</string>
+    <string name="download_torrent">下载种子</string>
+    <string name="title_activity_captcha">人机验证</string>
+    <string name="invalid_response">无效响应</string>
+    <string name="system_default">系统默认</string>
+    <string name="clear_cookies">清除 cookies</string>
+    <string name="fetching_cloudflare_token">获取 Cloudflare 令牌 …</string>
+    <string name="exact_title_match_title">仅精确标签匹配</string>
+    <string name="exact_title_match_summary">隐藏网站中会出现但不包含所有搜索标签的图库</string>
+    <string name="hide">隐藏</string>
+    <string name="title_user_agent">更改用户代理</string>
+    <string name="shuffle_contentDescription">随机图库按钮</string>
     <string-array name="scroll_type">
         <item>水平</item>
         <item>垂直</item>
