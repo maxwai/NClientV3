@@ -11,8 +11,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/app_name"
-        android:fitsSystemWindows="true">
+        app:title="@string/app_name">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
