@@ -456,7 +456,6 @@ public class GalleryActivity extends BaseActivity {
                 recycler.setAdapter(adapter);
                 lookup();
                 recycler.scrollToPosition(pos);
-                adapter.setMaxImageSize(null);
 
             }
         }
