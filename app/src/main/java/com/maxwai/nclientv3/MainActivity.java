@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -180,6 +181,19 @@ public class MainActivity extends BaseActivity
         } else {
             LogUtility.e(getIntent().getExtras());
         }
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START))
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                    setEnabled(true);
+                }
+            }
+        });
     }
 
     private void manageDrawer() {
@@ -479,13 +493,6 @@ public class MainActivity extends BaseActivity
         View layoutHeader = view.findViewById(R.id.layout_header);
         ImageDownloadUtility.loadImage(light ? R.drawable.ic_logo_dark : R.drawable.ic_logo, imageView);
         layoutHeader.setBackgroundResource(light ? R.drawable.side_nav_bar_light : R.drawable.side_nav_bar_dark);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
-            drawerLayout.closeDrawer(GravityCompat.START);
-        else getOnBackPressedDispatcher().onBackPressed();
     }
 
     public void hidePageSwitcher() {

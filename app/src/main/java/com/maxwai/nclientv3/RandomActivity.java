@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.ImageViewCompat;
 
 import com.maxwai.nclientv3.api.RandomLoader;
 import com.maxwai.nclientv3.api.components.Gallery;
 import com.maxwai.nclientv3.components.activities.GeneralActivity;
+import com.maxwai.nclientv3.components.classes.MultichoiceAdapter;
 import com.maxwai.nclientv3.settings.Favorites;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.ImageDownloadUtility;
@@ -91,6 +93,16 @@ public class RandomActivity extends GeneralActivity {
         Global.setTint(shuffle.getContentBackground());
         Global.setTint(share.getDrawable());
         Global.setTint(favorite.getDrawable());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                loadedGallery = null;
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+            }
+        });
     }
 
     @Override
@@ -120,11 +132,5 @@ public class RandomActivity extends GeneralActivity {
             ImageDownloadUtility.loadImage(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border, favorite);
             Global.setTint(favorite.getDrawable());
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        loadedGallery = null;
-        getOnBackPressedDispatcher().onBackPressed();
     }
 }

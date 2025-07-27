@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 
 import com.maxwai.nclientv3.adapters.LocalAdapter;
@@ -60,6 +61,18 @@ public class LocalActivity extends BaseActivity {
         refresher.setOnRefreshListener(() -> new FakeInspector(this, folder).execute(this));
         changeLayout(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
         new FakeInspector(this, folder).execute(this);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (adapter != null && adapter.getMode() == MultichoiceAdapter.Mode.SELECTING)
+                    adapter.deselectAll();
+                else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                    setEnabled(true);
+                }
+            }
+        });
     }
 
     public void setAdapter(LocalAdapter adapter) {
@@ -150,7 +163,7 @@ public class LocalActivity extends BaseActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.pause_all) {
             adapter.pauseSelected();
@@ -172,14 +185,6 @@ public class LocalActivity extends BaseActivity {
             dialogSortType();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (adapter != null && adapter.getMode() == MultichoiceAdapter.Mode.SELECTING)
-            adapter.deselectAll();
-        else
-            getOnBackPressedDispatcher().onBackPressed();
     }
 
     private void showDialogFolderChoose() {

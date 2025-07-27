@@ -23,7 +23,9 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/DarkTheme" >
+        android:theme="@style/DarkTheme"
+        android:enableOnBackInvokedCallback="true"
+        tools:ignore="UnusedAttribute">
 
         <activity android:name=".StatusManagerActivity" />
         <activity
