@@ -538,9 +538,10 @@ public class Global {
         );
 
         try {
+            //noinspection ResultOfMethodCallIgnored
             new File(Global.MAINFOLDER, ".nomedia").createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtility.e("Couldn't create nomedia file", e);
         }
     }
 
@@ -720,7 +721,7 @@ public class Global {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            LogUtility.w("Couldn't get Package Info", e);
         }
         return "0.0.0";
     }

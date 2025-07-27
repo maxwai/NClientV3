@@ -229,7 +229,8 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             try {
                 CopyToClipboardActivity.copyTextToClipboard(getContext(), getDataSettings(getContext()));
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtility.e("Error copying settings into clipboard", e);
+                Toast.makeText(getContext(), R.string.clipboard_settings_error, Toast.LENGTH_SHORT).show();
             }
             return true;
         });
@@ -302,21 +303,20 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
 
     private String getDataSettings(Context context) throws IOException {
         String[] names = new String[]{"Settings", "ScrapedTags"};
-        StringWriter sw = new StringWriter();
-        JsonWriter writer = new JsonWriter(sw);
-        writer.setIndent("\t");
+        try (StringWriter sw = new StringWriter();
+             JsonWriter writer = new JsonWriter(sw)) {
+            writer.setIndent("\t");
 
-        writer.beginObject();
-        for (String name : names)
-            processSharedFromName(writer, context, name);
-        writer.endObject();
+            writer.beginObject();
+            for (String name : names)
+                processSharedFromName(writer, context, name);
+            writer.endObject();
 
-        writer.flush();
-        String settings = sw.toString();
-        writer.close();
-
-        LogUtility.d(settings);
-        return settings;
+            writer.flush();
+            String settings = sw.toString();
+            LogUtility.d(settings);
+            return settings;
+        }
     }
 
     private void processSharedFromName(JsonWriter writer, Context context, String name) throws IOException {

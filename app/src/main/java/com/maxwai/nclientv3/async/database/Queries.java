@@ -55,18 +55,18 @@ public class Queries {
         private static void dumpTable(String name, FileWriter sb) throws IOException {
 
             String query = "SELECT * FROM " + name;
-            Cursor c = db.rawQuery(query, null);
             sb.write("DUMPING: ");
             sb.write(name);
-            sb.write(" count: ");
-            sb.write("" + c.getCount());
-            sb.write(": ");
-            if (c.moveToFirst()) {
-                do {
-                    sb.write(DatabaseUtils.dumpCurrentRowToString(c));
-                } while (c.moveToNext());
+            try (Cursor c = db.rawQuery(query, null)) {
+                sb.write(" count: ");
+                sb.write("" + c.getCount());
+                sb.write(": ");
+                if (c.moveToFirst()) {
+                    do {
+                        sb.write(DatabaseUtils.dumpCurrentRowToString(c));
+                    } while (c.moveToNext());
+                }
             }
-            c.close();
             sb.append("END DUMPING\n");
         }
     }
@@ -134,13 +134,13 @@ public class Queries {
          * @param id id of the gallery to retrieve
          */
         public static Gallery galleryFromId(int id) throws IOException {
-            Cursor cursor = db.query(true, TABLE_NAME, null, IDGALLERY + "=?", new String[]{"" + id}, null, null, null, null);
-            Gallery g = null;
-            if (cursor.moveToFirst()) {
-                g = cursorToGallery(cursor);
+            try (Cursor cursor = db.query(true, TABLE_NAME, null, IDGALLERY + "=?", new String[]{"" + id}, null, null, null, null)) {
+                Gallery g = null;
+                if (cursor.moveToFirst()) {
+                    g = cursorToGallery(cursor);
+                }
+                return g;
             }
-            cursor.close();
-            return g;
         }
 
         @Deprecated
@@ -168,15 +168,15 @@ public class Queries {
          */
         public static List<Gallery> getAllGalleries() throws IOException {
             String query = "SELECT * FROM " + TABLE_NAME;
-            Cursor cursor = db.rawQuery(query, null);
-            List<Gallery> galleries = new ArrayList<>(cursor.getCount());
-            if (cursor.moveToFirst()) {
-                do {
-                    galleries.add(cursorToGallery(cursor));
-                } while (cursor.moveToNext());
+            try (Cursor cursor = db.rawQuery(query, null)) {
+                List<Gallery> galleries = new ArrayList<>(cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    do {
+                        galleries.add(cursorToGallery(cursor));
+                    } while (cursor.moveToNext());
+                }
+                return galleries;
             }
-            cursor.close();
-            return galleries;
         }
 
         public static void insert(GenericGallery gallery) {
@@ -282,15 +282,16 @@ public class Queries {
          * The {@link Cursor} passed as parameter is closed
          */
         private static List<Tag> getTagsFromCursor(Cursor cursor) {
-            List<Tag> tags = new ArrayList<>(cursor.getCount());
-            int i = 0;
-            if (cursor.moveToFirst()) {
-                do {
-                    tags.add(cursorToTag(cursor));
-                } while (cursor.moveToNext());
+            try (cursor) {
+                List<Tag> tags = new ArrayList<>(cursor.getCount());
+                int i = 0;
+                if (cursor.moveToFirst()) {
+                    do {
+                        tags.add(cursorToTag(cursor));
+                    } while (cursor.moveToNext());
+                }
+                return tags;
             }
-            cursor.close();
-            return tags;
         }
 
         /**
@@ -389,10 +390,9 @@ public class Queries {
          */
         public static boolean isBlackListed(Tag tag) {
             String query = "SELECT " + IDTAG + " FROM " + TABLE_NAME + " WHERE " + IDTAG + "=? AND " + ONLINE + "=1";
-            Cursor c = db.rawQuery(query, new String[]{"" + tag.getId()});
-            boolean x = c.moveToFirst();
-            c.close();
-            return x;
+            try (Cursor c = db.rawQuery(query, new String[]{"" + tag.getId()})) {
+                return c.moveToFirst();
+            }
         }
 
         /**
@@ -401,11 +401,11 @@ public class Queries {
         @Nullable
         public static Tag getTagById(int id) {
             String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + IDTAG + " = ?";
-            Cursor c = db.rawQuery(query, new String[]{"" + id});
-            Tag t = null;
-            if (c.moveToFirst()) t = cursorToTag(c);
-            c.close();
-            return t;
+            try (Cursor c = db.rawQuery(query, new String[]{"" + id})) {
+                Tag t = null;
+                if (c.moveToFirst()) t = cursorToTag(c);
+                return t;
+            }
         }
 
         public static int updateStatus(int id, TagStatus status) {
@@ -476,22 +476,22 @@ public class Queries {
         public static TagStatus getStatus(Tag tag) {
             String query = "SELECT " + STATUS + " FROM " + TABLE_NAME +
                 " WHERE " + IDTAG + " =?";
-            Cursor c = db.rawQuery(query, new String[]{"" + tag.getId()});
-            TagStatus status = null;
-            if (c.moveToFirst()) {
-                status = TagTable.cursorToTag(c).getStatus();
-                tag.setStatus(status);
+            try (Cursor c = db.rawQuery(query, new String[]{"" + tag.getId()})) {
+                TagStatus status = null;
+                if (c.moveToFirst()) {
+                    status = TagTable.cursorToTag(c).getStatus();
+                    tag.setStatus(status);
+                }
+                return status;
             }
-            c.close();
-            return status;
         }
 
         public static Tag getTagFromTagName(String name) {
             Tag tag = null;
-            Cursor cursor = db.query(TABLE_NAME, null, NAME + "=?", new String[]{name}, null, null, null);
-            if (cursor.moveToFirst()) tag = cursorToTag(cursor);
-            cursor.close();
-            return tag;
+            try (Cursor cursor = db.query(TABLE_NAME, null, NAME + "=?", new String[]{name}, null, null, null)) {
+                if (cursor.moveToFirst()) tag = cursorToTag(cursor);
+                return tag;
+            }
         }
 
         /**
@@ -529,10 +529,10 @@ public class Queries {
             Tag tag = null;
             String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + NAME + " = ? AND " + TYPE + "=?";
             LogUtility.d(query);
-            Cursor c = db.rawQuery(query, new String[]{name, "" + type.getId()});
-            if (c.moveToFirst()) tag = cursorToTag(c);
-            c.close();
-            return tag;
+            try (Cursor c = db.rawQuery(query, new String[]{name, "" + type.getId()})) {
+                if (c.moveToFirst()) tag = cursorToTag(c);
+                return tag;
+            }
         }
 
         /**
@@ -591,20 +591,20 @@ public class Queries {
         public static List<GalleryDownloaderManager> getAllDownloads(Context context) throws IOException {
             String q = "SELECT * FROM %s INNER JOIN %s ON %s=%s";
             String query = String.format(Locale.US, q, GalleryTable.TABLE_NAME, DownloadTable.TABLE_NAME, GalleryTable.IDGALLERY, DownloadTable.ID_GALLERY);
-            Cursor c = db.rawQuery(query, null);
-            List<GalleryDownloaderManager> managers = new ArrayList<>();
+            try (Cursor c = db.rawQuery(query, null)) {
+                List<GalleryDownloaderManager> managers = new ArrayList<>();
 
-            Gallery x;
-            GalleryDownloaderManager m;
-            if (c.moveToFirst()) {
-                do {
-                    x = GalleryTable.cursorToGallery(c);
-                    m = new GalleryDownloaderManager(context, x, c.getInt(c.getColumnIndex(RANGE_START)), c.getInt(c.getColumnIndex(RANGE_END)));
-                    managers.add(m);
-                } while (c.moveToNext());
+                Gallery x;
+                GalleryDownloaderManager m;
+                if (c.moveToFirst()) {
+                    do {
+                        x = GalleryTable.cursorToGallery(c);
+                        m = new GalleryDownloaderManager(context, x, c.getInt(c.getColumnIndex(RANGE_START)), c.getInt(c.getColumnIndex(RANGE_END)));
+                        managers.add(m);
+                    } while (c.moveToNext());
+                }
+                return managers;
             }
-            c.close();
-            return managers;
         }
     }
 
@@ -692,23 +692,23 @@ public class Queries {
 
         public static List<Bookmark> getBookmarks() {
             String query = "SELECT * FROM " + TABLE_NAME;
-            Cursor cursor = db.rawQuery(query, null);
-            List<Bookmark> bookmarks = new ArrayList<>(cursor.getCount());
-            Bookmark b;
-            LogUtility.d("This url has " + cursor.getCount());
-            if (cursor.moveToFirst()) {
-                do {
-                    b = new Bookmark(
-                        cursor.getString(cursor.getColumnIndex(URL)),
-                        cursor.getInt(cursor.getColumnIndex(PAGE)),
-                        ApiRequestType.values[cursor.getInt(cursor.getColumnIndex(TYPE))],
-                        cursor.getInt(cursor.getColumnIndex(TAG_ID))
-                    );
-                    bookmarks.add(b);
-                } while (cursor.moveToNext());
+            try (Cursor cursor = db.rawQuery(query, null)) {
+                List<Bookmark> bookmarks = new ArrayList<>(cursor.getCount());
+                Bookmark b;
+                LogUtility.d("This url has " + cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    do {
+                        b = new Bookmark(
+                            cursor.getString(cursor.getColumnIndex(URL)),
+                            cursor.getInt(cursor.getColumnIndex(PAGE)),
+                            ApiRequestType.values[cursor.getInt(cursor.getColumnIndex(TYPE))],
+                            cursor.getInt(cursor.getColumnIndex(TAG_ID))
+                        );
+                        bookmarks.add(b);
+                    } while (cursor.moveToNext());
+                }
+                return bookmarks;
             }
-            cursor.close();
-            return bookmarks;
         }
     }
 
@@ -833,10 +833,9 @@ public class Queries {
          * Retrieve all favorite galleries
          */
         static List<Gallery> getAllFavoriteGalleries() throws IOException {
-            Cursor c = getAllFavoriteGalleriesCursor();
-            List<Gallery> galleries = GalleryTable.cursorToList(c);
-            c.close();
-            return galleries;
+            try (Cursor c = getAllFavoriteGalleriesCursor()) {
+                return GalleryTable.cursorToList(c);
+            }
         }
 
         static void insert(int galleryId) {
@@ -854,31 +853,30 @@ public class Queries {
             if (text == null || text.trim().isEmpty()) return countFavorite();
             int totalFavorite = 0;
             String param = "%" + text + "%";
-            Cursor c = db.query(FAVORITE_JOIN_GALLERY, new String[]{"COUNT(*)"}, TITLE_CLAUSE, new String[]{param, param, param}, null, null, null);
-            if (c.moveToFirst()) {
-                totalFavorite = c.getInt(0);
+            try (Cursor c = db.query(FAVORITE_JOIN_GALLERY, new String[]{"COUNT(*)"}, TITLE_CLAUSE, new String[]{param, param, param}, null, null, null)) {
+                if (c.moveToFirst()) {
+                    totalFavorite = c.getInt(0);
+                }
             }
-            c.close();
             return totalFavorite;
         }
 
         public static int countFavorite() {
             int totalFavorite = 0;
             String query = "SELECT COUNT(*) FROM " + TABLE_NAME;
-            Cursor c = db.rawQuery(query, null);
-            if (c.moveToFirst()) {
-                totalFavorite = c.getInt(0);
+            try (Cursor c = db.rawQuery(query, null)) {
+                if (c.moveToFirst()) {
+                    totalFavorite = c.getInt(0);
+                }
+                return totalFavorite;
             }
-            c.close();
-            return totalFavorite;
         }
 
         public static boolean isFavorite(int id) {
             String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID_GALLERY + "=?";
-            Cursor c = db.rawQuery(query, new String[]{"" + id});
-            boolean b = c.moveToFirst();
-            c.close();
-            return b;
+            try (Cursor c = db.rawQuery(query, new String[]{"" + id})) {
+                return c.moveToFirst();
+            }
         }
 
         public static void removeAllFavorite() {
@@ -909,11 +907,11 @@ public class Queries {
         public static int pageFromId(int id) {
             if (id < 0) return -1;
             int val = -1;
-            Cursor c = db.query(TABLE_NAME, new String[]{PAGE}, ID_GALLERY + "= ?", new String[]{"" + id}, null, null, null);
-            if (c.moveToFirst())
-                val = c.getInt(c.getColumnIndex(PAGE));
-            c.close();
-            return val;
+            try (Cursor c = db.query(TABLE_NAME, new String[]{PAGE}, ID_GALLERY + "= ?", new String[]{"" + id}, null, null, null)) {
+                if (c.moveToFirst())
+                    val = c.getInt(c.getColumnIndex(PAGE));
+                return val;
+            }
         }
 
         public static void remove(int id) {
@@ -953,14 +951,14 @@ public class Queries {
 
         @NonNull
         public static Status getStatus(int id) {
-            Cursor cursor = db.query(TABLE_NAME, new String[]{NAME}, GALLERY + "=?", new String[]{"" + id}, null, null, null);
-            Status status;
-            if (cursor.moveToFirst())
-                status = StatusManager.getByName(cursor.getString(cursor.getColumnIndex(NAME)));
-            else
-                status = StatusManager.getByName(StatusManager.DEFAULT_STATUS);
-            cursor.close();
-            return status;
+            try (Cursor cursor = db.query(TABLE_NAME, new String[]{NAME}, GALLERY + "=?", new String[]{"" + id}, null, null, null)) {
+                Status status;
+                if (cursor.moveToFirst())
+                    status = StatusManager.getByName(cursor.getString(cursor.getColumnIndex(NAME)));
+                else
+                    status = StatusManager.getByName(StatusManager.DEFAULT_STATUS);
+                return status;
+            }
         }
 
         public static void insert(GenericGallery gallery, String s) {
@@ -993,12 +991,12 @@ public class Queries {
                 StatusMangaTable.NAME);
             LogUtility.d(query);
             int value = -1;
-            Cursor cursor = db.rawQuery(query, new String[]{name});
-            if (cursor.moveToFirst()) {
-                value = cursor.getInt(0);
+            try (Cursor cursor = db.rawQuery(query, new String[]{name})) {
+                if (cursor.moveToFirst()) {
+                    value = cursor.getInt(0);
+                }
+                return value;
             }
-            cursor.close();
-            return value;
         }
 
         public static void removeStatus(String name) {
@@ -1030,16 +1028,16 @@ public class Queries {
         }
 
         public static void initStatuses() {
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    StatusManager.add(
-                        cursor.getString(cursor.getColumnIndex(NAME)),
-                        cursor.getInt(cursor.getColumnIndex(COLOR))
-                    );
-                } while (cursor.moveToNext());
+            try (Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null)) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        StatusManager.add(
+                            cursor.getString(cursor.getColumnIndex(NAME)),
+                            cursor.getInt(cursor.getColumnIndex(COLOR))
+                        );
+                    } while (cursor.moveToNext());
+                }
             }
-            cursor.close();
         }
 
         public static void update(Status oldStatus, Status newStatus) {

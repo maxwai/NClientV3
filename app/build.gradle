@@ -18,9 +18,9 @@ android {
         applicationId "com.maxwai.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
-        versionCode 400900
+        versionCode 410001
         multiDexEnabled true
-        versionName "4.0.9"
+        versionName "4.1.0_pre2"
         vectorDrawables.useSupportLibrary true
         proguardFiles 'proguard-rules.pro'
     }
@@ -97,7 +97,7 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.work:work-runtime-ktx:2.10.2'
+    implementation 'androidx.work:work-runtime:2.10.2'
 
 // Other
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.12.0'//Because of min SDK

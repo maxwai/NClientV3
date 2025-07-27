@@ -56,7 +56,7 @@ public class NetworkUtil {
             if (networks.length > 0)
                 setType(getConnectivityPostLollipop(cm, networks[0]));
         } catch (SecurityException e) {
-            e.printStackTrace();
+            LogUtility.e("Problem initializing connectivity", e);
         }
     }
 

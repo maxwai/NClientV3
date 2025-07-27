@@ -56,9 +56,10 @@ public class VersionChecker {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                JsonReader jr = new JsonReader(response.body().charStream());
-                GitHubRelease release = parseVersionJson(jr, withPrerelease);
-                jr.close();
+                GitHubRelease release;
+                try (JsonReader jr = new JsonReader(response.body().charStream())) {
+                    release = parseVersionJson(jr, withPrerelease);
+                }
                 if (release == null) {
                     release = new GitHubRelease();
                     release.versionCode = actualVersionName;
@@ -66,7 +67,7 @@ public class VersionChecker {
                 downloadUrl = release.downloadUrl;
                 GitHubRelease finalRelease = release;
                 context.runOnUiThread(() -> {
-                    if (downloadUrl == null || extractVersion(actualVersionName) >= extractVersion(finalRelease.versionCode)) {
+                    if (downloadUrl == null || actualVersionName.compareToIgnoreCase(finalRelease.versionCode) >= 0) {
                         if (!silent)
                             Toast.makeText(context, R.string.no_updates_found, Toast.LENGTH_SHORT).show();
                     } else {
@@ -208,17 +209,17 @@ public class VersionChecker {
                     Global.initStorage(context);
                 }
                 Global.UPDATEFOLDER.mkdirs();
+                //noinspection ResultOfMethodCallIgnored
                 f.createNewFile();
-                FileOutputStream stream = new FileOutputStream(f);
-                InputStream stream1 = response.body().byteStream();
-                int read;
-                byte[] bytes = new byte[1024];
-                while ((read = stream1.read(bytes)) != -1) {
-                    stream.write(bytes, 0, read);
+                try (FileOutputStream stream = new FileOutputStream(f);
+                     InputStream stream1 = response.body().byteStream()) {
+                    int read;
+                    byte[] bytes = new byte[1024];
+                    while ((read = stream1.read(bytes)) != -1) {
+                        stream.write(bytes, 0, read);
+                    }
+                    stream.flush();
                 }
-                stream1.close();
-                stream.flush();
-                stream.close();
                 context.getSharedPreferences("Settings", 0).edit().putBoolean("downloaded", true).apply();
                 installApp(f);
             }

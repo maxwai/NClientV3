@@ -29,7 +29,6 @@ public class GalleryDownloaderManager {
         public void triggerStartDownload(GalleryDownloaderV2 downloader) {
             gallery = downloader.getGallery();
             prepareNotification();
-            addActionToNotification(false);
             notificationUpdate();
         }
 
@@ -55,7 +54,6 @@ public class GalleryDownloaderManager {
 
         @Override
         public void triggerPauseDownload(GalleryDownloaderV2 downloader) {
-            addActionToNotification(true);
             notificationUpdate();
         }
     };
@@ -103,7 +101,6 @@ public class GalleryDownloaderManager {
     private void endNotification() {
         //notification=new NotificationCompat.Builder(context.getApplicationContext(), Global.CHANNEL_ID1);
         //notification.setOnlyAlertOnce(true).setSmallIcon(R.drawable.ic_check).setAutoCancel(true);
-        clearNotificationAction();
         hidePercentage();
         if (downloaderV2.getStatus() != GalleryDownloaderV2.Status.CANCELED) {
             notification.setSmallIcon(R.drawable.ic_check);
@@ -130,40 +127,6 @@ public class GalleryDownloaderManager {
             .setProgress(gallery.getPageCount(), 0, false)
             .setSmallIcon(R.drawable.ic_file);
         setPercentage(0, 1);
-    }
-
-    @SuppressLint("RestrictedApi")
-    private void clearNotificationAction() {
-        notification.mActions.clear();
-    }
-
-    private void addActionToNotification(boolean pauseMode) {
-        clearNotificationAction();
-        Intent startIntent = new Intent(context, DownloadGalleryV2.class);
-        Intent stopIntent = new Intent(context, DownloadGalleryV2.class);
-        Intent pauseIntent = new Intent(context, DownloadGalleryV2.class);
-
-        //stopIntent.setAction("STOP");
-        //startIntent.setAction("START");
-        //pauseIntent.setAction("PAUSE");
-
-        stopIntent.putExtra(context.getPackageName() + ".ID", downloaderV2.getId());
-        pauseIntent.putExtra(context.getPackageName() + ".ID", downloaderV2.getId());
-        startIntent.putExtra(context.getPackageName() + ".ID", downloaderV2.getId());
-
-        stopIntent.putExtra(context.getPackageName() + ".MODE", "STOP");
-        pauseIntent.putExtra(context.getPackageName() + ".MODE", "PAUSE");
-        startIntent.putExtra(context.getPackageName() + ".MODE", "START");
-        PendingIntent pStop;
-        PendingIntent pPause;
-        PendingIntent pStart;
-        pStop = PendingIntent.getService(context, 0, stopIntent, PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-        pPause = PendingIntent.getService(context, 1, pauseIntent, PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-        pStart = PendingIntent.getService(context, 2, startIntent, PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-        if (pauseMode)
-            notification.addAction(R.drawable.ic_play, context.getString(R.string.resume), pStart);
-        else notification.addAction(R.drawable.ic_pause, context.getString(R.string.pause), pPause);
-        notification.addAction(R.drawable.ic_close, context.getString(R.string.cancel), pStop);
     }
 
 
