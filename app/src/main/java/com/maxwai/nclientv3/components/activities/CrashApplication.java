@@ -34,7 +34,6 @@ public class CrashApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Global.initLanguage(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Global.initStorage(this);
         //noinspection resource

@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.os.LocaleListCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maxwai.nclientv3.CopyToClipboardActivity;
@@ -51,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import me.zhanghai.android.fastscroll.FastScrollerBuilder;
 import okhttp3.Cookie;
@@ -385,33 +387,10 @@ public class Global {
         reloadHttpClient(context);
     }
 
-    public static Locale initLanguage(Context context) {
-        Resources resources = context.getResources();
-        Locale l = getLanguage(context);
-        Configuration c = new Configuration(resources.getConfiguration());
-        c.setLocale(l);
-        resources.updateConfiguration(c, resources.getDisplayMetrics());
-        return l;
+    public static Locale getLanguage() {
+        LocaleListCompat setLocaleList = AppCompatDelegate.getApplicationLocales();
+        return setLocaleList.isEmpty() ? Locale.ENGLISH : Objects.requireNonNull(setLocaleList.get(0));
     }
-
-    public static Locale getLanguage(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("Settings", 0);
-        String prefLangKey = context.getString(R.string.key_language);
-        String defaultValue = context.getString(R.string.key_default_value);
-        String langCode = sharedPreferences.getString(prefLangKey, defaultValue);
-        if (langCode.equalsIgnoreCase(defaultValue)) {
-            return Locale.getDefault();
-        }
-        if (langCode.contains("-") || langCode.contains("_")) {
-            String[] regexSplit = langCode.split("[-_]");
-            return new Locale(regexSplit[0], regexSplit[1]);
-        } else {
-            Locale targetLocale = new Locale(langCode);
-            System.out.println(targetLocale.getCountry());
-            return targetLocale;
-        }
-    }
-
 
     public static int getOffscreenLimit() {
         return offscreenLimit;
@@ -692,7 +671,6 @@ public class Global {
     public static void initActivity(AppCompatActivity context) {
         initScreenSize(context);
         initGallerySize();
-        initLanguage(context);
         invertFix(context);
 
         switch (initTheme(context)) {

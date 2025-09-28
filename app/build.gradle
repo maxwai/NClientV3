@@ -74,6 +74,9 @@ android {
     buildFeatures {
         buildConfig true
     }
+    androidResources {
+        generateLocaleConfig true
+    }
 }
 
 android.applicationVariants.configureEach { variant ->

@@ -204,6 +204,15 @@
         <meta-data
             android:name="com.maxwai.nclientv3.components.classes.integration.OkHttpGlideModule"
             android:value="GlideModule" />
+
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
     </application>
 
     <queries>

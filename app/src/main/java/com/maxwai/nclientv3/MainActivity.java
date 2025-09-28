@@ -3,6 +3,7 @@ package com.maxwai.nclientv3;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -24,13 +25,18 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.os.LocaleListCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.maxwai.nclientv3.adapters.ListAdapter;
 import com.maxwai.nclientv3.api.InspectorV3;
 import com.maxwai.nclientv3.api.components.Gallery;
@@ -58,9 +64,6 @@ import com.maxwai.nclientv3.settings.TagV2;
 import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,30 +96,6 @@ public class MainActivity extends BaseActivity
             LogUtility.d("STARTED");
         }
     };
-    private final CookieInterceptor.Manager MANAGER = new CookieInterceptor.Manager() {
-        boolean tokenFound = false;
-
-        @Override
-        public void applyCookie(String key, String value) {
-            Cookie cookie = Cookie.parse(Login.BASE_HTTP_URL, key + "=" + value + "; Max-Age=31449600; Path=/; SameSite=Lax");
-            Global.client.cookieJar().saveFromResponse(Login.BASE_HTTP_URL, Collections.singletonList(cookie));
-            tokenFound |= key.equals("csrftoken");
-        }
-
-        @Override
-        public boolean endInterceptor() {
-            if (tokenFound) return true;
-            String cookies = CookieManager.getInstance().getCookie(Utility.getBaseUrl());
-            if (cookies == null) return false;
-            return cookies.contains("csrftoken");
-        }
-
-        @Override
-        public void onFinish() {
-            inspector = inspector.cloneInspector(MainActivity.this, resetDataset);
-            inspector.start();
-        }
-    };
     private final Handler changeLanguageTimeHandler = new Handler(Looper.myLooper());
     public ListAdapter adapter;
     private final InspectorV3.InspectorResponse addDataset = new MainInspectorResponse() {
@@ -143,6 +122,30 @@ public class MainActivity extends BaseActivity
             adapter.restartDataset(galleries);
             showPageSwitcher(inspector.getPage(), inspector.getPageCount());
             runOnUiThread(() -> recycler.smoothScrollToPosition(0));
+        }
+    };
+    private final CookieInterceptor.Manager MANAGER = new CookieInterceptor.Manager() {
+        boolean tokenFound = false;
+
+        @Override
+        public void applyCookie(String key, String value) {
+            Cookie cookie = Cookie.parse(Login.BASE_HTTP_URL, key + "=" + value + "; Max-Age=31449600; Path=/; SameSite=Lax");
+            Global.client.cookieJar().saveFromResponse(Login.BASE_HTTP_URL, Collections.singletonList(cookie));
+            tokenFound |= key.equals("csrftoken");
+        }
+
+        @Override
+        public boolean endInterceptor() {
+            if (tokenFound) return true;
+            String cookies = CookieManager.getInstance().getCookie(Utility.getBaseUrl());
+            if (cookies == null) return false;
+            return cookies.contains("csrftoken");
+        }
+
+        @Override
+        public void onFinish() {
+            inspector = inspector.cloneInspector(MainActivity.this, resetDataset);
+            inspector.start();
         }
     };
     final Runnable changeLanguageRunnable = () -> {
@@ -532,11 +535,16 @@ public class MainActivity extends BaseActivity
         }
         loadStringLogin();
         onlineFavoriteManager.setVisible(com.maxwai.nclientv3.settings.Login.isLogged());
+        SharedPreferences settings = getSharedPreferences("Settings", 0);
+        LocaleListCompat setLocaleList = AppCompatDelegate.getApplicationLocales();
+        settings.edit().putString(getString(R.string.key_language),
+            setLocaleList.isEmpty() ? getString(R.string.key_default_value) :
+                Objects.requireNonNull(setLocaleList.get(0)).toLanguageTag()).apply();
         if (setting != null) {
             Global.initFromShared(this);//restart all settings
             inspector = inspector.cloneInspector(this, resetDataset);
             inspector.start();//restart inspector
-            if (setting.theme != Global.getTheme() || !Objects.equals(setting.locale, Global.initLanguage(this))) {
+            if (setting.theme != Global.getTheme() || !Objects.equals(setting.locale, Global.getLanguage())) {
                 RequestManager manager = GlideX.with(getApplicationContext());
                 if (manager != null) manager.pauseAllRequestsRecursive();
                 recreate();
@@ -834,6 +842,16 @@ public class MainActivity extends BaseActivity
      */
     private enum ModeType {UNKNOWN, NORMAL, TAG, FAVORITE, SEARCH, BOOKMARK, ID}
 
+    private static class Setting {
+        final Global.ThemeScheme theme;
+        final Locale locale;
+
+        Setting() {
+            this.theme = Global.getTheme();
+            this.locale = Global.getLanguage();
+        }
+    }
+
     abstract class MainInspectorResponse extends InspectorV3.DefaultInspectorResponse {
         @Override
         public void onSuccess(List<GenericGallery> galleries) {
@@ -869,16 +887,6 @@ public class MainActivity extends BaseActivity
             return true;
             //loadWebVewUrl(inspector.getUrl());
             //return inspector.canParseDocument();
-        }
-    }
-
-    private class Setting {
-        final Global.ThemeScheme theme;
-        final Locale locale;
-
-        Setting() {
-            this.theme = Global.getTheme();
-            this.locale = Global.initLanguage(MainActivity.this);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.maxwai.nclientv3.components.views;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,16 +9,19 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.JsonWriter;
-import android.util.Pair;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+import androidx.core.os.LocaleListCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import androidx.preference.SeekBarPreference;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.CopyToClipboardActivity;
 import com.maxwai.nclientv3.PINActivity;
 import com.maxwai.nclientv3.R;
@@ -25,23 +29,24 @@ import com.maxwai.nclientv3.SettingsActivity;
 import com.maxwai.nclientv3.StatusManagerActivity;
 import com.maxwai.nclientv3.async.MetadataFetcher;
 import com.maxwai.nclientv3.async.VersionChecker;
-import com.maxwai.nclientv3.components.LocaleManager;
 import com.maxwai.nclientv3.components.launcher.LauncherCalculator;
 import com.maxwai.nclientv3.components.launcher.LauncherReal;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
     private SettingsActivity act;
@@ -94,23 +99,51 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         return R.string.data_usage_full;
     }
 
-    private void fillRoba() {
-        ArrayList<Pair<String, String>> languages = new ArrayList<>(LocaleManager.LANGUAGES.length);
-        Locale actualLocale = Global.getLanguage(act);
-        for (Locale l : LocaleManager.LANGUAGES) {
-            languages.add(new Pair<>(l.toString(), l.getDisplayName(actualLocale)));
+    private LocaleListCompat getLocaleListFromXml() {
+        List<CharSequence> tagsList = new ArrayList<>();
+        try {
+            @SuppressLint("DiscouragedApi") int id = getResources().getIdentifier(
+                "_generated_res_locale_config",
+                "xml",
+                requireContext().getPackageName()
+            );
+            XmlPullParser xpp = getResources().getXml(id);
+            while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
+                if (xpp.getEventType() == XmlPullParser.START_TAG) {
+                    if (Objects.equals(xpp.getName(), "locale")) {
+                        tagsList.add(xpp.getAttributeValue(0));
+                    }
+                }
+                xpp.next();
+            }
+        } catch (XmlPullParserException | IOException e) {
+            LogUtility.w("Problem parsing locales xml", e);
         }
-        languages.sort(Comparator.comparing(o -> o.second));
-        languages.add(0, new Pair<>(getString(R.string.key_default_value), getString(R.string.system_default)));
-        ListPreference preference = findPreference(getString(R.string.key_language));
-        assert preference != null;
+        return LocaleListCompat.forLanguageTags(tagsList.stream()
+            .reduce((a, b) -> a + "," + b)
+            .orElse("")
+            .toString());
+    }
 
-        String[] languagesEntry = new String[languages.size()];
-        String[] languagesNames = new String[languages.size()];
-        for (int i = 0; i < languages.size(); i++) {
-            Pair<String, String> lang = languages.get(i);
-            languagesEntry[i] = lang.first;
-            languagesNames[i] = Character.toUpperCase(lang.second.charAt(0)) + lang.second.substring(1);
+    private void fillRoba() {
+        LocaleListCompat setLocaleList = AppCompatDelegate.getApplicationLocales();
+        Locale actualLocale = setLocaleList.isEmpty() ? Locale.ENGLISH : Objects.requireNonNull(setLocaleList.get(0));
+
+        ListPreference preference = Objects.requireNonNull(findPreference(getString(R.string.key_language)));
+        LocaleListCompat localeList = getLocaleListFromXml();
+
+        String[] languagesEntry = new String[localeList.size() + 1];
+        String[] languagesNames = new String[localeList.size() + 1];
+        // System language
+        languagesEntry[0] = getString(R.string.key_default_value);
+        languagesNames[0] = Character.toUpperCase(getString(R.string.system_default).charAt(0))
+            + getString(R.string.system_default).substring(1);
+        // Other languages
+        for (int i = 0; i < localeList.size(); i++) {
+            Locale locale = Objects.requireNonNull(localeList.get(i));
+            languagesEntry[i + 1] = locale.toLanguageTag();
+            languagesNames[i + 1] = Character.toUpperCase(locale.getDisplayName(actualLocale).charAt(0))
+                + locale.getDisplayName(actualLocale).substring(1);
         }
 
         preference.setEntryValues(languagesEntry);
@@ -118,6 +151,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
 
     }
 
+    @SuppressLint("ApplySharedPref")
     private void mainMenu() {
         addPreferencesFromResource(R.xml.settings);
 
@@ -165,7 +199,13 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(getString(R.string.key_language)).setOnPreferenceChangeListener((preference, newValue) -> {
-            act.recreate();
+            LocaleListCompat newLocale;
+            if (newValue.equals(getString(R.string.key_default_value))) {
+                newLocale = LocaleListCompat.getEmptyLocaleList();
+            } else {
+                newLocale = LocaleListCompat.forLanguageTags((String) newValue);
+            }
+            act.getMainExecutor().execute(() -> AppCompatDelegate.setApplicationLocales(newLocale));
             return true;
         });
         findPreference(getString(R.string.key_enable_beta)).setOnPreferenceChangeListener((preference, newValue) -> {
