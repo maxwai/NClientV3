@@ -44,6 +44,8 @@ public class Exporter {
 
     private static void dumpDB(OutputStream stream) throws IOException {
         SQLiteDatabase db = Database.getDatabase();
+        if (db == null)
+            throw new IOException("Can't export Database, don't have database connection yet");
         try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(stream))) {
             writer.beginObject();
             for (String s : SCHEMAS) {

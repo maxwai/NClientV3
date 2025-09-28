@@ -2,16 +2,15 @@ package com.maxwai.nclientv3.settings;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.maxwai.nclientv3.async.database.Queries;
 import com.maxwai.nclientv3.utility.LogUtility;
 
 public class Database {
-    @NonNull
     private static SQLiteDatabase database;
 
-    @NonNull
+    @Nullable
     public static SQLiteDatabase getDatabase() {
         return database;
     }

@@ -65,6 +65,8 @@ class Importer {
 
     private static void importDB(InputStream stream) throws IOException {
         SQLiteDatabase db = Database.getDatabase();
+        if (db == null)
+            throw new IOException("Can't import Database, don't have database connection yet");
         db.beginTransaction();
         JsonReader reader = new JsonReader(new InputStreamReader(stream));
         reader.beginObject();
