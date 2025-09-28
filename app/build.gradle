@@ -92,30 +92,30 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
-    implementation 'androidx.fragment:fragment:1.8.8'
+    implementation 'androidx.fragment:fragment:1.8.9'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.work:work-runtime:2.10.2'
+    implementation 'com.google.android.material:material:1.13.0'
+    implementation 'androidx.work:work-runtime:2.10.5'
 
 // Other
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.12.0'//Because of min SDK
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.1.0' //Because of min SDK
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation 'org.jsoup:jsoup:1.18.3'
+    implementation 'org.jsoup:jsoup:1.21.2'
 
     implementation 'ch.acra:acra-core:5.12.0'
     compileOnly("com.google.auto.service:auto-service-annotations:1.1.1")
     annotationProcessor("com.google.auto.service:auto-service:1.1.1")
-    implementation 'com.google.guava:guava:31.1-android'
+    implementation 'com.google.guava:guava:33.5.0-android'
 
-    implementation('com.github.bumptech.glide:glide:4.16.0') {
+    implementation('com.github.bumptech.glide:glide:5.0.5') {
         exclude group: "com.android.support"
     }
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:5.0.5'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
     implementation 'me.zhanghai.android.fastscroll:library:1.3.0'
 

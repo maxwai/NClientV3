@@ -30,8 +30,6 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.WillClose;
-
 public class Utility {
     public static final Random RANDOM = new Random(System.nanoTime());
     public static final String ORIGINAL_URL = "nhentai.net";
@@ -128,7 +126,7 @@ public class Utility {
         }
     }
 
-    public static long writeStreamToFile(@WillClose InputStream inputStream, File filePath) throws IOException {
+    public static long writeStreamToFile(InputStream inputStream, File filePath) throws IOException {
         try (inputStream;
              FileOutputStream outputStream = new FileOutputStream(filePath)) {
             int read;
