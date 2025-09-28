@@ -61,7 +61,16 @@ public abstract class GenericAdapter<T extends GenericGallery> extends RecyclerV
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results != null) {
+                if (results != null && results.values instanceof List) {
+                    for (Object tmp : (List<?>) results.values) {
+                        try {
+                            //noinspection unchecked,unused
+                            T _tmp = (T) tmp;
+                        } catch (ClassCastException ignored) {
+                            return;
+                        }
+                    }
+                    //noinspection unchecked
                     filter = (List<T>) results.values;
                     if (filter.size() > results.count)
                         notifyItemRangeInserted(results.count, filter.size() - results.count);

@@ -14,7 +14,6 @@ import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -52,7 +51,6 @@ import com.maxwai.nclientv3.async.ScrapeTags;
 import com.maxwai.nclientv3.async.VersionChecker;
 import com.maxwai.nclientv3.async.database.Queries;
 import com.maxwai.nclientv3.async.downloader.DownloadGalleryV2;
-import com.maxwai.nclientv3.components.CookieInterceptor;
 import com.maxwai.nclientv3.components.activities.BaseActivity;
 import com.maxwai.nclientv3.components.views.PageSwitcher;
 import com.maxwai.nclientv3.components.widgets.CustomGridLayoutManager;
@@ -65,14 +63,11 @@ import com.maxwai.nclientv3.utility.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-
-import okhttp3.Cookie;
 
 public class MainActivity extends BaseActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -93,7 +88,7 @@ public class MainActivity extends BaseActivity
             LogUtility.d("STARTED");
         }
     };
-    private final Handler changeLanguageTimeHandler = new Handler(Looper.myLooper());
+    private final Handler changeLanguageTimeHandler = new Handler(Objects.requireNonNull(Looper.myLooper()));
     public ListAdapter adapter;
     private final InspectorV3.InspectorResponse addDataset = new MainInspectorResponse() {
         @Override
@@ -119,30 +114,6 @@ public class MainActivity extends BaseActivity
             adapter.restartDataset(galleries);
             showPageSwitcher(inspector.getPage(), inspector.getPageCount());
             runOnUiThread(() -> recycler.smoothScrollToPosition(0));
-        }
-    };
-    private final CookieInterceptor.Manager MANAGER = new CookieInterceptor.Manager() {
-        boolean tokenFound = false;
-
-        @Override
-        public void applyCookie(String key, String value) {
-            Cookie cookie = Cookie.parse(Login.BASE_HTTP_URL, key + "=" + value + "; Max-Age=31449600; Path=/; SameSite=Lax");
-            Global.client.cookieJar().saveFromResponse(Login.BASE_HTTP_URL, Collections.singletonList(cookie));
-            tokenFound |= key.equals("csrftoken");
-        }
-
-        @Override
-        public boolean endInterceptor() {
-            if (tokenFound) return true;
-            String cookies = CookieManager.getInstance().getCookie(Utility.getBaseUrl());
-            if (cookies == null) return false;
-            return cookies.contains("csrftoken");
-        }
-
-        @Override
-        public void onFinish() {
-            inspector = inspector.cloneInspector(MainActivity.this, resetDataset);
-            inspector.start();
         }
     };
     final Runnable changeLanguageRunnable = () -> {
@@ -207,21 +178,22 @@ public class MainActivity extends BaseActivity
     }
 
     private void setActivityTitle() {
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
         switch (modeType) {
             case FAVORITE:
-                getSupportActionBar().setTitle(R.string.favorite_online_manga);
+                actionBar.setTitle(R.string.favorite_online_manga);
                 break;
             case SEARCH:
-                getSupportActionBar().setTitle(inspector.getSearchTitle());
+                actionBar.setTitle(inspector.getSearchTitle());
                 break;
             case TAG:
-                getSupportActionBar().setTitle(inspector.getTag().getName());
+                actionBar.setTitle(inspector.getTag().getName());
                 break;
             case NORMAL:
-                getSupportActionBar().setTitle(R.string.app_name);
+                actionBar.setTitle(R.string.app_name);
                 break;
             default:
-                getSupportActionBar().setTitle("WTF");
+                actionBar.setTitle("WTF");
                 break;
         }
     }
@@ -274,7 +246,7 @@ public class MainActivity extends BaseActivity
      * Check if the last gallery has been shown
      **/
     private boolean lastGalleryReached(CustomGridLayoutManager manager) {
-        return manager.findLastVisibleItemPosition() >= (recycler.getAdapter().getItemCount() - 1 - manager.getSpanCount());
+        return recycler.getAdapter() != null && manager.findLastVisibleItemPosition() >= (recycler.getAdapter().getItemCount() - 1 - manager.getSpanCount());
     }
 
     private void initializeNavigationView() {
@@ -513,7 +485,7 @@ public class MainActivity extends BaseActivity
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setIcon(R.drawable.ic_exit_to_app).setTitle(R.string.logout).setMessage(R.string.are_you_sure);
         builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-            Login.logout(this);
+            Login.logout();
             onlineFavoriteManager.setVisible(false);
             loginItem.setTitle(R.string.login);
         }).setNegativeButton(R.string.no, null).show();
@@ -533,7 +505,7 @@ public class MainActivity extends BaseActivity
         onlineFavoriteManager.setVisible(com.maxwai.nclientv3.settings.Login.isLogged());
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         LocaleListCompat setLocaleList = AppCompatDelegate.getApplicationLocales();
-        settings.edit().putString(getString(R.string.key_language),
+        settings.edit().putString(getString(R.string.preference_key_language),
             setLocaleList.isEmpty() ? getString(R.string.key_default_value) :
                 Objects.requireNonNull(setLocaleList.get(0)).toLanguageTag()).apply();
         if (setting) {
@@ -585,12 +557,12 @@ public class MainActivity extends BaseActivity
         if (modeType != ModeType.FAVORITE)
             item.setActionView(null);
         else {
-            ((SearchView) item.getActionView()).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            ((SearchView) Objects.requireNonNull(item.getActionView())).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     inspector = InspectorV3.favoriteInspector(MainActivity.this, query, 1, resetDataset);
                     inspector.start();
-                    getSupportActionBar().setTitle(query);
+                    Objects.requireNonNull(getSupportActionBar()).setTitle(query);
                     return true;
                 }
 

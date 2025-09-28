@@ -52,16 +52,6 @@ public class DownloadQueue {
         return null;
     }
 
-    public static void remove(int id, boolean cancel) {
-        remove(findDownloaderFromId(id), cancel);
-    }
-
-    private static GalleryDownloaderV2 findDownloaderFromId(int id) {
-        for (GalleryDownloaderManager manager : downloadQueue)
-            if (manager.downloader().getId() == id) return manager.downloader();
-        return null;
-    }
-
     public static void remove(GalleryDownloaderV2 downloader, boolean cancel) {
         GalleryDownloaderManager manager = findManagerFromDownloader(downloader);
         if (manager == null) return;
@@ -75,12 +65,6 @@ public class DownloadQueue {
         if (manager == null) return;
         downloadQueue.remove(manager);
         downloadQueue.add(0, manager);
-    }
-
-    public static GalleryDownloaderManager managerFromId(int id) {
-        for (GalleryDownloaderManager manager : downloadQueue)
-            if (manager.downloader().getId() == id) return manager;
-        return null;
     }
 
 }

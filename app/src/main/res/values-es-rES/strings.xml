@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Otras etiquetas sí seran agregadas cuando una etiqueta es seleccionada desde el menu de la galería (excepto el lenguaje)</string>
     <string name="setting_on_use_account_tag">Usar las etiquetas de la cuenta para la busqueda (las etiquetas locales tendrán prioridad)</string>
     <string name="setting_off_use_account_tag">Las etiquetas de la cuenta serán ignoradas</string>
-    <string name="theme_summary">Seleccionar tema</string>
     <string name="send_crash_report">Enviar reporte de error</string>
     <string name="change_theme">Cambiar tema</string>
     <string name="clear_cache">Limpiar caché</string>
@@ -57,8 +56,6 @@
     <string name="image">Imagen</string>
     <string name="next">Siguiente</string>
     <string name="create_pdf">Crear PDF</string>
-    <string name="create_pdf_format" formatted="true">Crear PDF de: %s</string>
-    <string name="create_zip_format" formatted="true">Crear Comprimido de: %s</string>
     <string name="created_pdf">PDF Creado con éxito</string>
     <string name="error_pdf">Error Creando PDF</string>
     <string name="parsing_pages">Analizando páginas</string>
@@ -71,8 +68,6 @@
     <string name="next_page">Página siguiente</string>
     <string name="downloaded_manga">Descargas</string>
     <string name="download_gallery">Descargar galería</string>
-    <string name="delete_gallery_size_format" formatted="true">Borrar galería (%.2fMB)</string>
-    <string name="delete_gallery_format" formatted="true">¿Quieres borrar la galería: %s</string>
     <string name="share_with">Compartir con</string>
     <string name="link_copied_to_clipboard">Enlace copiado al portapapeles</string>
     <string name="open_in_browser">Abrir en el navegador</string>
@@ -155,9 +150,6 @@
     <string name="cancel">Cancelar</string>
     <string name="no">No</string>
     <string name="yes">Sí</string>
-    <string name="start_all_downloads">Iniciar todas las descargas</string>
-    <string name="pause_all_downloads">Pausar todas las descargas</string>
-    <string name="cancel_all_downloads">Cancelar todas las descargas</string>
     <string name="disable_lock_title">Desactivar el apagado de pantalla mientras se lee</string>
     <string name="download_all_galleries_in_this_page">Descargar todas las galerías de esta página</string>
     <string name="download_all_galleries">Descargar todas las galerías</string>
@@ -174,7 +166,6 @@
     <string name="start_page">Página de inicio</string>
     <string name="end_page">Página final</string>
     <string name="invalid_range_selected">Rango inválido seleccionado</string>
-    <string name="column_count_select">Seleccion de número de columnas</string>
     <string name="send_with_title">¿Enviar con título?</string>
     <string name="caption_send_with_title">¿Añadir url como pie de foto de la imagen?</string>
     <string name="history_size">Tamaño del historial</string>
@@ -187,7 +178,6 @@
     <string name="downloading_format">Descargando: %s</string>
     <string name="toggle_favorite">Cambiar favorito</string>
     <string name="resume">Reanudar</string>
-    <string name="pause">Pausa</string>
     <string name="title_copied_to_clipboard">Título copiado al portapapeles</string>
     <string name="setting_zoom_one_column">Activar el zoom cuando se está en el modo de una sola columna dentro de una galería</string>
     <string name="zoom_one_column">Activar el zoom</string>
@@ -255,11 +245,9 @@
     <string name="title">Título</string>
     <string name="download_date">Fecha de descarga</string>
     <string name="page_count">Número de página</string>
-    <string name="size">Tamaño</string>
     <string name="descending_order">Orden Descendiente</string>
     <string name="minimum_comment_length" formatted="true">El comentario debe ser de al menos %d carácteres.</string>
     <string name="change_scroll_type">Cambiar tipo de scroll</string>
-    <string name="exported_backup_file_toast" formatted="true">Copia de seguridad exportada en %s</string>
     <string name="export_data">Exportar datos</string>
     <string name="import_data">Importar datos</string>
     <string name="default_status_1">Leyendo</string>
@@ -280,8 +268,6 @@
     <string name="requesting_storage_access">Solicitando acceso a almacenamiento</string>
     <string name="request_storage_manager_summary">Debido a las restricciones de Android 11 debes de dar permisos adicionales para que las rutas funcionen.\nSi quieres conceder los permisos acepta en la siguiente ventana.</string>
     <string name="summary_beta">Actualizar a una version beta puede provocar errores, además de no poder volver a una version estable sin desinstalar.</string>
-    <string name="fix_inverted_title">Arreglar colores invertidos</string>
-    <string name="fix_inverted_summary">Activa esto si ves los colores invertidos (en algunos dispositivos puede causar que el tema del dispositivo se cambie a claro, desactivando eso puede solucionar el problema.)</string>
     <string name="navigation_settings_per_screen">Opciones de navegacion por pantalla</string>
     <string name="downloaded_update_at" formatted="true">Actualización descargada en la ruta: %s</string>
     <string name="summary_offscreen_limit">Establece el número de imágenes precargadas fuera de la pantalla</string>
@@ -294,8 +280,6 @@
     <string name="export_finished">Export finished</string>
     <string name="import_finished">Import finished</string>
     <string name="download_torrent">Download torrent</string>
-    <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Invalid response</string>
     <string name="system_default">System default</string>
     <string name="clear_cookies">Clear cookies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>

@@ -26,7 +26,8 @@ public class FakeInspector extends ThreadAsyncTask<LocalActivity, LocalActivity,
         if (!this.folder.exists()) return voids[0];
         publishProgress(voids[0]);
         File parent = this.folder;
-        parent.mkdirs();
+        if (!parent.mkdirs())
+            return voids[0];
         File[] files = parent.listFiles();
         if (files == null) return voids[0];
         for (File f : files) if (f.isDirectory()) createGallery(f);

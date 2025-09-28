@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.maxwai.nclientv3.adapters.ListAdapter;
@@ -14,6 +15,7 @@ import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.Utility;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HistoryActivity extends BaseActivity {
     ListAdapter adapter;
@@ -25,9 +27,10 @@ public class HistoryActivity extends BaseActivity {
         setContentView(R.layout.activity_bookmark);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(R.string.history);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(R.string.history);
         recycler = findViewById(R.id.recycler);
         masterLayout = findViewById(R.id.master_layout);
         adapter = new ListAdapter(this);

@@ -1,6 +1,5 @@
 package com.maxwai.nclientv3.async.downloader;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -72,7 +71,7 @@ public class GalleryDownloaderManager {
     }
 
     private void cancelNotification() {
-        NotificationSettings.cancel(context.getString(R.string.channel1_name), notificationId);
+        NotificationSettings.cancel(notificationId);
     }
 
     private void addClickListener() {
@@ -132,7 +131,7 @@ public class GalleryDownloaderManager {
 
     private synchronized void notificationUpdate() {
         try {
-            NotificationSettings.notify(context, context.getString(R.string.channel1_name), notificationId, notification.build());
+            NotificationSettings.notify(context, notificationId, notification.build());
         } catch (NullPointerException | ConcurrentModificationException ignore) {
         }
     }

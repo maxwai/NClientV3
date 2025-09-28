@@ -1,6 +1,7 @@
 package com.maxwai.nclientv3.async;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.JsonReader;
@@ -77,12 +78,6 @@ public class VersionChecker {
                 });
             }
         });
-    }
-
-    private static int extractVersion(String version) {
-        int index = version.indexOf('-');
-        if (index >= 0) version = version.substring(0, index);
-        return Integer.parseInt(version.replace(".", ""));
     }
 
     private static GitHubRelease parseVersionJson(JsonReader jr, boolean withPrerelease) throws IOException {
@@ -192,6 +187,7 @@ public class VersionChecker {
                 installApp(f);
                 return;
             }
+            //noinspection ResultOfMethodCallIgnored
             f.delete();
         }
         if (downloadUrl == null) return;
@@ -208,6 +204,7 @@ public class VersionChecker {
                 if (Global.UPDATEFOLDER == null) {
                     Global.initStorage(context);
                 }
+                //noinspection ResultOfMethodCallIgnored
                 Global.UPDATEFOLDER.mkdirs();
                 //noinspection ResultOfMethodCallIgnored
                 f.createNewFile();
@@ -229,7 +226,7 @@ public class VersionChecker {
     private void installApp(File f) {
         try {
             Uri apkUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", f);
-            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+            @SuppressLint("RequestInstallPackagesPolicy") Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
             intent.setData(apkUri);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             context.startActivity(intent);

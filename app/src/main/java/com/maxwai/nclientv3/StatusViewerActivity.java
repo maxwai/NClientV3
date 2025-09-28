@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
@@ -18,6 +19,8 @@ import com.maxwai.nclientv3.utility.Utility;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.Objects;
+
 public class StatusViewerActivity extends GeneralActivity {
     private boolean sortByTitle = false;
     private String query;
@@ -30,9 +33,10 @@ public class StatusViewerActivity extends GeneralActivity {
         setContentView(R.layout.activity_status_viewer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(R.string.manage_statuses);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(R.string.manage_statuses);
         viewPager = findViewById(R.id.view_pager);
         sectionsPagerAdapter = new SectionsPagerAdapter(this);
 
@@ -56,7 +60,7 @@ public class StatusViewerActivity extends GeneralActivity {
         super.onResume();
         TabLayout tabs = findViewById(R.id.tabs);
         for (int i = 0; i < tabs.getTabCount(); i++) {
-            tabs.getTabAt(i).setText(sectionsPagerAdapter.getPageTitle(i));
+            Objects.requireNonNull(tabs.getTabAt(i)).setText(sectionsPagerAdapter.getPageTitle(i));
         }
         PlaceholderFragment fragment = getActualFragment();
         if (fragment != null) fragment.reload(query, sortByTitle);
@@ -94,7 +98,7 @@ public class StatusViewerActivity extends GeneralActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.status_viewer, menu);
         final SearchView searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        Objects.requireNonNull(searchView).setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;

@@ -28,6 +28,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Objects;
 
 public class SimpleGallery extends GenericGallery {
     public static final Creator<SimpleGallery> CREATOR = new Creator<>() {
@@ -73,14 +74,14 @@ public class SimpleGallery extends GenericGallery {
         this.tags = Queries.TagTable.getTagsFromListOfInt(tags);
         language = Gallery.loadLanguage(this.tags);
         Element a = e.getElementsByTag("a").first();
-        temp = a.attr("href");
+        temp = Objects.requireNonNull(a).attr("href");
         id = Integer.parseInt(temp.substring(3, temp.length() - 1));
         a = e.getElementsByTag("img").first();
-        temp = a.hasAttr("data-src") ? a.attr("data-src") : a.attr("src");
+        temp = Objects.requireNonNull(a).hasAttr("data-src") ? a.attr("data-src") : a.attr("src");
         mediaId = Integer.parseInt(temp.substring(temp.indexOf("galleries") + 10, temp.lastIndexOf('/')));
         String extension = temp.substring(temp.indexOf('.', temp.lastIndexOf('/')) + 1);
         thumbnail = Page.stringToExt(extension);
-        title = e.getElementsByTag("div").first().text();
+        title = Objects.requireNonNull(e.getElementsByTag("div").first()).text();
         if (context != null && id > Global.getMaxId()) Global.updateMaxId(context, id);
     }
 

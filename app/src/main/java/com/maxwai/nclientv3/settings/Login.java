@@ -27,11 +27,10 @@ public class Login {
     public static HttpUrl BASE_HTTP_URL;
     private static User user;
     private static boolean accountTag;
-    private static SharedPreferences loginShared;
 
     public static void initLogin(@NonNull Context context) {
         SharedPreferences preferences = context.getSharedPreferences("Settings", 0);
-        accountTag = preferences.getBoolean(context.getString(R.string.key_use_account_tag), false);
+        accountTag = preferences.getBoolean(context.getString(R.string.preference_key_use_account_tag), false);
         BASE_HTTP_URL = HttpUrl.get(Utility.getBaseUrl());
     }
 
@@ -39,17 +38,16 @@ public class Login {
         return accountTag;
     }
 
-    public static void setLoginShared(SharedPreferences loginShared) {
-        Login.loginShared = loginShared;
-    }
-
+    /**
+     * @noinspection SameParameterValue
+     */
     private static void removeCookie(String cookieName) {
         CustomCookieJar cookieJar = (CustomCookieJar) Global.client.cookieJar();
         cookieJar.removeCookie(cookieName);
     }
 
 
-    public static void logout(Context context) {
+    public static void logout() {
         CustomCookieJar cookieJar = (CustomCookieJar) Global.client.cookieJar();
         removeCookie(LOGIN_COOKIE);
         cookieJar.clearSession();
@@ -70,8 +68,8 @@ public class Login {
         Queries.TagTable.removeAllBlacklisted();
     }
 
-    public static void clearCookies(){
-        CustomCookieJar cookieJar = (CustomCookieJar) Global.getClient().cookieJar();
+    public static void clearCookies(@NonNull Context context) {
+        CustomCookieJar cookieJar = (CustomCookieJar) Global.getClient(context).cookieJar();
         cookieJar.clear();
         cookieJar.clearSession();
     }
@@ -99,9 +97,9 @@ public class Login {
         List<Cookie> cookies = Global.client.cookieJar().loadForRequest(BASE_HTTP_URL);
         LogUtility.d("Cookies: " + cookies);
         if (hasCookie(LOGIN_COOKIE)) {
-            if (user == null) User.createUser(user -> {
+            if (context != null && user == null) User.createUser(context, user -> {
                 if (user != null) {
-                    new LoadTags(null).start();
+                    new LoadTags(context).start();
                     if (context instanceof MainActivity) {
                         ((MainActivity) context).runOnUiThread(() -> ((MainActivity) context).loginItem.setTitle(context.getString(R.string.login_formatted, user.getUsername())));
                     }
@@ -109,7 +107,7 @@ public class Login {
             });
             return true;
         }
-        if (context != null) logout(context);
+        if (context != null) logout();
         return false;
         //return sessionId!=null;
     }

@@ -19,8 +19,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 import androidx.preference.SeekBarPreference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -73,8 +73,8 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
 
     private void dataMenu() {
         addPreferencesFromResource(R.xml.settings_data);
-        SeekBarPreference mobile = findPreference(getString(R.string.key_mobile_usage));
-        SeekBarPreference wifi = findPreference(getString(R.string.key_wifi_usage));
+        SeekBarPreference mobile = Objects.requireNonNull(findPreference(getString(R.string.key_mobile_usage)));
+        SeekBarPreference wifi = Objects.requireNonNull(findPreference(getString(R.string.key_wifi_usage)));
         mobile.setOnPreferenceChangeListener((preference, newValue) -> {
             mobile.setTitle(getDataUsageString((Integer) newValue));
             return true;
@@ -131,7 +131,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         LocaleListCompat setLocaleList = AppCompatDelegate.getApplicationLocales();
         Locale actualLocale = setLocaleList.isEmpty() ? Locale.ENGLISH : Objects.requireNonNull(setLocaleList.get(0));
 
-        ListPreference preference = Objects.requireNonNull(findPreference(getString(R.string.key_language)));
+        ListPreference preference = Objects.requireNonNull(findPreference(getString(R.string.preference_key_language)));
         LocaleListCompat localeList = getLocaleListFromXml();
 
         String[] languagesEntry = new String[localeList.size() + 1];
@@ -159,167 +159,226 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
 
         fillRoba();
 
-        findPreference("status_screen").setOnPreferenceClickListener(preference -> {
-            Intent i = new Intent(act, StatusManagerActivity.class);
-            act.runOnUiThread(() -> act.startActivity(i));
-            return false;
-        });
-        findPreference("col_screen").setOnPreferenceClickListener(preference -> {
-            Intent i = new Intent(act, SettingsActivity.class);
-            i.putExtra(act.getPackageName() + ".TYPE", SettingsActivity.Type.COLUMN.ordinal());
-            act.runOnUiThread(() -> act.startActivity(i));
-            return false;
-        });
-        findPreference("data_screen").setOnPreferenceClickListener(preference -> {
-            Intent i = new Intent(act, SettingsActivity.class);
-            i.putExtra(act.getPackageName() + ".TYPE", SettingsActivity.Type.DATA.ordinal());
-            act.runOnUiThread(() -> act.startActivity(i));
-            return false;
-        });
-        findPreference("fetch_metadata").setVisible(Global.hasStoragePermission(act));
-        findPreference("fetch_metadata").setOnPreferenceClickListener(preference -> {
-            new Thread(new MetadataFetcher(act)).start();
-            return true;
-        });
-        findPreference(getString(R.string.key_fake_icon)).setOnPreferenceChangeListener((preference, newValue) -> {
-            PackageManager pm = act.getPackageManager();
-            ComponentName name1 = new ComponentName(act, LauncherReal.class);
-            ComponentName name2 = new ComponentName(act, LauncherCalculator.class);
-            if ((boolean) newValue) {
-                changeLauncher(pm, name1, false);
-                changeLauncher(pm, name2, true);
-            } else {
-                changeLauncher(pm, name1, true);
-                changeLauncher(pm, name2, false);
-            }
-            return true;
-        });
-        findPreference(getString(R.string.key_use_account_tag)).setEnabled(Login.isLogged());
-
-        findPreference(getString(R.string.key_theme_select)).setOnPreferenceChangeListener((preference, newValue) -> {
-            String newTheme = (String) newValue;
-            String[] availableThemes = getResources().getStringArray(R.array.theme_data);
-            assert availableThemes.length == 2;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                int theme;
-                if (newTheme.equals(availableThemes[0])) { // light
-                    theme = UiModeManager.MODE_NIGHT_NO;
-                } else if (newTheme.equals(availableThemes[1])) { // dark
-                    theme = UiModeManager.MODE_NIGHT_YES;
-                } else {
-                    assert false;
-                    return false;
-                }
-                UiModeManager uim = (UiModeManager) act.getSystemService(Context.UI_MODE_SERVICE);
-                uim.setApplicationNightMode(theme);
-            } else {
-                int theme;
-                if (newTheme.equals(availableThemes[0])) { // light
-                    theme = AppCompatDelegate.MODE_NIGHT_NO;
-                } else if (newTheme.equals(availableThemes[1])) { // dark
-                    theme = AppCompatDelegate.MODE_NIGHT_YES;
-                } else {
-                    assert false;
-                    return false;
-                }
-                act.getMainExecutor().execute(() -> AppCompatDelegate.setDefaultNightMode(theme));
-            }
-            return true;
-        });
-        findPreference(getString(R.string.key_language)).setOnPreferenceChangeListener((preference, newValue) -> {
-            LocaleListCompat newLocale;
-            if (newValue.equals(getString(R.string.key_default_value))) {
-                newLocale = LocaleListCompat.getEmptyLocaleList();
-            } else {
-                newLocale = LocaleListCompat.forLanguageTags((String) newValue);
-            }
-            act.getMainExecutor().execute(() -> AppCompatDelegate.setApplicationLocales(newLocale));
-            return true;
-        });
-        findPreference(getString(R.string.key_enable_beta)).setOnPreferenceChangeListener((preference, newValue) -> {
-            //Instant update to allow search for updates
-            Global.setEnableBeta((Boolean) newValue);
-            return true;
-        });
-        findPreference("has_pin").setOnPreferenceChangeListener((preference, newValue) -> {
-            if (newValue.equals(Boolean.TRUE)) {
-                Intent i = new Intent(act, PINActivity.class);
-                i.putExtra(act.getPackageName() + ".SET", true);
-                startActivity(i);
-                act.finish();
+        {
+            Preference statusScreen = Objects.requireNonNull(findPreference(getString(R.string.preference_key_status_screen)));
+            statusScreen.setOnPreferenceClickListener(preference -> {
+                Intent i = new Intent(act, StatusManagerActivity.class);
+                act.runOnUiThread(() -> act.startActivity(i));
                 return false;
-            }
-            act.getSharedPreferences("Settings", 0).edit().remove("pin").apply();
-            return true;
-        });
+            });
+        }
+        {
+            Preference colScreen = Objects.requireNonNull(findPreference(getString(R.string.preference_key_col_screen)));
+            colScreen.setOnPreferenceClickListener(preference -> {
+                Intent i = new Intent(act, SettingsActivity.class);
+                i.putExtra(act.getPackageName() + ".TYPE", SettingsActivity.Type.COLUMN.ordinal());
+                act.runOnUiThread(() -> act.startActivity(i));
+                return false;
+            });
+        }
+        {
+            Preference dataScreen = Objects.requireNonNull(findPreference(getString(R.string.preference_key_data_screen)));
+            dataScreen.setOnPreferenceClickListener(preference -> {
+                Intent i = new Intent(act, SettingsActivity.class);
+                i.putExtra(act.getPackageName() + ".TYPE", SettingsActivity.Type.DATA.ordinal());
+                act.runOnUiThread(() -> act.startActivity(i));
+                return false;
+            });
+        }
+        {
+            Preference fetchMetadata = Objects.requireNonNull(findPreference(getString(R.string.preference_key_fetch_metadata)));
+            fetchMetadata.setVisible(Global.hasStoragePermission(act));
+            fetchMetadata.setOnPreferenceClickListener(preference -> {
+                new Thread(new MetadataFetcher(act)).start();
+                return true;
+            });
+        }
+        {
+            Preference fakeIcon = Objects.requireNonNull(findPreference(getString(R.string.preference_key_fake_icon)));
+            fakeIcon.setOnPreferenceChangeListener((preference, newValue) -> {
+                PackageManager pm = act.getPackageManager();
+                ComponentName name1 = new ComponentName(act, LauncherReal.class);
+                ComponentName name2 = new ComponentName(act, LauncherCalculator.class);
+                if ((boolean) newValue) {
+                    changeLauncher(pm, name1, false);
+                    changeLauncher(pm, name2, true);
+                } else {
+                    changeLauncher(pm, name1, true);
+                    changeLauncher(pm, name2, false);
+                }
+                return true;
+            });
+        }
+        {
+            Preference useAccountTag = Objects.requireNonNull(findPreference(getString(R.string.preference_key_use_account_tag)));
+            useAccountTag.setEnabled(Login.isLogged());
+        }
 
-        findPreference("version").setTitle(getString(R.string.app_version_format, Global.getVersionName(getContext())));
-        initStoragePaths(findPreference(getString(R.string.key_save_path)));
-        double cacheSize = Global.recursiveSize(act.getCacheDir()) / ((double) (1 << 20));
-        findPreference(getString(R.string.key_save_path)).setOnPreferenceChangeListener((preference, newValue) -> {
-            if (!newValue.equals(getString(R.string.custom_path))) return true;
-            manageCustomPath();
-            return false;
-        });
-        //clear cache if pressed
-        findPreference(getString(R.string.key_cache)).setSummary(getString(R.string.cache_size_formatted, cacheSize));
-        findPreference(getString(R.string.key_cookie)).setOnPreferenceClickListener(preference -> {
-            Login.clearCookies();
-            CookieManager.getInstance().removeAllCookies(null);
-            return true;
-        });
-        findPreference(getString(R.string.key_cache)).setOnPreferenceClickListener(preference -> {
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(act);
-            builder.setTitle(R.string.clear_cache);
-            builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-                Global.recursiveDelete(act.getCacheDir());
-                act.runOnUiThread(() -> {
-                    Toast.makeText(act, act.getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show();
-                    double cSize = Global.recursiveSize(act.getCacheDir()) / ((double) (2 << 20));
-                    findPreference(getString(R.string.key_cache)).setSummary(getString(R.string.cache_size_formatted, cSize));
-                });
+        {
+            Preference themeSelect = Objects.requireNonNull(findPreference(getString(R.string.preference_key_theme_select)));
+            themeSelect.setOnPreferenceChangeListener((preference, newValue) -> {
+                String newTheme = (String) newValue;
+                String[] availableThemes = getResources().getStringArray(R.array.theme_data);
+                assert availableThemes.length == 2;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    int theme;
+                    if (newTheme.equals(availableThemes[0])) { // light
+                        theme = UiModeManager.MODE_NIGHT_NO;
+                    } else if (newTheme.equals(availableThemes[1])) { // dark
+                        theme = UiModeManager.MODE_NIGHT_YES;
+                    } else {
+                        assert false;
+                        return false;
+                    }
+                    UiModeManager uim = (UiModeManager) act.getSystemService(Context.UI_MODE_SERVICE);
+                    uim.setApplicationNightMode(theme);
+                } else {
+                    int theme;
+                    if (newTheme.equals(availableThemes[0])) { // light
+                        theme = AppCompatDelegate.MODE_NIGHT_NO;
+                    } else if (newTheme.equals(availableThemes[1])) { // dark
+                        theme = AppCompatDelegate.MODE_NIGHT_YES;
+                    } else {
+                        assert false;
+                        return false;
+                    }
+                    act.getMainExecutor().execute(() -> AppCompatDelegate.setDefaultNightMode(theme));
+                }
+                return true;
+            });
+        }
+        {
+            Preference keyLanguage = Objects.requireNonNull(findPreference(getString(R.string.preference_key_language)));
+            keyLanguage.setOnPreferenceChangeListener((preference, newValue) -> {
+                LocaleListCompat newLocale;
+                if (newValue.equals(getString(R.string.key_default_value))) {
+                    newLocale = LocaleListCompat.getEmptyLocaleList();
+                } else {
+                    newLocale = LocaleListCompat.forLanguageTags((String) newValue);
+                }
+                act.getMainExecutor().execute(() -> AppCompatDelegate.setApplicationLocales(newLocale));
+                return true;
+            });
+        }
+        {
+            Preference enableBeta = Objects.requireNonNull(findPreference(getString(R.string.preference_key_enable_beta)));
+            enableBeta.setOnPreferenceChangeListener((preference, newValue) -> {
+                //Instant update to allow search for updates
+                Global.setEnableBeta((Boolean) newValue);
+                return true;
+            });
+        }
+        {
+            Preference hasPin = Objects.requireNonNull(findPreference(getString(R.string.preference_key_has_pin)));
+            hasPin.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (newValue.equals(Boolean.TRUE)) {
+                    Intent i = new Intent(act, PINActivity.class);
+                    i.putExtra(act.getPackageName() + ".SET", true);
+                    startActivity(i);
+                    act.finish();
+                    return false;
+                }
+                act.getSharedPreferences("Settings", 0).edit().remove("pin").apply();
+                return true;
+            });
+        }
 
-            }).setNegativeButton(R.string.no, null).setCancelable(true);
-            builder.show();
+        {
+            Preference keyVersion = Objects.requireNonNull(findPreference(getString(R.string.preference_key_version)));
+            keyVersion.setTitle(getString(R.string.app_version_format, Global.getVersionName(act)));
+        }
+        {
+            ListPreference savePath = Objects.requireNonNull(findPreference(getString(R.string.preference_key_save_path)));
+            initStoragePaths(savePath);
+            savePath.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (!newValue.equals(getString(R.string.custom_path))) return true;
+                manageCustomPath();
+                return false;
+            });
+        }
+        {
+            //clear cache if pressed
+            double cacheSize = Global.recursiveSize(act.getCacheDir()) / ((double) (1 << 20));
+            Preference cache = Objects.requireNonNull(findPreference(getString(R.string.preference_key_cache)));
+            cache.setSummary(getString(R.string.cache_size_formatted, cacheSize));
+            cache.setOnPreferenceClickListener(preference -> {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(act);
+                builder.setTitle(R.string.clear_cache);
+                builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+                    Global.recursiveDelete(act.getCacheDir());
+                    act.runOnUiThread(() -> {
+                        Toast.makeText(act, act.getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show();
+                        double cSize = Global.recursiveSize(act.getCacheDir()) / ((double) (2 << 20));
+                        cache.setSummary(getString(R.string.cache_size_formatted, cSize));
+                    });
 
-            return true;
-        });
-        findPreference(getString(R.string.key_update)).setOnPreferenceClickListener(preference -> {
-            new VersionChecker(act, false);
-            return true;
-        });
-        findPreference("bug").setOnPreferenceClickListener(preference -> {
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/maxwai/NClientV3/issues/new"));
-            startActivity(i);
-            return true;
-        });
-        findPreference("copy_settings").setOnPreferenceClickListener(preference -> {
-            try {
-                CopyToClipboardActivity.copyTextToClipboard(getContext(), getDataSettings(getContext()));
-            } catch (IOException e) {
-                LogUtility.e("Error copying settings into clipboard", e);
-                Toast.makeText(getContext(), R.string.clipboard_settings_error, Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        });
-        findPreference("export").setOnPreferenceClickListener(preference -> {
-            act.exportSettings();
-            return true;
-        });
-        findPreference("import").setOnPreferenceClickListener(preference -> {
-            act.importSettings();
-            return true;
-        });
+                }).setNegativeButton(R.string.no, null).setCancelable(true);
+                builder.show();
 
-        ListPreference mirror = findPreference(getString(R.string.key_site_mirror));
-        mirror.setSummary(
-            act.getSharedPreferences("Settings", Context.MODE_PRIVATE)
-                .getString(getString(R.string.key_site_mirror), Utility.ORIGINAL_URL)
-        );
-        mirror.setOnPreferenceChangeListener((preference, newValue) -> {
-            preference.setSummary(newValue.toString());
-            return true;
-        });
+                return true;
+            });
+        }
+        {
+            Preference cookie = Objects.requireNonNull(findPreference(getString(R.string.preference_key_cookie)));
+            cookie.setOnPreferenceClickListener(preference -> {
+                Login.clearCookies(act);
+                CookieManager.getInstance().removeAllCookies(null);
+                return true;
+            });
+        }
+        {
+            Preference update = Objects.requireNonNull(findPreference(getString(R.string.preference_key_update)));
+            update.setOnPreferenceClickListener(preference -> {
+                new VersionChecker(act, false);
+                return true;
+            });
+        }
+        {
+            Preference bug = Objects.requireNonNull(findPreference(getString(R.string.preference_key_bug)));
+            bug.setOnPreferenceClickListener(preference -> {
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/maxwai/NClientV3/issues/new"));
+                startActivity(i);
+                return true;
+            });
+        }
+        {
+            Preference copySettings = Objects.requireNonNull(findPreference(getString(R.string.preference_key_copy_settings)));
+            copySettings.setOnPreferenceClickListener(preference -> {
+                try {
+                    CopyToClipboardActivity.copyTextToClipboard(act, getDataSettings(act));
+                } catch (IOException e) {
+                    LogUtility.e("Error copying settings into clipboard", e);
+                    Toast.makeText(act, R.string.clipboard_settings_error, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            });
+        }
+        {
+            Preference export = Objects.requireNonNull(findPreference(getString(R.string.preference_key_export)));
+            export.setOnPreferenceClickListener(preference -> {
+                act.exportSettings();
+                return true;
+            });
+        }
+        {
+            Preference _import = Objects.requireNonNull(findPreference(getString(R.string.preference_key_import)));
+            _import.setOnPreferenceClickListener(preference -> {
+                act.importSettings();
+                return true;
+            });
+        }
+
+        {
+            ListPreference mirror = Objects.requireNonNull(findPreference(getString(R.string.preference_key_site_mirror)));
+            mirror.setSummary(
+                act.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+                    .getString(getString(R.string.preference_key_site_mirror), Utility.ORIGINAL_URL)
+            );
+            mirror.setOnPreferenceChangeListener((preference, newValue) -> {
+                preference.setSummary(newValue.toString());
+                return true;
+            });
+        }
     }
 
     public void manageCustomPath() {
@@ -327,7 +386,8 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             act.requestStorageManager();
             return;
         }
-        final String key = getString(R.string.key_save_path);
+        final String key = getString(R.string.preference_key_save_path);
+        Preference savePathPreference = Objects.requireNonNull(findPreference(key));
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(act);
         AppCompatAutoCompleteTextView edit = (AppCompatAutoCompleteTextView) View.inflate(act, R.layout.autocomplete_entry, null);
         edit.setHint(R.string.insert_path);
@@ -335,7 +395,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         builder.setTitle(R.string.insert_path);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             act.getSharedPreferences("Settings", Context.MODE_PRIVATE).edit().putString(key, edit.getText().toString()).apply();
-            findPreference(key).setSummary(edit.getText().toString());
+            savePathPreference.setSummary(edit.getText().toString());
         }).setNegativeButton(R.string.cancel, null).show();
     }
 
@@ -361,7 +421,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         storagePreference.setEntryValues(strings.toArray(new CharSequence[0]));
         storagePreference.setSummary(
             act.getSharedPreferences("Settings", Context.MODE_PRIVATE)
-                .getString(getString(R.string.key_save_path), Global.MAINFOLDER.getParent())
+                .getString(getString(R.string.preference_key_save_path), Global.MAINFOLDER.getParent())
         );
         storagePreference.setOnPreferenceChangeListener((preference, newValue) -> {
             preference.setSummary(newValue.toString());

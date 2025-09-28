@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">從圖庫功能表中選中一個標籤時查詢其它標籤</string>
     <string name="setting_on_use_account_tag">帳戶標籤用於搜尋（本地標籤優先）</string>
     <string name="setting_off_use_account_tag">搜尋時忽略帳戶標籤</string>
-    <string name="theme_summary">選擇主題顏色</string>
     <string name="send_crash_report">發送錯誤報告</string>
     <string name="change_theme">更改主題</string>
     <string name="clear_cache">清除快取</string>
@@ -57,8 +56,6 @@
     <string name="image">圖像</string>
     <string name="next">下一個</string>
     <string name="create_pdf">建立 PDF</string>
-    <string name="create_pdf_format" formatted="true">建立的 PDF：\"%s\"</string>
-    <string name="create_zip_format" formatted="true">建立的 ZIP：\"%s\"</string>
     <string name="created_pdf">成功建立 PDF</string>
     <string name="error_pdf">建立 PDF 出錯</string>
     <string name="parsing_pages">正在分析頁面</string>
@@ -71,8 +68,6 @@
     <string name="next_page">下一頁</string>
     <string name="downloaded_manga">已下載漫畫</string>
     <string name="download_gallery">下載圖庫</string>
-    <string name="delete_gallery_size_format" formatted="true">刪除圖庫 (%.2fMB)</string>
-    <string name="delete_gallery_format" formatted="true">是否刪除圖庫：\n%s</string>
     <string name="share_with">分享</string>
     <string name="link_copied_to_clipboard">連結已複製到剪貼板</string>
     <string name="open_in_browser">在流覽器中打開</string>
@@ -155,9 +150,6 @@
     <string name="cancel">取消</string>
     <string name="no">否</string>
     <string name="yes">是</string>
-    <string name="start_all_downloads">開始所有下載</string>
-    <string name="pause_all_downloads">停止所有下載</string>
-    <string name="cancel_all_downloads">取消所有下載</string>
     <string name="disable_lock_title">閱讀時常亮</string>
     <string name="download_all_galleries_in_this_page">下載此頁所有圖庫</string>
     <string name="download_all_galleries">下載所有圖庫</string>
@@ -174,7 +166,6 @@
     <string name="start_page">起始頁</string>
     <string name="end_page">結束頁</string>
     <string name="invalid_range_selected">選擇的範圍無效</string>
-    <string name="column_count_select">列數選擇</string>
     <string name="send_with_title">與標題一起發送？</string>
     <string name="caption_send_with_title">在圖片上添加 URL 浮水印？</string>
     <string name="history_size">歷史記錄大小</string>
@@ -187,7 +178,6 @@
     <string name="downloading_format">下載中：%s</string>
     <string name="toggle_favorite">切換收藏</string>
     <string name="resume">恢復</string>
-    <string name="pause">暫停</string>
     <string name="title_copied_to_clipboard">標題已複製至剪貼板</string>
     <string name="setting_zoom_one_column">在圖庫內一列顯示時啟用縮放</string>
     <string name="zoom_one_column">啟用縮放</string>
@@ -255,11 +245,9 @@
     <string name="title">標題</string>
     <string name="download_date">下載日期</string>
     <string name="page_count">頁數</string>
-    <string name="size">大小</string>
     <string name="descending_order">降冪排列</string>
     <string name="minimum_comment_length" formatted="true">評論不得少於 %d 個字元</string>
     <string name="change_scroll_type">切換滾動類型</string>
-    <string name="exported_backup_file_toast" formatted="true">匯出備份資料於 %s</string>
     <string name="export_data">匯出設定</string>
     <string name="import_data">匯入設定</string>
     <string name="default_status_1">閱讀中</string>
@@ -280,8 +268,6 @@
     <string name="requesting_storage_access">正在請求儲存權限</string>
     <string name="request_storage_manager_summary">由於 Android 11 對儲存空間存取的限制，本應用程式需要額外的權限才能使用自訂路徑。\n若您願意授權，請在接下來的對話框中開啟相關設定。</string>
     <string name="summary_beta">更新至測試版本將無法回到穩定發布版本，除非重新安裝應用程式</string>
-    <string name="fix_inverted_title">修正倒置的圖片</string>
-    <string name="fix_inverted_summary">圖片顯示為反色時請啟用(若影響系統主題可停用以修正)</string>
     <string name="navigation_settings_per_screen">設定每個畫面的導航方式</string>
     <string name="downloaded_update_at" formatted="true">下載更新於 %s</string>
     <string name="summary_offscreen_limit">設定閱讀圖庫時預先載入的圖片數量</string>
@@ -294,8 +280,6 @@
     <string name="export_finished">匯出完成</string>
     <string name="import_finished">匯入完成</string>
     <string name="download_torrent">下載種子檔</string>
-    <string name="title_activity_captcha">驗證碼</string>
-    <string name="invalid_response">無效的回應</string>
     <string name="system_default">系統預設</string>
     <string name="clear_cookies">清除 Cookies</string>
     <string name="fetching_cloudflare_token">獲得 Cloudflare 通行證 …</string>

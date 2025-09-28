@@ -1,26 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="key_offscreen_limit" translatable="false">offscreen_limit</string>
+    <string name="preference_key_offscreen_limit" translatable="false">offscreen_limit</string>
+    <string name="preference_key_enable_beta" translatable="false">enable_beta</string>
+    <string name="preference_key_save_path" translatable="false">save_path</string>
+    <string name="preference_key_fake_icon" translatable="false">fake_icon</string>
+    <string name="preference_key_user_agent" translatable="false">setting_user_agent</string>
+    <string name="preference_key_title_type" translatable="false">title_type_str</string>
+    <string name="preference_key_default_zoom" translatable="false">default_zoom</string>
+    <string name="preference_key_theme_select" translatable="false">theme_select</string>
+    <string name="preference_key_cache" translatable="false">cache</string>
+    <string name="preference_key_use_account_tag" translatable="false">use_account_tags</string>
+    <string name="preference_key_send_report" translatable="false">send_report</string>
+    <string name="preference_key_use_rtl" translatable="false">use_rtl</string>
+    <string name="preference_key_show_titles" translatable="false">show_titles</string>
+    <string name="preference_key_exact_title_match" translatable="false">precise_tag</string>
+    <string name="preference_key_hide_multitasking" translatable="false">hide_multitasking</string>
+    <string name="preference_key_site_mirror" translatable="false">site_mirror</string>
+    <string name="preference_key_language" translatable="false">key_language</string>
+    <string name="preference_key_disable_lock" translatable="false">disable_lock</string>
+    <string name="preference_key_max_history_size" translatable="false">max_history_size</string>
+    <string name="preference_key_zoom_one_column" translatable="false">zoom_one_column</string>
+    <string name="preference_key_maximum_notification" translatable="false">maximum_notification</string>
+    <string name="preference_key_keep_history" translatable="false">keep_history</string>
+    <string name="preference_key_override_volume" translatable="false">volume_override</string>
+    <string name="preference_key_remove_ignored" translatable="false">remove_ignored</string>
+    <string name="preference_key_check_update" translatable="false">check_update</string>
+    <string name="preference_key_update" translatable="false">update</string>
+    <string name="preference_key_status_screen" translatable="false">status_screen</string>
+    <string name="preference_key_col_screen" translatable="false">col_screen</string>
+    <string name="preference_key_data_screen" translatable="false">data_screen</string>
+    <string name="preference_key_fetch_metadata" translatable="false">fetch_metadata</string>
+    <string name="preference_key_has_pin" translatable="false">has_pin</string>
+    <string name="preference_key_version" translatable="false">version</string>
+    <string name="preference_key_bug" translatable="false">bug</string>
+    <string name="preference_key_copy_settings" translatable="false">copy_settings</string>
+    <string name="preference_key_export" translatable="false">export</string>
+    <string name="preference_key_import" translatable="false">import</string>
+    <string name="preference_key_cookie" translatable="false">cookie</string>
+    <string name="preference_key_change_page_buttons" translatable="false">change_page_buttons</string>
+    <string name="preference_key_favorite_limit" translatable="false">favorite_limit</string>
     <string name="key_default_value" translatable="false">default_value</string>
-    <string name="key_enable_beta" translatable="false">enable_beta</string>
-    <string name="key_save_path" translatable="false">save_path</string>
-    <string name="key_fake_icon" translatable="false">fake_icon</string>
     <string name="key_local_sort" translatable="false">local_sort_type</string>
-    <string name="key_user_agent" translatable="false">setting_user_agent</string>
-    <string name="key_title_type" translatable="false">title_type_str</string>
     <string name="key_by_popular" translatable="false">is_by_popular</string>
     <string name="key_column_count" translatable="false">column_count</string>
     <string name="key_only_language" translatable="false">only_language</string>
-    <string name="key_default_zoom" translatable="false">default_zoom</string>
-    <string name="key_theme_select" translatable="false">theme_select</string>
     <string name="key_max_id" translatable="false">max_id</string>
-    <string name="key_cache" translatable="false">cache</string>
     <string name="key_ignore_tags" translatable="false">ignore_tags</string>
-    <string name="key_use_account_tag" translatable="false">use_account_tags</string>
-    <string name="key_send_report" translatable="false">send_report</string>
-    <string name="key_use_rtl" translatable="false">use_rtl</string>
-    <string name="key_show_titles" translatable="false">show_titles</string>
     <string name="key_column_port_hist" translatable="false">column_port_hist</string>
     <string name="key_column_land_hist" translatable="false">column_land_hist</string>
     <string name="key_column_port_main" translatable="false">column_port_main</string>
@@ -31,34 +57,18 @@
     <string name="key_column_land_favo" translatable="false">column_land_favo</string>
     <string name="key_column_port_stat" translatable="false">column_port_stat</string>
     <string name="key_column_land_stat" translatable="false">column_land_stat</string>
-    <string name="key_exact_title_match" translatable="false">precise_tag</string>
     <string name="key_infinite_scroll_main" translatable="false">key_infinite_scroll</string>
     <string name="key_infinite_scroll_favo" translatable="false">infinite_scroll_favo</string>
-    <string name="key_hide_multitasking" translatable="false">hide_multitasking</string>
-    <string name="key_site_mirror" translatable="false">site_mirror</string>
-    <string name="key_language" translatable="false">key_language</string>
-    <string name="key_disable_lock" translatable="false">disable_lock</string>
-    <string name="key_max_history_size" translatable="false">max_history_size</string>
-    <string name="key_zoom_one_column" translatable="false">zoom_one_column</string>
     <string name="empty_circle" translatable="false">○</string>
     <string name="full_circle" translatable="false">◉</string>
     <string name="key_mobile_usage" translatable="false">mobile_usage</string>
     <string name="key_wifi_usage" translatable="false">wifi_usage</string>
-    <string name="key_maximum_notification" translatable="false">maximum_notification</string>
-    <string name="key_keep_history" translatable="false">keep_history</string>
     <string name="app_version_format" formatted="true" translatable="false">NClientV3 %s</string>
-    <string name="key_override_volume" translatable="false">volume_override</string>
-    <string name="key_remove_ignored" translatable="false">remove_ignored</string>
-    <string name="key_check_update" translatable="false">check_update</string>
-    <string name="key_update" translatable="false">update</string>
     <string name="hashtag" translatable="false">#</string>
     <string name="page_format" formatted="true" translatable="false">%d/%d</string>
     <string name="percentage_format" formatted="true" translatable="false">%d%%</string>
     <string name="page_switcher_placeholder" translatable="false">0/0</string>
     <string name="page_placeholder" translatable="false">999/999</string>
-    <string name="key_favorite_limit" translatable="false">favorite_limit</string>
-    <string name="key_cookie" translatable="false">cookie</string>
-    <string name="key_change_page_buttons" translatable="false">change_page_buttons</string>
     <string name="dash" translatable="false">-</string>
     <string name="slash" translatable="false">/</string>
     <string name="default_user_agent" translatable="false">Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N)</string>
@@ -66,7 +76,6 @@
     <string name="setting_off_ignore_tags">Other tags will be queried when a tag is selected from the gallery menu</string>
     <string name="setting_on_use_account_tag">Use the account tags into the search query (Local tags will have priority)</string>
     <string name="setting_off_use_account_tag">Account tags will be ignored for the query</string>
-    <string name="theme_summary">Select theme colors</string>
     <string name="send_crash_report">Send crash report</string>
     <string name="change_theme">Change theme</string>
     <string name="clear_cache">Clear cache</string>
@@ -119,8 +128,6 @@
     <string name="image">Image</string>
     <string name="next">Next</string>
     <string name="create_pdf">Create PDF</string>
-    <string name="create_pdf_format" formatted="true">Create PDF of: "%s"</string>
-    <string name="create_zip_format" formatted="true">Create ZIP of: "%s"</string>
     <string name="created_pdf">Successful created PDF</string>
     <string name="error_pdf">Error while creating PDF</string>
     <string name="parsing_pages">Parsing pages</string>
@@ -133,8 +140,6 @@
     <string name="next_page">Next page</string>
     <string name="downloaded_manga">Downloaded galleries</string>
     <string name="download_gallery">Download gallery</string>
-    <string name="delete_gallery_size_format" formatted="true">Delete gallery (%.2fMB)</string>
-    <string name="delete_gallery_format" formatted="true">Do you want to delete the gallery:\n%s</string>
     <string name="share_with">Share with</string>
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="open_in_browser">Open in browser</string>
@@ -217,9 +222,6 @@
     <string name="cancel">Cancel</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="start_all_downloads">Start all downloads</string>
-    <string name="pause_all_downloads">Pause all downloads</string>
-    <string name="cancel_all_downloads">Cancel all downloads</string>
     <string name="disable_lock_title">Disable screen off while reading</string>
     <string name="download_all_galleries_in_this_page">Download all galleries in this page</string>
     <string name="download_all_galleries">Download all galleries</string>
@@ -236,7 +238,6 @@
     <string name="start_page">Start page</string>
     <string name="end_page">End page</string>
     <string name="invalid_range_selected">Invalid range selected</string>
-    <string name="column_count_select">Column count select</string>
     <string name="send_with_title">Send with title?</string>
     <string name="caption_send_with_title">Append url to the image as caption to the image?</string>
     <string name="history_size">History size</string>
@@ -249,7 +250,6 @@
     <string name="downloading_format">Downloading: %s</string>
     <string name="toggle_favorite">Toggle favorite</string>
     <string name="resume">Resume</string>
-    <string name="pause">Pause</string>
     <string name="title_copied_to_clipboard">Title copied to clipboard</string>
     <string name="setting_zoom_one_column">Enable zoom when in one column mode inside a gallery</string>
     <string name="zoom_one_column">Enable zoom</string>
@@ -317,11 +317,9 @@
     <string name="title">Title</string>
     <string name="download_date">Download date</string>
     <string name="page_count">Page count</string>
-    <string name="size">Size</string>
     <string name="descending_order">Descending order</string>
     <string name="minimum_comment_length" formatted="true">The comment must be at least %d characters</string>
     <string name="change_scroll_type">Change scroll type</string>
-    <string name="exported_backup_file_toast" formatted="true">Exported backup file in %s</string>
     <string name="export_data">Export data</string>
     <string name="import_data">Import data</string>
     <string name="default_status_1">Reading</string>
@@ -342,8 +340,6 @@
     <string name="requesting_storage_access">Requesting storage access</string>
     <string name="request_storage_manager_summary">Due to some restriction in Android 11 to the storage access this app will require you to give additional permission to use custom paths.\nIf you want to give those permission please enable the setting in the next dialog.</string>
     <string name="summary_beta">Switching to a beta version will make you unable to return to stable versions without uninstalling</string>
-    <string name="fix_inverted_title">Fix inverted images</string>
-    <string name="fix_inverted_summary">Enable if the images are shown with inverted colors (in some devices can cause the system theme to be changed to light, disabling it will fix this issue)</string>
     <string name="navigation_settings_per_screen">Navigation settings per screen</string>
     <string name="downloaded_update_at" formatted="true">Downloaded update at %s</string>
     <string name="summary_offscreen_limit">Set the number of images to preload offscreen when reading a gallery</string>
@@ -356,8 +352,6 @@
     <string name="export_finished">Export finished</string>
     <string name="import_finished">Import finished</string>
     <string name="download_torrent">Download torrent</string>
-    <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Invalid response</string>
     <string name="system_default">System default</string>
     <string name="clear_cookies">Clear cookies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>

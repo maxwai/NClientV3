@@ -45,14 +45,12 @@ public class ScrapeTags extends Worker {
     private int getNewVersionCode() throws IOException {
         try (Response x = Global.getClient(getApplicationContext()).newCall(new Request.Builder().url(VERSION).build()).execute()) {
             ResponseBody body = x.body();
-            if (body != null) {
-                try {
-                    int k = Integer.parseInt(body.string().trim());
-                    LogUtility.d("Found version: " + k);
-                    return k;
-                } catch (NumberFormatException e) {
-                    LogUtility.e("Unable to convert", e);
-                }
+            try {
+                int k = Integer.parseInt(body.string().trim());
+                LogUtility.d("Found version: " + k);
+                return k;
+            } catch (NumberFormatException e) {
+                LogUtility.e("Unable to convert", e);
             }
         }
         return -1;
@@ -64,7 +62,7 @@ public class ScrapeTags extends Worker {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("Settings", 0);
         Date nowTime = new Date();
         Date lastTime = new Date(preferences.getLong("lastSync", nowTime.getTime()));
-        int lastVersion = preferences.getInt("lastTagsVersion", -1), newVersion = -1;
+        int lastVersion = preferences.getInt("lastTagsVersion", -1), newVersion;
         if (!enoughDayPassed(nowTime, lastTime)) return Result.retry();
 
         LogUtility.d("Scraping tags");
@@ -89,13 +87,11 @@ public class ScrapeTags extends Worker {
     private void fetchTags() throws IOException {
         try (Response x = Global.getClient(getApplicationContext()).newCall(new Request.Builder().url(TAGS).build()).execute()) {
             ResponseBody body = x.body();
-            if (body != null) {
-                try (JsonReader reader = new JsonReader(body.charStream())) {
-                    reader.beginArray();
-                    while (reader.hasNext()) {
-                        Tag tag = readTag(reader);
-                        Queries.TagTable.insertScrape(tag, true);
-                    }
+            try (JsonReader reader = new JsonReader(body.charStream())) {
+                reader.beginArray();
+                while (reader.hasNext()) {
+                    Tag tag = readTag(reader);
+                    Queries.TagTable.insertScrape(tag, true);
                 }
             }
         }

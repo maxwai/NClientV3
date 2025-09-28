@@ -350,7 +350,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
                 if (o instanceof LocalGallery) {
                     dataset.remove(o);
                     Global.recursiveDelete(((LocalGallery) o).getDirectory());
-                } else if (o instanceof DownloadGalleryV2) {
+                } else if (o instanceof GalleryDownloaderV2) {
                     DownloadQueue.remove((GalleryDownloaderV2) o, true);
                 }
             }
@@ -421,7 +421,8 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
             @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results != null) {
+                if (results != null && results.values instanceof CopyOnWriteArrayList) {
+                    //noinspection unchecked
                     filter = (CopyOnWriteArrayList<Object>) results.values;
                     context.runOnUiThread(() -> notifyDataSetChanged());
                 }

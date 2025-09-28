@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">ギャラリーメニューからタグを選択すると、他のタグが照会されます</string>
     <string name="setting_on_use_account_tag">アカウントタグを検索に使用します（ローカルタグが優先されます）</string>
     <string name="setting_off_use_account_tag">アカウントタグを無視</string>
-    <string name="theme_summary">テーマの色を選択</string>
     <string name="send_crash_report">クラッシュレポートを送信</string>
     <string name="change_theme">テーマを変更</string>
     <string name="clear_cache">キャッシュをクリア</string>
@@ -57,8 +56,6 @@
     <string name="image">画像</string>
     <string name="next">次</string>
     <string name="create_pdf">PDFを作成</string>
-    <string name="create_pdf_format" formatted="true">次のPDFを作成： \"%s\"</string>
-    <string name="create_zip_format" formatted="true">次のZIPを作成： \"%s\"</string>
     <string name="created_pdf">PDFファイルは正常に作成されました</string>
     <string name="error_pdf">PDFファイルの作成中にエラーが発生しました</string>
     <string name="parsing_pages">ページの解析</string>
@@ -71,8 +68,6 @@
     <string name="next_page">次のページ</string>
     <string name="downloaded_manga">ダウンロードしたギャラリー一覧</string>
     <string name="download_gallery">ギャラリーをダウンロード</string>
-    <string name="delete_gallery_size_format" formatted="true">ギャラリーを削除します（%.2fMB）</string>
-    <string name="delete_gallery_format" formatted="true">ギャラリーを削除しますか？：\ n%s</string>
     <string name="share_with">と共有する</string>
     <string name="link_copied_to_clipboard">リンクをクリップボードにコピーしました</string>
     <string name="open_in_browser">ブラウザで開く</string>
@@ -155,9 +150,6 @@
     <string name="cancel">キャンセル</string>
     <string name="no">いいえ</string>
     <string name="yes">はい</string>
-    <string name="start_all_downloads">全てのダウンロードを開始</string>
-    <string name="pause_all_downloads">すべてのダウンロードを一時停止</string>
-    <string name="cancel_all_downloads">全てのダウンロードを停止</string>
     <string name="disable_lock_title">読書中は画面をオフ</string>
     <string name="download_all_galleries_in_this_page">このページの全てのギャラリーをダウンロード</string>
     <string name="download_all_galleries">全てのギャラリーをダウンロード</string>
@@ -174,7 +166,6 @@
     <string name="start_page">最初のページ</string>
     <string name="end_page">最後のページ</string>
     <string name="invalid_range_selected">無効な範囲が選択されました</string>
-    <string name="column_count_select">列数の選択</string>
     <string name="send_with_title">タイトルで送信しますか？</string>
     <string name="caption_send_with_title">画像のキャプションとしてURLを画像に追加しますか？</string>
     <string name="history_size">履歴サイズ</string>
@@ -187,7 +178,6 @@
     <string name="downloading_format">ダウンロード中: %s</string>
     <string name="toggle_favorite">お気に入りを切り替える</string>
     <string name="resume">再開する</string>
-    <string name="pause">一時停止</string>
     <string name="title_copied_to_clipboard">タイトルをクリップボードにコピー</string>
     <string name="setting_zoom_one_column">ギャラリー内の1列モードでズームを有効</string>
     <string name="zoom_one_column">ズームを有効</string>
@@ -255,11 +245,9 @@
     <string name="title">タイトル</string>
     <string name="download_date">データをダウンロード</string>
     <string name="page_count">ページ数</string>
-    <string name="size">サイズを変更</string>
     <string name="descending_order">降順</string>
     <string name="minimum_comment_length" formatted="true">コメントは少なくとも%d文字である必要があります</string>
     <string name="change_scroll_type">スクロールタイプを変更</string>
-    <string name="exported_backup_file_toast" formatted="true">エクスポートされたバックアップファイル（%s）</string>
     <string name="export_data">データをエクスポート</string>
     <string name="import_data">データをインポート</string>
     <string name="default_status_1">読書中</string>
@@ -280,8 +268,6 @@
     <string name="requesting_storage_access">ストレージアクセスの要求</string>
     <string name="request_storage_manager_summary">Android 11ではストレージアクセスに制限があるため、このアプリではカスタムパスを使用するための追加の権限を付与する必要があります。\ nこれらの権限を付与する場合は、次のダイアログで設定を有効にしてください。</string>
     <string name="summary_beta">ベータ版に切り替えると、アンインストールせずに安定版に戻ることができなくなります。</string>
-    <string name="fix_inverted_title">反転画像を修正</string>
-    <string name="fix_inverted_summary">画像が反転した色で表示されている場合は有効にします（一部のデバイスでは、システムテーマが明るい色に変更される可能性があり、この設定を無効にするとこの問題が修正されます。）</string>
     <string name="navigation_settings_per_screen">画面ごとのナビゲーションを設定</string>
     <string name="downloaded_update_at" formatted="true">%sでダウンロードされた更新</string>
     <string name="summary_offscreen_limit">ギャラリーを読むときに画面外にプリロードする画像の数を設定</string>
@@ -294,8 +280,6 @@
     <string name="export_finished">エクスポートが完了しました</string>
     <string name="import_finished">インポートが完了しました</string>
     <string name="download_torrent">torrentファイルをダウンロード</string>
-    <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">無効な応答</string>
     <string name="system_default">システムのデフォルト</string>
     <string name="clear_cookies">Cookie を消去</string>
     <string name="fetching_cloudflare_token">Cloudflareトークンを取得しています …</string>

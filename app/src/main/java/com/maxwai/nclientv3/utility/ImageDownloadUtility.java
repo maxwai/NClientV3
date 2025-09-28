@@ -86,7 +86,7 @@ public class ImageDownloadUtility {
             if (angle != 0)
                 dra = dra.transform(new Rotate(angle));
             dra.error(logo)
-                .addListener(new RequestListener<Drawable>() {
+                .addListener(new RequestListener<>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, @Nullable Object model, @NonNull Target<Drawable> target, boolean isFirstResource) {
                         new Handler(context.getMainLooper()).post(errorRunnable);
@@ -189,7 +189,7 @@ public class ImageDownloadUtility {
                     LogUtility.d("Trying again with extension " + imageExt.getName());
                     triedExtensions.add(imageExt);
                     gallery.setPageExtensionFrom(page, imageExt);
-                    Uri url = getUrlForGallery(gallery, page, shouldFull);
+                    getUrlForGallery(gallery, page, shouldFull);
                     loadImageOp(context, imageView, gallery, () -> getUrlForGallery(gallery, page, shouldFull), angle, this, true);
                 });
         }

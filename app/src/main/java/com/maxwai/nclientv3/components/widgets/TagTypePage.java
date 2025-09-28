@@ -66,7 +66,7 @@ public class TagTypePage extends Fragment {
                              Bundle savedInstanceState) {
 
         activity = (TagFilterActivity) getActivity();
-        type = TagType.values[getArguments().getInt("TAGTYPE")];
+        type = TagType.values[requireArguments().getInt("TAGTYPE")];
         View rootView = inflater.inflate(R.layout.fragment_tag_filter, container, false);
         recyclerView = rootView.findViewById(R.id.recycler);
         Global.applyFastScroller(recyclerView);

@@ -1,35 +1,25 @@
 package com.maxwai.nclientv3.api.enums;
 
-import androidx.annotation.Nullable;
-
 import com.maxwai.nclientv3.R;
 
 import java.util.Arrays;
 
 public enum Language {
-    ENGLISH(R.string.only_english, "ENGLISH"),
-    CHINESE(R.string.only_chinese, "CHINESE"),
-    JAPANESE(R.string.only_japanese, "JAPANESE"),
-    ALL(R.string.all_languages, "ALL"),
-    UNKNOWN(R.string.unknown_language, "UNKNOWN");
+    ENGLISH(R.string.only_english),
+    CHINESE(R.string.only_chinese),
+    JAPANESE(R.string.only_japanese),
+    ALL(R.string.all_languages),
+    UNKNOWN(R.string.unknown_language);
 
 
     private final int nameResId;
-    @Nullable
-    private final String language;
 
-    Language(int nameResId, @Nullable String languageCode) {
+    Language(int nameResId) {
         this.nameResId = nameResId;
-        this.language = languageCode;
     }
 
     public int getNameResId() {
         return nameResId;
-    }
-
-    @Nullable
-    public String getLanguage() {
-        return language;
     }
 
 

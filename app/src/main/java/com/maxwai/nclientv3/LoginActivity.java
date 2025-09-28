@@ -76,7 +76,7 @@ public class LoginActivity extends GeneralActivity {
         private void applyCookie(String session) {
             Cookie cookie = Cookie.parse(Login.BASE_HTTP_URL, "sessionid=" + session + "; HttpOnly; Max-Age=1209600; Path=/; SameSite=Lax");
             Global.client.cookieJar().saveFromResponse(Login.BASE_HTTP_URL, Collections.singletonList(cookie));
-            User.createUser(null);
+            User.createUser(LoginActivity.this, null);
             finish();
         }
 

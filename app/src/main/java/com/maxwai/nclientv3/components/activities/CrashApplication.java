@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowInsets;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,7 +56,7 @@ public class CrashApplication extends MultiDexApplication {
         //update tags
         ScrapeTags.startWork(this);
         if ("0.0.0".equals(oldVersion))
-            editor.putBoolean(getString(R.string.key_check_update), true);
+            editor.putBoolean(getString(R.string.preference_key_check_update), true);
         editor.apply();
         Global.setLastVersion(this);
     }
@@ -84,7 +83,7 @@ public class CrashApplication extends MultiDexApplication {
                 ReportField.LOGCAT);
 
         ACRA.init(this, builder);
-        ACRA.getErrorReporter().setEnabled(getSharedPreferences("Settings", 0).getBoolean(getString(R.string.key_send_report), false));
+        ACRA.getErrorReporter().setEnabled(getSharedPreferences("Settings", 0).getBoolean(getString(R.string.preference_key_send_report), false));
     }
 
     private static class CustomActivityLifecycleCallback implements ActivityLifecycleCallbacks {

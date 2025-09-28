@@ -1,10 +1,10 @@
 package com.maxwai.nclientv3.loginapi;
 
+import android.content.Context;
 import android.util.JsonReader;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
-import com.maxwai.nclientv3.adapters.TagsAdapter;
 import com.maxwai.nclientv3.api.components.Tag;
 import com.maxwai.nclientv3.api.enums.TagType;
 import com.maxwai.nclientv3.settings.Global;
@@ -19,21 +19,22 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Locale;
+import java.util.Objects;
 
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class LoadTags extends Thread {
-    @Nullable
-    private final TagsAdapter adapter;
+    @NonNull
+    private final Context context;
 
-    public LoadTags(@Nullable TagsAdapter adapter) {
-        this.adapter = adapter;
+    public LoadTags(@NonNull Context context) {
+        this.context = context;
     }
 
     private Elements getScripts(String url) throws IOException {
 
-        try (Response response = Global.getClient().newCall(new Request.Builder().url(url).build()).execute()) {
+        try (Response response = Global.getClient(context).newCall(new Request.Builder().url(url).build()).execute()) {
             return Jsoup.parse(response.body().byteStream(), null, Utility.getBaseUrl()).getElementsByTag("script");
         }
     }
@@ -49,7 +50,6 @@ public class LoadTags extends Thread {
             Tag tt = new Tag(reader);
             if (tt.getType() != TagType.LANGUAGE && tt.getType() != TagType.CATEGORY) {
                 Login.addOnlineTag(tt);
-                if (adapter != null) adapter.addItem();
             }
         }
     }
@@ -71,10 +71,10 @@ public class LoadTags extends Thread {
 
     }
 
-    private void analyzeScripts(Elements scripts) throws IOException, StringIndexOutOfBoundsException {
+    private void analyzeScripts(@NonNull Elements scripts) throws IOException, StringIndexOutOfBoundsException {
         if (!scripts.isEmpty()) {
             Login.clearOnlineTags();
-            String array = Utility.unescapeUnicodeString(extractArray(scripts.last()));
+            String array = Utility.unescapeUnicodeString(extractArray(Objects.requireNonNull(scripts.last())));
             try (JsonReader reader = new JsonReader(new StringReader(array))) {
                 readTags(reader);
             }

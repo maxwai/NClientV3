@@ -113,12 +113,12 @@ public class CreatePdfOrZip extends Worker {
                         bitmap.recycle();
                     }
                     notification.setProgress(totalPage - 1, a + 1, false);
-                    NotificationSettings.notify(getApplicationContext(), getApplicationContext().getString(R.string.channel2_name), notId, notification.build());
+                    NotificationSettings.notify(getApplicationContext(), notId, notification.build());
 
                 }
                 notification.setContentText(getApplicationContext().getString(R.string.writing_pdf));
                 notification.setProgress(totalPage, 0, true);
-                NotificationSettings.notify(getApplicationContext(), getApplicationContext().getString(R.string.channel2_name), notId, notification.build());
+                NotificationSettings.notify(getApplicationContext(), notId, notification.build());
                 try {
                     File finalPath = Global.PDFFOLDER;
                     //noinspection ResultOfMethodCallIgnored
@@ -134,13 +134,13 @@ public class CreatePdfOrZip extends Worker {
                     notification.setContentTitle(getApplicationContext().getString(R.string.created_pdf));
                     notification.setContentText(gallery.getTitle());
                     createIntentOpen(finalPath, true);
-                    NotificationSettings.notify(getApplicationContext(), getApplicationContext().getString(R.string.channel2_name), notId, notification.build());
+                    NotificationSettings.notify(getApplicationContext(), notId, notification.build());
                     LogUtility.d(finalPath.getAbsolutePath());
                 } catch (IOException e) {
                     notification.setContentTitle(getApplicationContext().getString(R.string.error_pdf));
                     notification.setContentText(getApplicationContext().getString(R.string.failed));
                     notification.setProgress(0, 0, false);
-                    NotificationSettings.notify(getApplicationContext(), getApplicationContext().getString(R.string.channel2_name), notId, notification.build());
+                    NotificationSettings.notify(getApplicationContext(), notId, notification.build());
                     LogUtility.e(new RuntimeException("Error generating file", e));
                     return Result.failure();
                 }
@@ -168,7 +168,7 @@ public class CreatePdfOrZip extends Worker {
                         }
                         out.closeEntry();
                         notification.setProgress(gallery.getPageCount(), i, false);
-                        NotificationSettings.notify(getApplicationContext(), getApplicationContext().getString(R.string.channel3_name), notId, notification.build());
+                        NotificationSettings.notify(getApplicationContext(), notId, notification.build());
                     }
                     out.flush();
                 }
@@ -192,7 +192,7 @@ public class CreatePdfOrZip extends Worker {
         } else {
             createIntentOpen(file, false);
         }
-        NotificationSettings.notify(getApplicationContext(), getApplicationContext().getString(R.string.channel3_name), notId, notification.build());
+        NotificationSettings.notify(getApplicationContext(), notId, notification.build());
     }
 
     private void createIntentOpen(File finalPath, boolean pdf) {
@@ -228,6 +228,6 @@ public class CreatePdfOrZip extends Worker {
         if (pdf) {
             notification.setStyle(new NotificationCompat.BigTextStyle().bigText(file.getName()));
         }
-        NotificationSettings.notify(getApplicationContext(), getApplicationContext().getString(pdf ? R.string.channel2_name : R.string.channel3_name), notId, notification.build());
+        NotificationSettings.notify(getApplicationContext(), notId, notification.build());
     }
 }

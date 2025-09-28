@@ -266,7 +266,7 @@ public class GalleryDownloaderV2 {
             if (r.code() != 200) {
                 return false;
             }
-            assert r.body() != null;
+            //noinspection DataFlowIssue
             long expectedSize = Integer.parseInt(r.header("Content-Length", "-1"));
             long len = r.body().contentLength();
             if (len < 0 || expectedSize != len) {
@@ -274,6 +274,7 @@ public class GalleryDownloaderV2 {
             }
             long written = Utility.writeStreamToFile(r.body().byteStream(), filePath);
             if (written != len) {
+                //noinspection ResultOfMethodCallIgnored
                 filePath.delete();
                 return false;
             }

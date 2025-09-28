@@ -113,7 +113,7 @@ public class StatusManagerAdapter extends RecyclerView.Adapter<StatusManagerAdap
                 Toast.makeText(activity, R.string.name_too_short, Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (StatusManager.getByName(newName) != null && !newName.equals(status.name)) {
+            if (StatusManager.getByName(newName) != null && status != null &&  !newName.equals(status.name)) {
                 Toast.makeText(activity, R.string.duplicated_name, Toast.LENGTH_SHORT).show();
                 return;
             }

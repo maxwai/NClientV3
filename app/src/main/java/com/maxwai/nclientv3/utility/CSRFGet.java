@@ -24,7 +24,6 @@ public class CSRFGet extends Thread {
             assert Global.getClient() != null;
             try (okhttp3.Response response = Global.getClient().newCall(new Request.Builder().url(url).build()).execute())
             {
-                if (response.body() == null) throw new NullPointerException("Error retrieving url");
                 String token = response.body().string();
                 token = token.substring(token.lastIndexOf("csrf_token"));
                 token = token.substring(token.indexOf('"') + 1);

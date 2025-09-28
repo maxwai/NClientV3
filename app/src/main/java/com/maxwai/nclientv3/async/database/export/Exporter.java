@@ -131,8 +131,15 @@ public class Exporter {
             } else if (val instanceof Set) {
                 writer.beginObject().name(SharedType.STRING_SET.name());
                 writer.beginArray();
-                for (String s : (Set<String>) val) {
-                    writer.value(s);
+                Set<?> val2 = (Set<?>) val;
+                if (!val2.isEmpty()) {
+                    for (Object s : (Set<?>) val) {
+                        if (s instanceof String) {
+                            writer.value((String) s);
+                        } else {
+                            LogUtility.e("Missing export class: " + val.getClass().getName());
+                        }
+                    }
                 }
                 writer.endArray();
                 writer.endObject();

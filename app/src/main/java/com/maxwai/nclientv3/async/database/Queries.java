@@ -50,10 +50,10 @@ public class Queries {
         return cursor.getColumnIndex(name);
     }
 
+    /**
+     * @noinspection unused
+     */
     public static class DebugDatabase {
-        /**
-         * @noinspection unused
-         */
         private static void dumpTable(String name, FileWriter sb) throws IOException {
 
             String query = "SELECT * FROM " + name;
@@ -412,10 +412,10 @@ public class Queries {
             }
         }
 
-        public static int updateStatus(int id, TagStatus status) {
+        public static void updateStatus(int id, TagStatus status) {
             ContentValues values = new ContentValues(1);
             values.put(STATUS, status.ordinal());
-            return db.updateWithOnConflict(TABLE_NAME, values, IDTAG + "=?", new String[]{"" + id}, SQLiteDatabase.CONFLICT_IGNORE);
+            db.updateWithOnConflict(TABLE_NAME, values, IDTAG + "=?", new String[]{"" + id}, SQLiteDatabase.CONFLICT_IGNORE);
         }
 
         /**

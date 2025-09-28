@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
@@ -25,6 +26,7 @@ import com.maxwai.nclientv3.utility.Utility;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Locale;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -44,9 +46,10 @@ public class CommentActivity extends BaseActivity {
         setContentView(R.layout.activity_comment);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(R.string.comments);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(R.string.comments);
         findViewById(R.id.page_switcher).setVisibility(View.GONE);
         int id = getIntent().getIntExtra(getPackageName() + ".GALLERYID", -1);
         if (id == -1) {

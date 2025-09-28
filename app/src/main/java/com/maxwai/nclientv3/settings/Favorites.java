@@ -7,14 +7,12 @@ import com.maxwai.nclientv3.async.database.Queries;
 public class Favorites {
 
 
-    public static boolean addFavorite(Gallery gallery) {
+    public static void addFavorite(Gallery gallery) {
         Queries.FavoriteTable.addFavorite(gallery);
-        return true;
     }
 
-    public static boolean removeFavorite(GenericGallery gallery) {
+    public static void removeFavorite(GenericGallery gallery) {
         Queries.FavoriteTable.removeFavorite(gallery.getId());
-        return true;
     }
 
     public static boolean isFavorite(GenericGallery gallery) {

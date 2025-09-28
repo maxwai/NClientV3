@@ -1,5 +1,7 @@
 package com.maxwai.nclientv3.loginapi;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.maxwai.nclientv3.settings.Global;
@@ -12,6 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -28,8 +31,8 @@ public class User {
         this.codename = codename;
     }
 
-    public static void createUser(final CreateUser createUser) {
-        Global.getClient().newCall(new Request.Builder().url(Login.BASE_HTTP_URL).build()).enqueue(new Callback() {
+    public static void createUser(@NonNull Context context, final CreateUser createUser) {
+        Global.getClient(context).newCall(new Request.Builder().url(Login.BASE_HTTP_URL).build()).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
             }
@@ -40,8 +43,8 @@ public class User {
                 Document doc = Jsoup.parse(response.body().byteStream(), null, Utility.getBaseUrl());
                 Elements elements = doc.getElementsByClass("fa-tachometer-alt");
                 if (!elements.isEmpty()) {
-                    Element x = elements.first().parent();
-                    String username = x.text().trim();
+                    Element x = Objects.requireNonNull(elements.first()).parent();
+                    String username = Objects.requireNonNull(x).text().trim();
                     String[] y = x.attr("href").split("/");
                     user = new User(username, y[2], y[3]);
                 }

@@ -10,6 +10,9 @@ import org.acra.config.CoreConfiguration;
 import org.acra.sender.ReportSender;
 import org.acra.sender.ReportSenderFactory;
 
+/**
+ * @noinspection unused
+ */
 //TODO: test if this works
 @AutoService(ReportSenderFactory.class)
 public class MySenderFactory implements ReportSenderFactory {

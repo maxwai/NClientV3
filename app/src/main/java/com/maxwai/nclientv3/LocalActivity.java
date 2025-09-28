@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.maxwai.nclientv3.adapters.LocalAdapter;
@@ -28,6 +29,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 public class LocalActivity extends BaseActivity {
     private Menu optionMenu;
@@ -52,9 +54,10 @@ public class LocalActivity extends BaseActivity {
         setContentView(R.layout.app_bar_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(R.string.downloaded_manga);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(R.string.downloaded_manga);
         findViewById(R.id.page_switcher).setVisibility(View.GONE);
         recycler = findViewById(R.id.recycler);
         refresher = findViewById(R.id.refresher);
@@ -93,7 +96,7 @@ public class LocalActivity extends BaseActivity {
         this.optionMenu = menu;
         setMenuVisibility(menu);
         searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        Objects.requireNonNull(searchView).setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return true;
