@@ -16,7 +16,7 @@
             android:entries="@array/theme"
             android:entryValues="@array/theme_data"
             android:key="@string/key_theme_select"
-            android:summary="@string/theme_summary"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/change_theme"
             app:iconSpaceReserved="false" />
         <ListPreference
@@ -190,12 +190,6 @@
     <PreferenceCategory
         android:title="@string/miscellaneous"
         app:iconSpaceReserved="false">
-        <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="@string/key_inverted_fix"
-            android:summary="@string/fix_inverted_summary"
-            android:title="@string/fix_inverted_title"
-            app:iconSpaceReserved="false" />
         <Preference
             android:key="fetch_metadata"
             android:summary="@string/summary_fetch_metadata"

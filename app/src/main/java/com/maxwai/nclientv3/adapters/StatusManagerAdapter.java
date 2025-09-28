@@ -52,7 +52,7 @@ public class StatusManagerAdapter extends RecyclerView.Adapter<StatusManagerAdap
             holder.color.setVisibility(View.INVISIBLE);
             holder.color.setBackgroundColor(Color.TRANSPARENT);
             holder.cancel.setImageResource(R.drawable.ic_add);
-            Global.setTint(holder.cancel.getDrawable());
+            Global.setTint(activity, holder.cancel.getDrawable());
             holder.cancel.setOnClickListener(null);
             holder.master.setOnClickListener(v -> updateStatus(null));
             return;

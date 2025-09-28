@@ -120,7 +120,7 @@ public class FavoriteActivity extends BaseActivity {
                 return true;
             }
         });
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
 
         return true;
     }

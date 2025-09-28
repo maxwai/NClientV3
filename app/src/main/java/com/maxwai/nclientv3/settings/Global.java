@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -83,8 +81,7 @@ public class Global {
     private static TitleType titleType;
     private static SortType sortType;
     private static LocalSortType localSortType;
-    private static boolean invertFix, buttonChangePage, hideMultitask, enableBeta, volumeOverride, zoomOneColumn, keepHistory, lockScreen, onlyTag, showTitles, removeAvoidedGalleries, useRtl;
-    private static ThemeScheme theme;
+    private static boolean buttonChangePage, hideMultitask, enableBeta, volumeOverride, zoomOneColumn, keepHistory, lockScreen, onlyTag, showTitles, removeAvoidedGalleries, useRtl;
     private static DataUsageType usageMobile, usageWifi;
     private static String lastVersion, mirror;
     private static int maxHistory, columnCount, maxId, galleryWidth = -1, galleryHeight = -1;
@@ -272,7 +269,6 @@ public class Global {
         SharedPreferences shared = context.getSharedPreferences("Settings", 0);
         initHttpClient(context);
         initTitleType(context);
-        initTheme(context);
         loadNotificationChannel(context);
         NotificationSettings.initializeNotificationManager(context);
         Global.initStorage(context);
@@ -282,7 +278,6 @@ public class Global {
         mirror = shared.getString(context.getString(R.string.key_site_mirror), Utility.ORIGINAL_URL);
         keepHistory = shared.getBoolean(context.getString(R.string.key_keep_history), true);
         removeAvoidedGalleries = shared.getBoolean(context.getString(R.string.key_remove_ignored), true);
-        invertFix = shared.getBoolean(context.getString(R.string.key_inverted_fix), true);
         onlyTag = shared.getBoolean(context.getString(R.string.key_ignore_tags), true);
         volumeOverride = shared.getBoolean(context.getString(R.string.key_override_volume), true);
         enableBeta = shared.getBoolean(context.getString(R.string.key_enable_beta), true);
@@ -396,21 +391,12 @@ public class Global {
         return offscreenLimit;
     }
 
-    private static ThemeScheme initTheme(Context context) {
-        String h = context.getSharedPreferences("Settings", 0).getString(context.getString(R.string.key_theme_select), "dark");
-        return theme = h.equals("light") ? ThemeScheme.LIGHT : ThemeScheme.DARK;
-    }
-
     public static boolean shouldCheckForUpdates(Context context) {
         return context.getSharedPreferences("Settings", 0).getBoolean(context.getString(R.string.key_check_update), true);
     }
 
-    public static int getLogo() {
-        return theme == ThemeScheme.LIGHT ? R.drawable.ic_logo_dark : R.drawable.ic_logo;
-    }
-
     public static Drawable getLogo(Resources resources) {
-        return ResourcesCompat.getDrawable(resources, getLogo(), null);
+        return ResourcesCompat.getDrawable(resources, R.drawable.ic_logo, null);
     }
 
     public static float getDefaultZoom() {
@@ -419,10 +405,6 @@ public class Global {
 
     public static TitleType getTitleType() {
         return titleType;
-    }
-
-    public static ThemeScheme getTheme() {
-        return theme;
     }
 
     public static boolean removeAvoidedGalleries() {
@@ -568,9 +550,9 @@ public class Global {
         shareURL(context, gallery.getTitle(), Utility.getBaseUrl() + "g/" + gallery.getId());
     }
 
-    public static void setTint(Drawable drawable) {
+    public static void setTint(Context context, Drawable drawable) {
         if (drawable == null) return;
-        DrawableCompat.setTint(drawable, theme == ThemeScheme.LIGHT ? Color.BLACK : Color.WHITE);
+        DrawableCompat.setTint(drawable, context.getColor(R.color.tint_dark));
     }
 
     private static void loadNotificationChannel(@NonNull Context context) {
@@ -654,33 +636,9 @@ public class Global {
         return null;
     }
 
-    private static void updateConfigurationNightMode(Configuration c) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        c.uiMode &= (~Configuration.UI_MODE_NIGHT_MASK);//clear night mode bits
-        c.uiMode |= Configuration.UI_MODE_NIGHT_NO; //disable night mode
-    }
-
-    private static void invertFix(AppCompatActivity context) {
-        if (!invertFix) return;
-        Resources resources = context.getResources();
-        Configuration c = new Configuration(resources.getConfiguration());
-        updateConfigurationNightMode(c);
-        resources.updateConfiguration(c, resources.getDisplayMetrics());
-    }
-
     public static void initActivity(AppCompatActivity context) {
         initScreenSize(context);
         initGallerySize();
-        invertFix(context);
-
-        switch (initTheme(context)) {
-            case LIGHT:
-                context.setTheme(R.style.LightTheme);
-                break;
-            case DARK:
-                context.setTheme(R.style.DarkTheme);
-                break;
-        }
     }
 
     public static void recursiveDelete(File file) {
@@ -690,6 +648,7 @@ public class Global {
             if (files == null) return;
             for (File x : files) recursiveDelete(x);
         }
+        //noinspection ResultOfMethodCallIgnored
         file.delete();
     }
 
@@ -729,8 +688,6 @@ public class Global {
         }
         return "";
     }
-
-    public enum ThemeScheme {LIGHT, DARK}
 
     public enum DataUsageType {NONE, THUMBNAIL, FULL}
 

@@ -33,7 +33,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.RequestManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,7 +53,6 @@ import com.maxwai.nclientv3.async.VersionChecker;
 import com.maxwai.nclientv3.async.database.Queries;
 import com.maxwai.nclientv3.async.downloader.DownloadGalleryV2;
 import com.maxwai.nclientv3.components.CookieInterceptor;
-import com.maxwai.nclientv3.components.GlideX;
 import com.maxwai.nclientv3.components.activities.BaseActivity;
 import com.maxwai.nclientv3.components.views.PageSwitcher;
 import com.maxwai.nclientv3.components.widgets.CustomGridLayoutManager;
@@ -70,7 +68,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -154,7 +151,7 @@ public class MainActivity extends BaseActivity
     };
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private Setting setting = null;
+    private boolean setting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -490,12 +487,11 @@ public class MainActivity extends BaseActivity
     }
 
     private void changeNavigationImage(NavigationView navigationView) {
-        boolean light = Global.getTheme() == Global.ThemeScheme.LIGHT;
         View view = navigationView.getHeaderView(0);
         ImageView imageView = view.findViewById(R.id.imageView);
         View layoutHeader = view.findViewById(R.id.layout_header);
-        ImageDownloadUtility.loadImage(light ? R.drawable.ic_logo_dark : R.drawable.ic_logo, imageView);
-        layoutHeader.setBackgroundResource(light ? R.drawable.side_nav_bar_light : R.drawable.side_nav_bar_dark);
+        ImageDownloadUtility.loadImage(R.drawable.ic_logo, imageView);
+        layoutHeader.setBackgroundResource(R.drawable.side_nav_bar);
     }
 
     public void hidePageSwitcher() {
@@ -540,20 +536,15 @@ public class MainActivity extends BaseActivity
         settings.edit().putString(getString(R.string.key_language),
             setLocaleList.isEmpty() ? getString(R.string.key_default_value) :
                 Objects.requireNonNull(setLocaleList.get(0)).toLanguageTag()).apply();
-        if (setting != null) {
+        if (setting) {
             Global.initFromShared(this);//restart all settings
             inspector = inspector.cloneInspector(this, resetDataset);
             inspector.start();//restart inspector
-            if (setting.theme != Global.getTheme() || !Objects.equals(setting.locale, Global.getLanguage())) {
-                RequestManager manager = GlideX.with(getApplicationContext());
-                if (manager != null) manager.pauseAllRequestsRecursive();
-                recreate();
-            }
             adapter.notifyDataSetChanged();//restart adapter
             adapter.resetStatuses();
             showPageSwitcher(inspector.getPage(), inspector.getPageCount());//restart page switcher
             changeLayout(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
-            setting = null;
+            setting = false;
         } else if (filteringTag) {
             inspector = InspectorV3.basicInspector(this, 1, resetDataset);
             inspector.start();
@@ -586,7 +577,7 @@ public class MainActivity extends BaseActivity
             TagStatus ts = inspector.getTag().getStatus();
             updateTagStatus(item, ts);
         }
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
         return true;
     }
 
@@ -613,7 +604,7 @@ public class MainActivity extends BaseActivity
 
     private void popularItemDispay(MenuItem item) {
         item.setTitle(getString(R.string.sort_type_title_format, getString(Global.getSortType().getNameId())));
-        Global.setTint(item.getIcon());
+        Global.setTint(this, item.getIcon());
     }
 
     private void showLanguageIcon(MenuItem item) {
@@ -635,7 +626,7 @@ public class MainActivity extends BaseActivity
                 item.setIcon(R.drawable.ic_world);
                 break;
         }
-        Global.setTint(item.getIcon());
+        Global.setTint(this, item.getIcon());
     }
 
     @Override
@@ -763,7 +754,7 @@ public class MainActivity extends BaseActivity
                 item.setIcon(R.drawable.ic_check);
                 break;
         }
-        Global.setTint(item.getIcon());
+        Global.setTint(this, item.getIcon());
     }
 
     @Override
@@ -783,7 +774,7 @@ public class MainActivity extends BaseActivity
             intent = new Intent(this, FavoriteActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.action_settings) {
-            setting = new Setting();
+            setting = true;
             intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.online_favorite_manager) {
@@ -841,16 +832,6 @@ public class MainActivity extends BaseActivity
      * ID when searched for an ID
      */
     private enum ModeType {UNKNOWN, NORMAL, TAG, FAVORITE, SEARCH, BOOKMARK, ID}
-
-    private static class Setting {
-        final Global.ThemeScheme theme;
-        final Locale locale;
-
-        Setting() {
-            this.theme = Global.getTheme();
-            this.locale = Global.getLanguage();
-        }
-    }
 
     abstract class MainInspectorResponse extends InspectorV3.DefaultInspectorResponse {
         @Override

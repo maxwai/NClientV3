@@ -6,7 +6,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"
+        tools:ignore="RequestInstallPackagesPolicy" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
@@ -23,7 +24,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/DarkTheme"
+        android:theme="@style/AppTheme"
         android:enableOnBackInvokedCallback="true"
         tools:ignore="UnusedAttribute">
 
@@ -32,7 +33,7 @@
             android:name=".PINActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
-            android:theme="@style/DarkTheme">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -76,7 +77,7 @@
             android:exported="true"
             android:hardwareAccelerated="true"
             android:parentActivityName=".PINActivity"
-            android:theme="@style/DarkTheme">
+            android:theme="@style/AppTheme">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -103,7 +104,7 @@
             android:exported="true"
             android:label="@string/title_activity_gallery"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/DarkTheme">
+            android:theme="@style/AppTheme">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -125,19 +126,19 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_zoom"
             android:parentActivityName=".GalleryActivity"
-            android:theme="@style/DarkTheme.NoTitle" />
+            android:theme="@style/AppTheme.NoTitle" />
         <activity
             android:name=".LocalActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/DarkTheme" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".TagFilterActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:label="@string/title_activity_tag_filter"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/DarkTheme">
+            android:theme="@style/AppTheme">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 

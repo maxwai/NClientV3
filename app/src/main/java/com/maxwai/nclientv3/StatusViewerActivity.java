@@ -73,7 +73,7 @@ public class StatusViewerActivity extends GeneralActivity {
             if (fragment != null) fragment.changeSort(sortByTitle);
             item.setTitle(sortByTitle ? R.string.sort_by_latest : R.string.sort_by_title);
             item.setIcon(sortByTitle ? R.drawable.ic_sort_by_alpha : R.drawable.ic_access_time);
-            Global.setTint(item.getIcon());
+            Global.setTint(this, item.getIcon());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -108,7 +108,7 @@ public class StatusViewerActivity extends GeneralActivity {
                 return true;
             }
         });
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
         return super.onCreateOptionsMenu(menu);
     }
 }

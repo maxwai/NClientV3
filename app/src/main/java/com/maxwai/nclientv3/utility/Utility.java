@@ -93,11 +93,11 @@ public class Utility {
         }
     }
 
-    public static void tintMenu(Menu menu) {
+    public static void tintMenu(Context context, Menu menu) {
         int x = menu.size();
         for (int i = 0; i < x; i++) {
             MenuItem item = menu.getItem(i);
-            Global.setTint(item.getIcon());
+            Global.setTint(context, item.getIcon());
         }
     }
 

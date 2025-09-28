@@ -107,7 +107,7 @@ public class LocalActivity extends BaseActivity {
             }
         });
 
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
 
         return true;
     }

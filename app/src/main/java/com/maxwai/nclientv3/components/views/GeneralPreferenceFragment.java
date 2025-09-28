@@ -1,12 +1,14 @@
 package com.maxwai.nclientv3.components.views;
 
 import android.annotation.SuppressLint;
+import android.app.UiModeManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonWriter;
 import android.view.View;
@@ -195,7 +197,33 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         findPreference(getString(R.string.key_use_account_tag)).setEnabled(Login.isLogged());
 
         findPreference(getString(R.string.key_theme_select)).setOnPreferenceChangeListener((preference, newValue) -> {
-            act.recreate();
+            String newTheme = (String) newValue;
+            String[] availableThemes = getResources().getStringArray(R.array.theme_data);
+            assert availableThemes.length == 2;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                int theme;
+                if (newTheme.equals(availableThemes[0])) { // light
+                    theme = UiModeManager.MODE_NIGHT_NO;
+                } else if (newTheme.equals(availableThemes[1])) { // dark
+                    theme = UiModeManager.MODE_NIGHT_YES;
+                } else {
+                    assert false;
+                    return false;
+                }
+                UiModeManager uim = (UiModeManager) act.getSystemService(Context.UI_MODE_SERVICE);
+                uim.setApplicationNightMode(theme);
+            } else {
+                int theme;
+                if (newTheme.equals(availableThemes[0])) { // light
+                    theme = AppCompatDelegate.MODE_NIGHT_NO;
+                } else if (newTheme.equals(availableThemes[1])) { // dark
+                    theme = AppCompatDelegate.MODE_NIGHT_YES;
+                } else {
+                    assert false;
+                    return false;
+                }
+                act.getMainExecutor().execute(() -> AppCompatDelegate.setDefaultNightMode(theme));
+            }
             return true;
         });
         findPreference(getString(R.string.key_language)).setOnPreferenceChangeListener((preference, newValue) -> {

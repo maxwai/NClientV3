@@ -2,4 +2,11 @@
 <resources>
     <color name="entry_background">#7f000000</color>
     <color name="color_overlay">#8f000000</color>
+
+    <color name="tint_dark">@android:color/black</color>
+    <color name="tint_light">@android:color/white</color>
+
+    <color name="primaryColorVariant">@color/primary_material_light</color>
+    <color name="colorAccent">@android:color/holo_blue_bright</color>
+    <color name="colorPrimary">@android:color/holo_blue_bright</color>
 </resources>

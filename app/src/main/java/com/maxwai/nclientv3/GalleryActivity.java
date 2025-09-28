@@ -243,7 +243,7 @@ public class GalleryActivity extends BaseActivity {
         menu.findItem(R.id.favorite_manager).setIcon(isLocalFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
         menuItemsVisible(menu);
         initFavoriteIcon(menu);
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
         updateColumnCount(false);
         return true;
     }
@@ -297,7 +297,7 @@ public class GalleryActivity extends BaseActivity {
                 isLocalFavorite = !isLocalFavorite;
             }
             item.setIcon(isLocalFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
-            Global.setTint(item.getIcon());
+            Global.setTint(this, item.getIcon());
         } else if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
             return true;
@@ -475,7 +475,7 @@ public class GalleryActivity extends BaseActivity {
                     item.setIcon(R.drawable.ic_view_4);
                     break;
             }
-            Global.setTint(item.getIcon());
+            Global.setTint(this, item.getIcon());
 
         }
     }

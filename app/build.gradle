@@ -101,6 +101,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'com.google.android.material:material:1.13.0'
     implementation 'androidx.work:work-runtime:2.10.5'
+    implementation "androidx.core:core-splashscreen:1.0.1"
 
 // Other
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.1.0' //Because of min SDK

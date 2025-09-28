@@ -64,7 +64,7 @@ public class HistoryActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.history, menu);
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
         return true;
     }
 }

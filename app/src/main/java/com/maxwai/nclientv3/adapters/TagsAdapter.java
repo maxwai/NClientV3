@@ -200,11 +200,11 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
                     break;//ImageDownloadUtility.loadImage(R.drawable.ic_void,img); break;
                 case ACCEPTED:
                     ImageDownloadUtility.loadImage(R.drawable.ic_check, img);
-                    Global.setTint(img.getDrawable());
+                    Global.setTint(context, img.getDrawable());
                     break;
                 case AVOIDED:
                     ImageDownloadUtility.loadImage(R.drawable.ic_close, img);
-                    Global.setTint(img.getDrawable());
+                    Global.setTint(context, img.getDrawable());
                     break;
             }
         });

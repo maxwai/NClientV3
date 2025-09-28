@@ -312,8 +312,8 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
         holder.progress.setVisibility(downloader.getStatus() == GalleryDownloaderV2.Status.NOT_STARTED ? View.GONE : View.VISIBLE);
         holder.progressBar.setProgress(percentage);
         holder.progressBar.setIndeterminate(downloader.getStatus() == GalleryDownloaderV2.Status.NOT_STARTED);
-        Global.setTint(holder.playButton.getDrawable());
-        Global.setTint(holder.cancelButton.getDrawable());
+        Global.setTint(context, holder.playButton.getDrawable());
+        Global.setTint(context, holder.cancelButton.getDrawable());
     }
 
     private void removeDownloader(GalleryDownloaderV2 downloader) {

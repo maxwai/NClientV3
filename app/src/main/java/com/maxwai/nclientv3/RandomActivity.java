@@ -84,15 +84,15 @@ public class RandomActivity extends GeneralActivity {
             favoriteUpdateButton();
         });
 
-        ColorStateList colorStateList = ColorStateList.valueOf(Global.getTheme() == Global.ThemeScheme.LIGHT ? Color.WHITE : Color.BLACK);
+        ColorStateList colorStateList = ColorStateList.valueOf(getColor(R.color.tint_light));
 
         ImageViewCompat.setImageTintList(shuffle, colorStateList);
         ImageViewCompat.setImageTintList(share, colorStateList);
         ImageViewCompat.setImageTintList(favorite, colorStateList);
 
-        Global.setTint(shuffle.getContentBackground());
-        Global.setTint(share.getDrawable());
-        Global.setTint(favorite.getDrawable());
+        Global.setTint(this, shuffle.getContentBackground());
+        Global.setTint(this, share.getDrawable());
+        Global.setTint(this, favorite.getDrawable());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -130,7 +130,7 @@ public class RandomActivity extends GeneralActivity {
     private void favoriteUpdateButton() {
         runOnUiThread(() -> {
             ImageDownloadUtility.loadImage(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border, favorite);
-            Global.setTint(favorite.getDrawable());
+            Global.setTint(this, favorite.getDrawable());
         });
     }
 }

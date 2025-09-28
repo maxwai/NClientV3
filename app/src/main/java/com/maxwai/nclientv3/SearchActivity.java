@@ -301,7 +301,7 @@ public class SearchActivity extends GeneralActivity {
         c.setChipIconResource(R.drawable.ic_add);
         c.setText(getString(R.string.add));
         c.setOnClickListener(v -> loadTag(type));
-        Global.setTint(c.getChipIcon());
+        Global.setTint(this, c.getChipIcon());
         return c;
     }
 
@@ -386,7 +386,7 @@ public class SearchActivity extends GeneralActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search, menu);
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -401,7 +401,7 @@ public class SearchActivity extends GeneralActivity {
             boolean isVisible = v.getVisibility() == View.VISIBLE;
             v.setVisibility(isVisible ? View.GONE : View.VISIBLE);
             item.setIcon(isVisible ? R.drawable.ic_add : R.drawable.ic_close);
-            Global.setTint(item.getIcon());
+            Global.setTint(this, item.getIcon());
         }
         return super.onOptionsItemSelected(item);
     }

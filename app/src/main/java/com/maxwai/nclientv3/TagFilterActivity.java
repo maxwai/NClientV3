@@ -138,7 +138,7 @@ public class TagFilterActivity extends GeneralActivity {
     private void updateSortItem(MenuItem item) {
         item.setIcon(TagV2.isSortedByName() ? R.drawable.ic_sort_by_alpha : R.drawable.ic_sort);
         item.setTitle(TagV2.isSortedByName() ? R.string.sort_by_title : R.string.sort_by_popular);
-        Global.setTint(item.getIcon());
+        Global.setTint(this, item.getIcon());
     }
 
     @Override

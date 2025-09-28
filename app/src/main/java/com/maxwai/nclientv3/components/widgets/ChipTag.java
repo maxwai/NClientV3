@@ -75,6 +75,6 @@ public class ChipTag extends Chip {
             return;
         }
         setChipIcon(drawable);
-        Global.setTint(getChipIcon());
+        Global.setTint(getContext(), getChipIcon());
     }
 }
