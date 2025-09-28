@@ -51,7 +51,9 @@ public class Queries {
     }
 
     public static class DebugDatabase {
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         private static void dumpTable(String name, FileWriter sb) throws IOException {
 
             String query = "SELECT * FROM " + name;
@@ -107,24 +109,24 @@ public class Queries {
 
         static void clearGalleries() {
             db.delete(GalleryTable.TABLE_NAME, String.format(Locale.US,
-                "%s NOT IN (SELECT %s FROM %s) AND " +
                     "%s NOT IN (SELECT %s FROM %s) AND " +
-                    "%s NOT IN (SELECT %s FROM %s)",
-                GalleryTable.IDGALLERY, DownloadTable.ID_GALLERY, DownloadTable.TABLE_NAME,
-                GalleryTable.IDGALLERY, FavoriteTable.ID_GALLERY, FavoriteTable.TABLE_NAME,
-                GalleryTable.IDGALLERY, StatusMangaTable.GALLERY, StatusMangaTable.TABLE_NAME)
+                        "%s NOT IN (SELECT %s FROM %s) AND " +
+                        "%s NOT IN (SELECT %s FROM %s)",
+                    GalleryTable.IDGALLERY, DownloadTable.ID_GALLERY, DownloadTable.TABLE_NAME,
+                    GalleryTable.IDGALLERY, FavoriteTable.ID_GALLERY, FavoriteTable.TABLE_NAME,
+                    GalleryTable.IDGALLERY, StatusMangaTable.GALLERY, StatusMangaTable.TABLE_NAME)
                 , null);
             db.delete(GalleryBridgeTable.TABLE_NAME, String.format(Locale.US,
-                "%s NOT IN (SELECT %s FROM %s)",
-                GalleryBridgeTable.ID_GALLERY, GalleryTable.IDGALLERY, GalleryTable.TABLE_NAME)
+                    "%s NOT IN (SELECT %s FROM %s)",
+                    GalleryBridgeTable.ID_GALLERY, GalleryTable.IDGALLERY, GalleryTable.TABLE_NAME)
                 , null);
             db.delete(FavoriteTable.TABLE_NAME, String.format(Locale.US,
-                "%s NOT IN (SELECT %s FROM %s)",
-                FavoriteTable.ID_GALLERY, GalleryTable.IDGALLERY, GalleryTable.TABLE_NAME)
+                    "%s NOT IN (SELECT %s FROM %s)",
+                    FavoriteTable.ID_GALLERY, GalleryTable.IDGALLERY, GalleryTable.TABLE_NAME)
                 , null);
             db.delete(DownloadTable.TABLE_NAME, String.format(Locale.US,
-                "%s NOT IN (SELECT %s FROM %s)",
-                DownloadTable.ID_GALLERY, GalleryTable.IDGALLERY, GalleryTable.TABLE_NAME)
+                    "%s NOT IN (SELECT %s FROM %s)",
+                    DownloadTable.ID_GALLERY, GalleryTable.IDGALLERY, GalleryTable.TABLE_NAME)
                 , null);
         }
 
@@ -247,7 +249,9 @@ public class Queries {
 
     public static class TagTable {
         public static final String TABLE_NAME = "Tags";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `Tags` (" +
             " `idTag` INT  NOT NULL PRIMARY KEY," +
@@ -501,11 +505,12 @@ public class Queries {
         public static TagList getTagsFromListOfInt(String tagString) {
             TagList tags = new TagList();
             String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + IDTAG + " IN (" + tagString + ")";
-            Cursor cursor = db.rawQuery(query, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    tags.addTag(cursorToTag(cursor));
-                } while (cursor.moveToNext());
+            try (Cursor cursor = db.rawQuery(query, null)) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        tags.addTag(cursorToTag(cursor));
+                    } while (cursor.moveToNext());
+                }
             }
             return tags;
         }
@@ -563,7 +568,9 @@ public class Queries {
         public static final String RANGE_START = "range_start";
         public static final String RANGE_END = "range_end";
         public static final String TABLE_NAME = "Downloads";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `Downloads` (" +
             "`id_gallery`  INT NOT NULL PRIMARY KEY , " +
@@ -615,7 +622,9 @@ public class Queries {
         public static final String THUMB = "thumbType";
         public static final String TIME = "time";
         public static final String TABLE_NAME = "History";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `History`(" +
             "`id` INT NOT NULL PRIMARY KEY," +
@@ -639,13 +648,14 @@ public class Queries {
 
         public static List<SimpleGallery> getHistory() {
             ArrayList<SimpleGallery> galleries = new ArrayList<>();
-            Cursor c = db.query(TABLE_NAME, null, null, null, null, null, TIME + " DESC", "" + Global.getMaxHistory());
-            if (c.moveToFirst()) {
-                do {
-                    galleries.add(new SimpleGallery(c));
-                } while (c.moveToNext());
+            try (Cursor c = db.query(TABLE_NAME, null, null, null, null, null, TIME + " DESC", "" + Global.getMaxHistory())) {
+                if (c.moveToFirst()) {
+                    do {
+                        galleries.add(new SimpleGallery(c));
+                    } while (c.moveToNext());
+                }
+                galleries.trimToSize();
             }
-            galleries.trimToSize();
             return galleries;
         }
 
@@ -662,7 +672,9 @@ public class Queries {
 
     public static class BookmarkTable {
         public static final String TABLE_NAME = "Bookmark";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String URL = "url";
         static final String PAGE = "page";
@@ -714,7 +726,9 @@ public class Queries {
 
     public static class GalleryBridgeTable {
         public static final String TABLE_NAME = "GalleryTags";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `GalleryTags` (" +
             "`id_gallery` INT NOT NULL , " +
@@ -760,7 +774,9 @@ public class Queries {
 
     public static class FavoriteTable {
         public static final String TABLE_NAME = "Favorite";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `Favorite` (" +
             "`id_gallery` INT NOT NULL PRIMARY KEY , " +
@@ -886,7 +902,9 @@ public class Queries {
 
     public static class ResumeTable {
         public static final String TABLE_NAME = "Resume";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `Resume` (" +
             "`id_gallery` INT NOT NULL PRIMARY KEY , " +
@@ -922,7 +940,9 @@ public class Queries {
 
     public static class StatusMangaTable {
         public static final String TABLE_NAME = "StatusManga";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `StatusManga` (" +
             "`gallery` INT NOT NULL PRIMARY KEY, " +
@@ -1006,7 +1026,9 @@ public class Queries {
 
     public static class StatusTable {
         public static final String TABLE_NAME = "Status";
-        /** @noinspection unused*/
+        /**
+         * @noinspection unused
+         */
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `Status` (" +
             "`name` TINYTEXT NOT NULL PRIMARY KEY, " +

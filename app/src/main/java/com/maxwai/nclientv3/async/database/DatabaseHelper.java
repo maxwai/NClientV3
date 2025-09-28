@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class DatabaseHelper extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "Entries.db";
     private static final int DATABASE_VERSION = 13;
@@ -124,6 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     @SuppressLint("Range")
     private int[] getAllFavoriteIndex() {
+        //noinspection deprecation
         try (Cursor c = Queries.GalleryTable.getAllFavoriteCursorDeprecated("%", false)) {
             int[] favorites = new int[c.getCount()];
             int i = 0;
