@@ -221,8 +221,12 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference("bug").setOnPreferenceClickListener(preference -> {
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/maxwai/NClientV3/issues/new"));
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/maxwai/NClientV3/issues/new/choose"));
             startActivity(i);
+            return true;
+        });
+        findPreference(getString(R.string.key_copy_logs)).setOnPreferenceClickListener(preference -> {
+            act.exportLogs();
             return true;
         });
         findPreference("copy_settings").setOnPreferenceClickListener(preference -> {

@@ -18,21 +18,34 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.async.database.export.Exporter;
 import com.maxwai.nclientv3.async.database.export.Manager;
 import com.maxwai.nclientv3.components.activities.GeneralActivity;
 import com.maxwai.nclientv3.components.views.GeneralPreferenceFragment;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.LogUtility;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class SettingsActivity extends GeneralActivity {
     GeneralPreferenceFragment fragment;
     private ActivityResultLauncher<String> IMPORT_ZIP;
     private ActivityResultLauncher<String> SAVE_SETTINGS;
     private ActivityResultLauncher<Object> REQUEST_STORAGE_MANAGER;
+    private ActivityResultLauncher<String> COPY_LOGS;
+    private int selectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +64,6 @@ public class SettingsActivity extends GeneralActivity {
         fragment.setType(SettingsActivity.Type.values()[getIntent().getIntExtra(getPackageName() + ".TYPE", SettingsActivity.Type.MAIN.ordinal())]);
 
     }
-
-    private int selectedItem;
 
     private void registerActivities() {
         IMPORT_ZIP = registerForActivityResult(new ActivityResultContracts.GetContent(), selectedFile -> {
@@ -95,6 +106,30 @@ public class SettingsActivity extends GeneralActivity {
                 }
             });
         }
+        COPY_LOGS = registerForActivityResult(new ActivityResultContracts.CreateDocument("text/log") {
+            @NonNull
+            @Override
+            public Intent createIntent(@NonNull Context context, @NonNull String input) {
+                Intent i = super.createIntent(context, input);
+                i.setType("text/log");
+                return i;
+            }
+        }, selectedFile -> {
+            if (selectedFile == null) return;
+            try {
+                Process process = Runtime.getRuntime().exec(new String[]{"logcat", "-d"});
+                try (OutputStream outputStream = getContentResolver().openOutputStream(selectedFile);
+                     Writer writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                     BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String output = in.lines().collect(Collectors.joining("\n"));
+                    writer.write(output);
+                }
+                Toast.makeText(this, getString(process.exitValue() != 0 ? R.string.copy_logs_fail : R.string.export_finished), Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                LogUtility.e("Error getting logcat", e);
+                Toast.makeText(this, getString(R.string.copy_logs_fail), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void importSettings(Uri selectedFile) {
@@ -138,6 +173,15 @@ public class SettingsActivity extends GeneralActivity {
             File f = new File(Global.BACKUPFOLDER, name);
             exportSettings(Uri.fromFile(f));
         }
+    }
+
+    public void exportLogs() {
+        if (COPY_LOGS == null) {
+            Toast.makeText(this, R.string.failed, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Date actualTime = new Date();
+        COPY_LOGS.launch(String.format("NClientv3_Log_%s.log", new SimpleDateFormat("yyMMdd_HHmmss", Locale.getDefault()).format(actualTime)));
     }
 
     @Override
