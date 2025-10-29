@@ -100,16 +100,16 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'com.google.android.material:material:1.13.0'
-    implementation 'androidx.work:work-runtime:2.10.5'
+    implementation 'androidx.work:work-runtime:2.11.0'
     implementation "androidx.core:core-splashscreen:1.0.1"
 
 // Other
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.1.0' //Because of min SDK
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.2.1' //Because of min SDK
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'org.jsoup:jsoup:1.21.2'
 
-    implementation 'ch.acra:acra-core:5.12.0'
+    implementation 'ch.acra:acra-core:5.13.1'
     compileOnly("com.google.auto.service:auto-service-annotations:1.1.1")
     annotationProcessor("com.google.auto.service:auto-service:1.1.1")
     implementation 'com.google.guava:guava:33.5.0-android'
