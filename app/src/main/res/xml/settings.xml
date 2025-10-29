@@ -258,7 +258,7 @@
             android:title="@string/send_bug_on_github"
             app:iconSpaceReserved="false" />
         <Preference
-            android:key="@string/key_copy_logs"
+            android:key="@string/preference_key_copy_logs"
             android:title="@string/copy_logs"
             android:summary="@string/copy_logs_summary"
             app:iconSpaceReserved="false"/>
