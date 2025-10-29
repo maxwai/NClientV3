@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Andere Tags werden gesucht, wenn du einen Tag von einer Galerie auswählst</string>
     <string name="setting_on_use_account_tag">Benutze online Tags in deiner Suche (lokale Tags haben Priorität)</string>
     <string name="setting_off_use_account_tag">Online Tags werden bei deiner Suche ignoriert</string>
-    <string name="send_crash_report">Sende Absturzbericht</string>
     <string name="change_theme">Thema ändern</string>
     <string name="clear_cache">Cache löschen</string>
     <string name="infinite_scroll">Unendlich scrollen</string>
@@ -304,4 +303,7 @@
         <item>Japanisch</item>
         <item>Schön</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 </resources>
