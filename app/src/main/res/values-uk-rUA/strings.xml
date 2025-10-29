@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Інші теги будуть використані, якщо тег вибрано з меню галереї</string>
     <string name="setting_on_use_account_tag">Використовувати теги аккаунту у пошуковому запиті (Локальні теги будуть мати більший пріоритет)</string>
     <string name="setting_off_use_account_tag">Теги аккаунту будуть ігноруватися при запиті</string>
-    <string name="send_crash_report">Надіслати відгук про збій</string>
     <string name="change_theme">Змінити тему</string>
     <string name="clear_cache">Очистити кеш</string>
     <string name="infinite_scroll">Нескінченна прокрутка</string>
@@ -304,4 +303,7 @@
         <item>Японська</item>
         <item>Pretty</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 </resources>

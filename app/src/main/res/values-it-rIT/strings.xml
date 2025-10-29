@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Verranno aggiunti ulteriori tag quando un tag è scelto da una galleria (tranne la lingua)</string>
     <string name="setting_on_use_account_tag">Usa i tag online per la ricerca (i tag locali avranno priorità)</string>
     <string name="setting_off_use_account_tag">I tag online verranno ignorati</string>
-    <string name="send_crash_report">Invia report in caso di errori</string>
     <string name="change_theme">Cambia temi</string>
     <string name="clear_cache">Pulisci cache</string>
     <string name="infinite_scroll">Scorrimento infinito</string>
@@ -304,4 +303,7 @@
         <item>Giapponese</item>
         <item>Semplice</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 </resources>

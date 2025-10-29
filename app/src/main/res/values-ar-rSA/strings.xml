@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">سيُستعلم عن الوسوم الأخرى إذا اختير وسام من قائمة الأعمال</string>
     <string name="setting_on_use_account_tag">اِستخدم وسوم حسابك عند استعلام البحث (ستحظى الوسوم المحلية بالأولوية)</string>
     <string name="setting_off_use_account_tag">ستُتَجاهل وسوم حسابك عند الاستعلام</string>
-    <string name="send_crash_report">أَرسل تقارير الأعطاب</string>
     <string name="change_theme">غيِّر السِّمة</string>
     <string name="clear_cache">اِمح الذاكرة الخبيئة</string>
     <string name="infinite_scroll">تمرير لامتناهي</string>
@@ -282,7 +281,7 @@
     <string name="download_torrent">تحميل التورنت</string>
     <string name="system_default">الافتراضي للنظام</string>
     <string name="clear_cookies">امح الكوكيز</string>
-    <string name="fetching_cloudflare_token">جاري جلب رمز Cloudflare…</string>
+    <string name="fetching_cloudflare_token">جاري جلب رمز Cloudflare...</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">Hide</string>
@@ -304,4 +303,7 @@
         <item>اليابانية</item>
         <item>أنيق</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 </resources>

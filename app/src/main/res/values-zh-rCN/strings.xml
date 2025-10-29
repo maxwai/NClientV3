@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">从画廊菜单中选中一个标签时查询其它标签</string>
     <string name="setting_on_use_account_tag">在搜索请求中使用账户标签（本地标签优先）</string>
     <string name="setting_off_use_account_tag">在搜索请求中忽略账户标签</string>
-    <string name="send_crash_report">发送崩溃报告</string>
     <string name="change_theme">更改主题</string>
     <string name="clear_cache">清除缓存</string>
     <string name="infinite_scroll">无限滚动</string>
@@ -304,4 +303,7 @@
         <item>日文</item>
         <item>简约</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 </resources>

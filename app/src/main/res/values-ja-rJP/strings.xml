@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">ギャラリーメニューからタグを選択すると、他のタグが照会されます</string>
     <string name="setting_on_use_account_tag">アカウントタグを検索に使用します（ローカルタグが優先されます）</string>
     <string name="setting_off_use_account_tag">アカウントタグを無視</string>
-    <string name="send_crash_report">クラッシュレポートを送信</string>
     <string name="change_theme">テーマを変更</string>
     <string name="clear_cache">キャッシュをクリア</string>
     <string name="infinite_scroll">スクロールを無限</string>
@@ -304,4 +303,7 @@
         <item>日本語</item>
         <item>かわいい</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 </resources>
