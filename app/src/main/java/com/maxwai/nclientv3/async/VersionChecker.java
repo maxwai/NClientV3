@@ -22,6 +22,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -68,7 +71,13 @@ public class VersionChecker {
                 downloadUrl = release.downloadUrl;
                 GitHubRelease finalRelease = release;
                 context.runOnUiThread(() -> {
-                    if (downloadUrl == null || actualVersionName.compareToIgnoreCase(finalRelease.versionCode) >= 0) {
+                    boolean newer;
+                    try {
+                        newer = finalRelease.isNewerThenVersion(actualVersionName);
+                    } catch (IllegalStateException ignored) {
+                        newer = false;
+                    }
+                    if (downloadUrl == null || !newer) {
                         if (!silent)
                             Toast.makeText(context, R.string.no_updates_found, Toast.LENGTH_SHORT).show();
                     } else {
@@ -238,7 +247,93 @@ public class VersionChecker {
 
 
     public static class GitHubRelease {
+        // regex to get version in the form: MM.mm.pp(-suffix)
+        private final static String regex = "(\\d+)\\.(\\d+)\\.(\\d+)(?:-((?:pre|rc)\\d))?";
         String versionCode, body, downloadUrl;
         boolean beta;
+
+        public boolean isNewerThenVersion(String currentVersion) throws IllegalArgumentException {
+            Matcher matcher = Pattern.compile(regex).matcher(currentVersion);
+            if (!matcher.find()) {
+                throw new IllegalArgumentException("Current Version not in format");
+            }
+            int[] curNumbers = new int[3];
+            String curSuffix;
+            try {
+                curNumbers[0] = Integer.parseInt(Objects.requireNonNull(matcher.group(1)));
+                curNumbers[1] = Integer.parseInt(Objects.requireNonNull(matcher.group(2)));
+                curNumbers[2] = Integer.parseInt(Objects.requireNonNull(matcher.group(3)));
+                curSuffix = matcher.group(4);
+            } catch (NumberFormatException ignored) {
+                throw new IllegalStateException("Current Version not in format");
+            }
+
+            matcher = Pattern.compile(regex).matcher(versionCode);
+            if (!matcher.find()) {
+                throw new IllegalArgumentException("New Version not in format");
+            }
+            int[] newNumbers = new int[3];
+            String newSuffix;
+            try {
+                newNumbers[0] = Integer.parseInt(Objects.requireNonNull(matcher.group(1)));
+                newNumbers[1] = Integer.parseInt(Objects.requireNonNull(matcher.group(2)));
+                newNumbers[2] = Integer.parseInt(Objects.requireNonNull(matcher.group(3)));
+                newSuffix = matcher.group(4);
+            } catch (NumberFormatException ignored) {
+                throw new IllegalStateException("New Version not in format");
+            }
+
+            for (int i = 0; i < curNumbers.length; i++) {
+                if (newNumbers[i] < curNumbers[i]) {
+                    return false;
+                } else if (newNumbers[i] > curNumbers[i]) {
+                    return true;
+                }
+            }
+            // At this point only the suffix may be different
+
+            if (curSuffix == null && newSuffix == null) {
+                return false;
+            } else if (curSuffix == null) { // newSuffix != null
+                // our current version doesn't have a suffix but the newest has one.
+                // as suffixes are only for pre release, we have a newer version
+                return false;
+            } else if (newSuffix == null) { // curSuffix != null
+                // our current version has a suffix but the newest has none.
+                // as suffixes are only for pre release, there is a newer version
+                return true;
+            }
+
+            // Hierarchy of pre release: preX -> rcX
+            if (curSuffix.startsWith("pre") && newSuffix.startsWith("rc")) {
+                return true;
+            } else if (curSuffix.startsWith("rc") && newSuffix.startsWith("pre")) {
+                return false;
+            }
+
+            if (curSuffix.startsWith("pre") && newSuffix.startsWith("pre")) {
+                int curPreRelease, newPreRelease;
+                try {
+                    curPreRelease = Integer.parseInt(curSuffix.substring(3));
+                    newPreRelease = Integer.parseInt(newSuffix.substring(3));
+                } catch (NumberFormatException ignored) {
+                    throw new IllegalStateException("New Version not in format");
+                }
+                return newPreRelease > curPreRelease;
+            }
+
+            if (curSuffix.startsWith("rc") && newSuffix.startsWith("rc")) {
+                int curPreRelease, newPreRelease;
+                try {
+                    curPreRelease = Integer.parseInt(curSuffix.substring(2));
+                    newPreRelease = Integer.parseInt(newSuffix.substring(2));
+                } catch (NumberFormatException ignored) {
+                    throw new IllegalStateException("New Version not in format");
+                }
+                return newPreRelease > curPreRelease;
+            }
+
+            throw new IllegalStateException("Suffix was not formated as expected");
+        }
     }
 }
