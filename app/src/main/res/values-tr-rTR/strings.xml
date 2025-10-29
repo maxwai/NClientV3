@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Diğer etiketler galeri menüsünden bir etiket seçildiğinde listelenecek</string>
     <string name="setting_on_use_account_tag">Hesap etiketlerini aramada kullan (Yerel etiketler daha önceliklidir)</string>
     <string name="setting_off_use_account_tag">Hesap etiketleri aramada dikkate alınmayacak</string>
-    <string name="send_crash_report">Otomatik çökme raporu gönder</string>
     <string name="change_theme">Tema değiştir</string>
     <string name="clear_cache">Önbelleği temizle</string>
     <string name="infinite_scroll">Sonsuz kaydırma</string>
@@ -304,4 +303,7 @@
         <item>Japonca</item>
         <item>Özel</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 </resources>
