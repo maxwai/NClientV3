@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.maxwai.nclientv3.api.enums.ImageExt;
 
 import java.io.File;
+import java.util.Objects;
 
 public class PageFile extends File implements Parcelable {
     public static final Creator<PageFile> CREATOR = new Creator<>() {
@@ -30,7 +31,7 @@ public class PageFile extends File implements Parcelable {
     }
 
     protected PageFile(Parcel in) {
-        super(in.readString());
+        super(Objects.requireNonNull(in.readString()));
         page = in.readInt();
         ext = ImageExt.values()[in.readByte()];
     }

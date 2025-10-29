@@ -25,10 +25,10 @@ public abstract class ThreadAsyncTask<Params, Progress, Result> {
     protected void onPostExecute(Result result) {
     }
 
-    protected void onProgressUpdate(Progress... values) {
+    protected void onProgressUpdate(Progress[] values) {
     }
 
-    protected abstract Result doInBackground(Params... params);
+    protected abstract Result doInBackground(Params[] params);
 
     @SafeVarargs
     protected final void publishProgress(Progress... values) {

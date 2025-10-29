@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -38,6 +39,7 @@ import com.maxwai.nclientv3.utility.Utility;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
+import java.util.Objects;
 
 public class ZoomActivity extends GeneralActivity {
     private final static int hideFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -77,13 +79,14 @@ public class ZoomActivity extends GeneralActivity {
         } else {
             gallery = getIntent().getParcelableExtra(getPackageName() + ".GALLERY");
         }
-        final int page = getIntent().getExtras().getInt(getPackageName() + ".PAGE", 1) - 1;
+        final int page = Objects.requireNonNull(getIntent().getExtras()).getInt(getPackageName() + ".PAGE", 1) - 1;
         directory = gallery.getGalleryFolder();
         //toolbar setup
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
         setTitle(gallery.getTitle());
 
         getWindow().setFlags(
@@ -220,7 +223,7 @@ public class ZoomActivity extends GeneralActivity {
 
     public void changeClosePage(boolean next) {
         if (Global.useRtl()) next = !next;
-        if (next && mViewPager.getCurrentItem() < (mViewPager.getAdapter().getItemCount() - 1))
+        if (next && mViewPager.getCurrentItem() < (Objects.requireNonNull(mViewPager.getAdapter()).getItemCount() - 1))
             changePage(mViewPager.getCurrentItem() + 1);
         if (!next && mViewPager.getCurrentItem() > 0) changePage(mViewPager.getCurrentItem() - 1);
     }
@@ -274,7 +277,7 @@ public class ZoomActivity extends GeneralActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_zoom, menu);
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
         return true;
     }
 

@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maxwai.nclientv3.components.activities.GeneralActivity;
-import com.maxwai.nclientv3.settings.Global;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +36,7 @@ public class PINActivity extends GeneralActivity {
             return;
         }
         ImageView logo = findViewById(R.id.imageView);
-        logo.setImageResource(Global.getTheme() == Global.ThemeScheme.LIGHT ? R.drawable.ic_logo_dark : R.drawable.ic_logo);
+        logo.setImageResource(R.drawable.ic_logo);
         LinearLayout linear = findViewById(R.id.linearLayout);
         text = findViewById(R.id.textView);
         ImageButton cancelButton = findViewById(R.id.cancelButton);

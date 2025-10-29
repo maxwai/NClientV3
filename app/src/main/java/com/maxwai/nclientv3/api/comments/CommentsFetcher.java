@@ -6,6 +6,7 @@ import android.util.JsonToken;
 import com.maxwai.nclientv3.CommentActivity;
 import com.maxwai.nclientv3.adapters.CommentAdapter;
 import com.maxwai.nclientv3.settings.Global;
+import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import okhttp3.Request;
 import okhttp3.Response;
@@ -46,23 +48,18 @@ public class CommentsFetcher extends Thread {
 
     private void populateComments() {
         String url = String.format(Locale.US, COMMENT_API_URL, id);
-        try {
-            Response response = Global.getClient().newCall(new Request.Builder().url(url).build()).execute();
+        try (Response response = Objects.requireNonNull(Global.getClient()).newCall(new Request.Builder().url(url).build()).execute()) {
+
             ResponseBody body = response.body();
-            if (body == null) {
-                response.close();
-                return;
+            try (JsonReader reader = new JsonReader(new InputStreamReader(body.byteStream()))) {
+                if(reader.peek() == JsonToken.BEGIN_ARRAY) {
+                    reader.beginArray();
+                    while (reader.hasNext())
+                        comments.add(new Comment(reader));
+                }
             }
-            JsonReader reader = new JsonReader(new InputStreamReader(body.byteStream()));
-            if(reader.peek() == JsonToken.BEGIN_ARRAY) {
-                reader.beginArray();
-                while (reader.hasNext())
-                    comments.add(new Comment(reader));
-            }
-            reader.close();
-            response.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (NullPointerException | IOException e) {
+            LogUtility.w("Error getting comments", e);
         }
     }
 }

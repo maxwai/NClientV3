@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 public class Gallery extends GenericGallery {
@@ -95,12 +96,12 @@ public class Gallery extends GenericGallery {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             maxSize = in.readParcelable(Size.class.getClassLoader(), Size.class);
             minSize = in.readParcelable(Size.class.getClassLoader(), Size.class);
-            galleryData = in.readParcelable(GalleryData.class.getClassLoader(), GalleryData.class);
+            galleryData = Objects.requireNonNull(in.readParcelable(GalleryData.class.getClassLoader(), GalleryData.class));
             folder = in.readParcelable(GalleryFolder.class.getClassLoader(), GalleryFolder.class);
         } else {
             maxSize = in.readParcelable(Size.class.getClassLoader());
             minSize = in.readParcelable(Size.class.getClassLoader());
-            galleryData = in.readParcelable(GalleryData.class.getClassLoader());
+            galleryData = Objects.requireNonNull(in.readParcelable(GalleryData.class.getClassLoader()));
             folder = in.readParcelable(GalleryFolder.class.getClassLoader());
         }
         in.readTypedList(related, SimpleGallery.CREATOR);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tint_dark">@android:color/white</color>
+    <color name="tint_light">@android:color/black</color>
+
+    <color name="primaryColorVariant">@color/primary_material_dark</color>
+    <color name="colorAccent">@android:color/holo_blue_dark</color>
+    <color name="colorPrimary">@android:color/holo_blue_dark</color>
+</resources>

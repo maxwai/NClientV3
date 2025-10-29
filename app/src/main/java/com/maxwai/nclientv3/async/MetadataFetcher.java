@@ -7,6 +7,7 @@ import com.maxwai.nclientv3.api.components.Gallery;
 import com.maxwai.nclientv3.api.enums.SpecialTagIds;
 import com.maxwai.nclientv3.api.local.LocalGallery;
 import com.maxwai.nclientv3.settings.Global;
+import com.maxwai.nclientv3.utility.LogUtility;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -33,12 +34,10 @@ public class MetadataFetcher implements Runnable {
             if (inspector.getGalleries() == null || inspector.getGalleries().isEmpty())
                 continue;
             Gallery g = (Gallery) inspector.getGalleries().get(0);
-            try {
-                FileWriter writer = new FileWriter(new File(lg.getDirectory(), ".nomedia"));
+            try (FileWriter writer = new FileWriter(new File(lg.getDirectory(), ".nomedia"))) {
                 g.jsonWrite(writer);
-                writer.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtility.e("Error saving metadata", e);
             }
         }
     }

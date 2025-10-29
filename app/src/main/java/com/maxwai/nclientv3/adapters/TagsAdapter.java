@@ -41,22 +41,22 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> implements Filterable {
+    @NonNull
     private final TagFilterActivity context;
     private final boolean logged = Login.isLogged();
     private final TagType type;
     private final TagMode tagMode;
     private String lastQuery = null;
-    private boolean wasSortedByName;
     private Cursor cursor = null;
 
-    public TagsAdapter(TagFilterActivity cont, String query, boolean online) {
+    public TagsAdapter(@NonNull TagFilterActivity cont, String query, boolean online) {
         this.context = cont;
         this.type = null;
         this.tagMode = online ? TagMode.ONLINE : TagMode.OFFLINE;
         getFilter().filter(query);
     }
 
-    public TagsAdapter(TagFilterActivity cont, String query, TagType type) {
+    public TagsAdapter(@NonNull TagFilterActivity cont, String query, TagType type) {
         this.context = cont;
         this.type = type;
         this.tagMode = TagMode.TYPE;
@@ -78,7 +78,6 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 if (constraint == null) constraint = "";
-                wasSortedByName = TagV2.isSortedByName();
 
                 lastQuery = constraint.toString();
                 Cursor tags = Queries.TagTable.getFilterCursor(lastQuery, type, tagMode == TagMode.ONLINE, TagV2.isSortedByName());
@@ -130,7 +129,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
                     try {
                         onlineTagUpdate(ent, !Login.isOnlineTags(ent), holder.imgView);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LogUtility.e("Error setting tag", e);
                     }
                     break;
             }
@@ -157,7 +156,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
             try {
                 onlineTagUpdate(tag, true, imgView);
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtility.w("Error adding to online blacklist", e);
+                Toast.makeText(context, R.string.online_blacklist_add_error, Toast.LENGTH_SHORT).show();
             }
         }).setNegativeButton(R.string.no, null).show();
     }
@@ -199,11 +199,11 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
                     break;//ImageDownloadUtility.loadImage(R.drawable.ic_void,img); break;
                 case ACCEPTED:
                     ImageDownloadUtility.loadImage(R.drawable.ic_check, img);
-                    Global.setTint(img.getDrawable());
+                    Global.setTint(context, img.getDrawable());
                     break;
                 case AVOIDED:
                     ImageDownloadUtility.loadImage(R.drawable.ic_close, img);
-                    Global.setTint(img.getDrawable());
+                    Global.setTint(context, img.getDrawable());
                     break;
             }
         });

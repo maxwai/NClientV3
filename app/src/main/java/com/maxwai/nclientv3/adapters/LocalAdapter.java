@@ -18,13 +18,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.GalleryActivity;
 import com.maxwai.nclientv3.LocalActivity;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.api.local.LocalGallery;
 import com.maxwai.nclientv3.api.local.LocalSortType;
-import com.maxwai.nclientv3.async.converters.CreatePDF;
-import com.maxwai.nclientv3.async.converters.CreateZIP;
+import com.maxwai.nclientv3.async.converters.CreatePdfOrZip;
 import com.maxwai.nclientv3.async.database.Queries;
 import com.maxwai.nclientv3.async.downloader.DownloadGalleryV2;
 import com.maxwai.nclientv3.async.downloader.DownloadObserver;
@@ -35,7 +35,6 @@ import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -313,8 +312,8 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
         holder.progress.setVisibility(downloader.getStatus() == GalleryDownloaderV2.Status.NOT_STARTED ? View.GONE : View.VISIBLE);
         holder.progressBar.setProgress(percentage);
         holder.progressBar.setIndeterminate(downloader.getStatus() == GalleryDownloaderV2.Status.NOT_STARTED);
-        Global.setTint(holder.playButton.getDrawable());
-        Global.setTint(holder.cancelButton.getDrawable());
+        Global.setTint(context, holder.playButton.getDrawable());
+        Global.setTint(context, holder.cancelButton.getDrawable());
     }
 
     private void removeDownloader(GalleryDownloaderV2 downloader) {
@@ -351,7 +350,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
                 if (o instanceof LocalGallery) {
                     dataset.remove(o);
                     Global.recursiveDelete(((LocalGallery) o).getDirectory());
-                } else if (o instanceof DownloadGalleryV2) {
+                } else if (o instanceof GalleryDownloaderV2) {
                     DownloadQueue.remove((GalleryDownloaderV2) o, true);
                 }
             }
@@ -376,7 +375,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
         builder.setPositiveButton(R.string.yes, (dialog, which) -> {
             for (Object o : getSelected()) {
                 if (!(o instanceof LocalGallery)) continue;
-                CreatePDF.startWork(context, (LocalGallery) o);
+                CreatePdfOrZip.startWork(context, (LocalGallery) o, true);
             }
         }).setNegativeButton(R.string.no, null).setCancelable(true);
         builder.show();
@@ -389,7 +388,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
         builder.setPositiveButton(R.string.yes, (dialog, which) -> {
             for (Object o : getSelected()) {
                 if (!(o instanceof LocalGallery)) continue;
-                CreateZIP.startWork(context, (LocalGallery) o);
+                CreatePdfOrZip.startWork(context, (LocalGallery) o, false);
             }
         }).setNegativeButton(R.string.no, null).setCancelable(true);
         builder.show();
@@ -420,9 +419,10 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
             }
 
             @SuppressLint("NotifyDataSetChanged")
+            @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results != null) {
+                if (results != null && results.values instanceof CopyOnWriteArrayList) {
                     filter = (CopyOnWriteArrayList<Object>) results.values;
                     context.runOnUiThread(() -> notifyDataSetChanged());
                 }
@@ -451,6 +451,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
             GalleryDownloaderV2 d = (GalleryDownloaderV2) o;
             if (d.getStatus() == GalleryDownloaderV2.Status.PAUSED)
                 d.setStatus(GalleryDownloaderV2.Status.NOT_STARTED);
+            DownloadGalleryV2.startWork(context);
         }
         context.runOnUiThread(this::notifyDataSetChanged);
     }

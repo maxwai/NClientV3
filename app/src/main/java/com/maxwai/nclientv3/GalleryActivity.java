@@ -25,6 +25,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.maxwai.nclientv3.adapters.GalleryAdapter;
 import com.maxwai.nclientv3.api.InspectorV3;
 import com.maxwai.nclientv3.api.components.Gallery;
@@ -41,15 +44,12 @@ import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
-
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -78,8 +78,9 @@ public class GalleryActivity extends BaseActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
         recycler = findViewById(R.id.recycler);
         refresher = findViewById(R.id.refresher);
         masterLayout = findViewById(R.id.master_layout);
@@ -146,10 +147,10 @@ public class GalleryActivity extends BaseActivity {
     private void lookup() {
         CustomGridLayoutManager manager = (CustomGridLayoutManager) recycler.getLayoutManager();
         GalleryAdapter adapter = (GalleryAdapter) recycler.getAdapter();
-        manager.setSpanSizeLookup(new CustomGridLayoutManager.SpanSizeLookup() {
+        Objects.requireNonNull(manager).setSpanSizeLookup(new CustomGridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return adapter.positionToType(position) == GalleryAdapter.Type.PAGE ? 1 : manager.getSpanCount();
+                return adapter == null ? 0 : (adapter.positionToType(position) == GalleryAdapter.Type.PAGE ? 1 : manager.getSpanCount());
             }
         });
     }
@@ -243,7 +244,7 @@ public class GalleryActivity extends BaseActivity {
         menu.findItem(R.id.favorite_manager).setIcon(isLocalFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
         menuItemsVisible(menu);
         initFavoriteIcon(menu);
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
         updateColumnCount(false);
         return true;
     }
@@ -289,15 +290,17 @@ public class GalleryActivity extends BaseActivity {
             i.putExtra(getPackageName() + ".GALLERYID", gallery.getId());
             startActivity(i);
         } else if (id == R.id.related) {
-            recycler.smoothScrollToPosition(recycler.getAdapter().getItemCount());
+            if (recycler.getAdapter() != null)
+                recycler.smoothScrollToPosition(recycler.getAdapter().getItemCount());
         } else if (id == R.id.favorite_manager) {
             if (isLocalFavorite) {
-                if (Favorites.removeFavorite(gallery)) isLocalFavorite = !isLocalFavorite;
-            } else if (Favorites.addFavorite((Gallery) gallery)) {
-                isLocalFavorite = !isLocalFavorite;
+                Favorites.removeFavorite(gallery);
+            } else {
+                Favorites.addFavorite((Gallery) gallery);
             }
+            isLocalFavorite = !isLocalFavorite;
             item.setIcon(isLocalFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
-            Global.setTint(item.getIcon());
+            Global.setTint(this, item.getIcon());
         } else if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
             return true;
@@ -307,7 +310,7 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void downloadTorrent() {
-        if(!Global.hasStoragePermission(this)){
+        if (!Global.hasStoragePermission(this)) {
             return;
         }
 
@@ -316,24 +319,24 @@ public class GalleryActivity extends BaseActivity {
 
         new AuthRequest(referer, url, new Callback() {
             @Override
-            public void onFailure(@NonNull Call call,@NonNull  IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 GalleryActivity.this.runOnUiThread(() ->
                     Toast.makeText(GalleryActivity.this, R.string.failed, Toast.LENGTH_SHORT).show()
                 );
             }
 
             @Override
-            public void onResponse(@NonNull Call call,@NonNull Response response) throws IOException {
-                File file=new File(Global.TORRENTFOLDER,gallery.getId()+".torrent");
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                File file = new File(Global.TORRENTFOLDER, gallery.getId() + ".torrent");
                 Utility.writeStreamToFile(response.body().byteStream(), file);
-                Intent intent=new Intent(Intent.ACTION_VIEW);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri torrentUri;
                 torrentUri = FileProvider.getUriForFile(GalleryActivity.this, GalleryActivity.this.getPackageName() + ".provider", file);
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(torrentUri, "application/x-bittorrent");
                 try {
                     GalleryActivity.this.startActivity(intent);
-                }catch (RuntimeException ignore){
+                } catch (RuntimeException ignore) {
                     runOnUiThread(() ->
                         Toast.makeText(GalleryActivity.this, R.string.failed, Toast.LENGTH_SHORT).show()
                     );
@@ -341,7 +344,7 @@ public class GalleryActivity extends BaseActivity {
                 }
                 file.deleteOnExit();
             }
-        }).setMethod("GET",null).start();
+        }).setMethod("GET", null).start();
     }
 
     private void updateStatus() {
@@ -419,19 +422,17 @@ public class GalleryActivity extends BaseActivity {
 
     private void addToFavorite() {
 
-        boolean wasFavorite = onlineFavoriteItem.getTitle().equals(getString(R.string.remove_from_online_favorites));
+        boolean wasFavorite = Objects.equals(onlineFavoriteItem.getTitle(), getString(R.string.remove_from_online_favorites));
         String url = String.format(Locale.US, Utility.getBaseUrl() + "api/gallery/%d/%sfavorite", gallery.getId(), wasFavorite ? "un" : "");
         String galleryUrl = String.format(Locale.US, Utility.getBaseUrl() + "g/%d/", gallery.getId());
         LogUtility.d("Calling: " + url);
         new AuthRequest(galleryUrl, url, new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                assert response.body() != null;
                 String responseString = response.body().string();
                 boolean nowIsFavorite = responseString.contains("true");
                 updateIcon(nowIsFavorite);
@@ -475,7 +476,7 @@ public class GalleryActivity extends BaseActivity {
                     item.setIcon(R.drawable.ic_view_4);
                     break;
             }
-            Global.setTint(item.getIcon());
+            Global.setTint(this, item.getIcon());
 
         }
     }

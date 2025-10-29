@@ -22,10 +22,11 @@ public class FakeInspector extends ThreadAsyncTask<LocalActivity, LocalActivity,
 
 
     @Override
-    protected LocalActivity doInBackground(LocalActivity... voids) {
+    protected LocalActivity doInBackground(LocalActivity[] voids) {
         if (!this.folder.exists()) return voids[0];
         publishProgress(voids[0]);
         File parent = this.folder;
+        //noinspection ResultOfMethodCallIgnored
         parent.mkdirs();
         File[] files = parent.listFiles();
         if (files == null) return voids[0];
@@ -35,7 +36,7 @@ public class FakeInspector extends ThreadAsyncTask<LocalActivity, LocalActivity,
     }
 
     @Override
-    protected void onProgressUpdate(LocalActivity... values) {
+    protected void onProgressUpdate(LocalActivity[] values) {
         values[0].getRefresher().setRefreshing(true);
     }
 

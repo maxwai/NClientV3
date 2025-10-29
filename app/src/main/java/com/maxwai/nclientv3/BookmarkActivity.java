@@ -3,12 +3,15 @@ package com.maxwai.nclientv3;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maxwai.nclientv3.adapters.BookmarkAdapter;
 import com.maxwai.nclientv3.components.activities.GeneralActivity;
 import com.maxwai.nclientv3.components.widgets.CustomLinearLayoutManager;
+
+import java.util.Objects;
 
 public class BookmarkActivity extends GeneralActivity {
     BookmarkAdapter adapter;
@@ -21,9 +24,10 @@ public class BookmarkActivity extends GeneralActivity {
         setContentView(R.layout.activity_bookmark);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(R.string.manage_bookmarks);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(R.string.manage_bookmarks);
 
         recycler = findViewById(R.id.recycler);
         adapter = new BookmarkAdapter(this);

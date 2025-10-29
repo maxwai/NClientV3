@@ -59,7 +59,7 @@ public class PlaceholderFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_status_viewer, container, false);
         recycler = root.findViewById(R.id.recycler);
         refresher = root.findViewById(R.id.refresher);
-        adapter = new StatusViewerAdapter(getActivity(), getArguments().getString("STATUS_NAME"));
+        adapter = new StatusViewerAdapter(getActivity(), requireArguments().getString("STATUS_NAME"));
         refresher.setOnRefreshListener(() -> {
             adapter.reloadGalleries();
             refresher.setRefreshing(false);

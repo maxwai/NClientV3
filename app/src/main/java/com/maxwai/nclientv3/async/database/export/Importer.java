@@ -65,6 +65,8 @@ class Importer {
 
     private static void importDB(InputStream stream) throws IOException {
         SQLiteDatabase db = Database.getDatabase();
+        if (db == null)
+            throw new IOException("Can't import Database, don't have database connection yet");
         db.beginTransaction();
         JsonReader reader = new JsonReader(new InputStreamReader(stream));
         reader.beginObject();
@@ -106,19 +108,19 @@ class Importer {
 
     public static void importData(@NonNull Context context, Uri selectedFile) throws IOException {
         InputStream stream = context.getContentResolver().openInputStream(selectedFile);
-        ZipInputStream inputStream = new ZipInputStream(stream);
-        ZipEntry entry;
-        while ((entry = inputStream.getNextEntry()) != null) {
-            String name = entry.getName();
-            LogUtility.d("Importing: " + name);
-            if (Exporter.DB_ZIP_FILE.equals(name)) {
-                importDB(inputStream);
-            } else {
-                String shared = name.substring(0, name.length() - 5);
-                importSharedPreferences(context, shared, inputStream);
+        try (ZipInputStream inputStream = new ZipInputStream(stream)) {
+            ZipEntry entry;
+            while ((entry = inputStream.getNextEntry()) != null) {
+                String name = entry.getName();
+                LogUtility.d("Importing: " + name);
+                if (Exporter.DB_ZIP_FILE.equals(name)) {
+                    importDB(inputStream);
+                } else {
+                    String shared = name.substring(0, name.length() - 5);
+                    importSharedPreferences(context, shared, inputStream);
+                }
+                inputStream.closeEntry();
             }
-            inputStream.closeEntry();
         }
-        inputStream.close();
     }
 }

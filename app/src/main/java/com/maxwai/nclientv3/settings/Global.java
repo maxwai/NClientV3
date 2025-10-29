@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -22,7 +20,6 @@ import android.util.DisplayMetrics;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -42,15 +39,13 @@ import com.maxwai.nclientv3.utility.network.NetworkUtil;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
-import org.acra.ACRA;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
 
 import me.zhanghai.android.fastscroll.FastScrollerBuilder;
 import okhttp3.Cookie;
@@ -68,7 +63,6 @@ public class Global {
     private static final String TORRENTFOLDER_NAME = "Torrents";
     private static final DisplayMetrics lastDisplay = new DisplayMetrics();
     public static OkHttpClient client = null;
-    public static File OLD_GALLERYFOLDER;
     public static File MAINFOLDER;
     public static File DOWNLOADFOLDER;
     public static File SCREENFOLDER;
@@ -81,8 +75,7 @@ public class Global {
     private static TitleType titleType;
     private static SortType sortType;
     private static LocalSortType localSortType;
-    private static boolean invertFix, buttonChangePage, hideMultitask, enableBeta, volumeOverride, zoomOneColumn, keepHistory, lockScreen, onlyTag, showTitles, removeAvoidedGalleries, useRtl;
-    private static ThemeScheme theme;
+    private static boolean buttonChangePage, hideMultitask, enableBeta, volumeOverride, zoomOneColumn, keepHistory, lockScreen, onlyTag, showTitles, removeAvoidedGalleries, useRtl;
     private static DataUsageType usageMobile, usageWifi;
     private static String lastVersion, mirror;
     private static int maxHistory, columnCount, maxId, galleryWidth = -1, galleryHeight = -1;
@@ -109,7 +102,7 @@ public class Global {
     }
 
     public static int getFavoriteLimit(Context context) {
-        return context.getSharedPreferences("Settings", 0).getInt(context.getString(R.string.key_favorite_limit), 10);
+        return context.getSharedPreferences("Settings", 0).getInt(context.getString(R.string.preference_key_favorite_limit), 10);
     }
 
     public static String getLastVersion(Context context) {
@@ -148,10 +141,6 @@ public class Global {
         return colPortStat;
     }
 
-    public static void updateACRAReportStatus(Context context) {
-        ACRA.getErrorReporter().setEnabled(context.getSharedPreferences("Settings", 0).getBoolean(context.getString(R.string.key_send_report), false));
-    }
-
     public static boolean isDestroyed(Activity activity) {
         return activity.isDestroyed();
     }
@@ -162,6 +151,7 @@ public class Global {
         return agent.replace("\n", " ").trim();
     }
 
+    @Nullable
     public static String getDefaultFileParent(Context context) {
         File f;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -169,19 +159,18 @@ public class Global {
         } else {
             f = Environment.getExternalStorageDirectory();
         }
-        return f.getAbsolutePath();
+        return f == null ? null : f.getAbsolutePath();
     }
 
-    private static void initFilesTree(Context context) {
+    private static void initFilesTree(@NonNull Context context) {
         List<File> files = getUsableFolders(context);
-        String path = context.getSharedPreferences("Settings", Context.MODE_PRIVATE).getString(context.getString(R.string.key_save_path), getDefaultFileParent(context));
+        String path = context.getSharedPreferences("Settings", Context.MODE_PRIVATE).getString(context.getString(R.string.preference_key_save_path), Objects.requireNonNull(getDefaultFileParent(context)));
         File ROOTFOLDER = new File(path);
         //in case the permission is removed
         if (!files.contains(ROOTFOLDER) && !isExternalStorageManager())
-            ROOTFOLDER = new File(getDefaultFileParent(context));
+            ROOTFOLDER = new File(Objects.requireNonNull(getDefaultFileParent(context)));
         MAINFOLDER = new File(ROOTFOLDER, MAINFOLDER_NAME);
         LogUtility.d(MAINFOLDER);
-        OLD_GALLERYFOLDER = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), MAINFOLDER_NAME);
         DOWNLOADFOLDER = new File(MAINFOLDER, DOWNLOADFOLDER_NAME);
         SCREENFOLDER = new File(MAINFOLDER, SCREENFOLDER_NAME);
         PDFFOLDER = new File(MAINFOLDER, PDFFOLDER_NAME);
@@ -197,7 +186,7 @@ public class Global {
     }
 
     @NonNull
-    public static OkHttpClient getClient(Context context) {
+    public static OkHttpClient getClient(@NonNull Context context) {
         if (client == null) initHttpClient(context);
         return client;
     }
@@ -236,7 +225,7 @@ public class Global {
 
 
     private static void initTitleType(@NonNull Context context) {
-        String s = context.getSharedPreferences("Settings", 0).getString(context.getString(R.string.key_title_type), "pretty");
+        String s = context.getSharedPreferences("Settings", 0).getString(context.getString(R.string.preference_key_title_type), "pretty");
         switch (s) {
             case "pretty":
                 titleType = TitleType.PRETTY;
@@ -270,32 +259,30 @@ public class Global {
         SharedPreferences shared = context.getSharedPreferences("Settings", 0);
         initHttpClient(context);
         initTitleType(context);
-        initTheme(context);
         loadNotificationChannel(context);
         NotificationSettings.initializeNotificationManager(context);
         Global.initStorage(context);
         shared.edit().remove("local_sort").apply();
         localSortType = new LocalSortType(shared.getInt(context.getString(R.string.key_local_sort), 0));
-        useRtl = shared.getBoolean(context.getString(R.string.key_use_rtl), false);
-        mirror = shared.getString(context.getString(R.string.key_site_mirror), Utility.ORIGINAL_URL);
-        keepHistory = shared.getBoolean(context.getString(R.string.key_keep_history), true);
-        removeAvoidedGalleries = shared.getBoolean(context.getString(R.string.key_remove_ignored), true);
-        invertFix = shared.getBoolean(context.getString(R.string.key_inverted_fix), true);
+        useRtl = shared.getBoolean(context.getString(R.string.preference_key_use_rtl), false);
+        mirror = shared.getString(context.getString(R.string.preference_key_site_mirror), Utility.ORIGINAL_URL);
+        keepHistory = shared.getBoolean(context.getString(R.string.preference_key_keep_history), true);
+        removeAvoidedGalleries = shared.getBoolean(context.getString(R.string.preference_key_remove_ignored), true);
         onlyTag = shared.getBoolean(context.getString(R.string.key_ignore_tags), true);
-        volumeOverride = shared.getBoolean(context.getString(R.string.key_override_volume), true);
-        enableBeta = shared.getBoolean(context.getString(R.string.key_enable_beta), true);
+        volumeOverride = shared.getBoolean(context.getString(R.string.preference_key_override_volume), true);
+        enableBeta = shared.getBoolean(context.getString(R.string.preference_key_enable_beta), true);
         columnCount = shared.getInt(context.getString(R.string.key_column_count), 2);
-        showTitles = shared.getBoolean(context.getString(R.string.key_show_titles), true);
-        exactTagMatch = shared.getBoolean(context.getString(R.string.key_exact_title_match), false);
-        buttonChangePage = shared.getBoolean(context.getString(R.string.key_change_page_buttons), true);
-        lockScreen = shared.getBoolean(context.getString(R.string.key_disable_lock), false);
-        hideMultitask = shared.getBoolean(context.getString(R.string.key_hide_multitasking), true);
+        showTitles = shared.getBoolean(context.getString(R.string.preference_key_show_titles), true);
+        exactTagMatch = shared.getBoolean(context.getString(R.string.preference_key_exact_title_match), false);
+        buttonChangePage = shared.getBoolean(context.getString(R.string.preference_key_change_page_buttons), true);
+        lockScreen = shared.getBoolean(context.getString(R.string.preference_key_disable_lock), false);
+        hideMultitask = shared.getBoolean(context.getString(R.string.preference_key_hide_multitasking), true);
         infiniteScrollFavorite = shared.getBoolean(context.getString(R.string.key_infinite_scroll_favo), false);
         infiniteScrollMain = shared.getBoolean(context.getString(R.string.key_infinite_scroll_main), false);
         maxId = shared.getInt(context.getString(R.string.key_max_id), 300000);
-        offscreenLimit = Math.max(1, shared.getInt(context.getString(R.string.key_offscreen_limit), 5));
-        maxHistory = shared.getInt(context.getString(R.string.key_max_history_size), 2);
-        defaultZoom = shared.getInt(context.getString(R.string.key_default_zoom), 100);
+        offscreenLimit = Math.max(1, shared.getInt(context.getString(R.string.preference_key_offscreen_limit), 5));
+        maxHistory = shared.getInt(context.getString(R.string.preference_key_max_history_size), 2);
+        defaultZoom = shared.getInt(context.getString(R.string.preference_key_default_zoom), 100);
         colPortMain = shared.getInt(context.getString(R.string.key_column_port_main), 2);
         colLandMain = shared.getInt(context.getString(R.string.key_column_land_main), 4);
         colPortDownload = shared.getInt(context.getString(R.string.key_column_port_down), 2);
@@ -306,8 +293,8 @@ public class Global {
         colLandHist = shared.getInt(context.getString(R.string.key_column_land_hist), 4);
         colPortStat = shared.getInt(context.getString(R.string.key_column_port_stat), 2);
         colLandStat = shared.getInt(context.getString(R.string.key_column_land_stat), 4);
-        zoomOneColumn = shared.getBoolean(context.getString(R.string.key_zoom_one_column), false);
-        userAgent = shared.getString(context.getString(R.string.key_user_agent), DEFAULT_USER_AGENT);
+        zoomOneColumn = shared.getBoolean(context.getString(R.string.preference_key_zoom_one_column), false);
+        userAgent = shared.getString(context.getString(R.string.preference_key_user_agent), DEFAULT_USER_AGENT);
         int x = Math.max(0, shared.getInt(context.getString(R.string.key_only_language), Language.ALL.ordinal()));
         sortType = SortType.values()[shared.getInt(context.getString(R.string.key_by_popular), SortType.RECENT_ALL_TIME.ordinal())];
         usageMobile = DataUsageType.values()[shared.getInt(context.getString(R.string.key_mobile_usage), DataUsageType.FULL.ordinal())];
@@ -362,7 +349,6 @@ public class Global {
 
     public static void reloadHttpClient(@NonNull Context context) {
         SharedPreferences preferences = context.getSharedPreferences("Login", 0);
-        Login.setLoginShared(preferences);
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
             .cookieJar(
                 new CustomCookieJar(
@@ -385,53 +371,16 @@ public class Global {
         reloadHttpClient(context);
     }
 
-    public static Locale initLanguage(Context context) {
-        Resources resources = context.getResources();
-        Locale l = getLanguage(context);
-        Configuration c = new Configuration(resources.getConfiguration());
-        c.setLocale(l);
-        resources.updateConfiguration(c, resources.getDisplayMetrics());
-        return l;
-    }
-
-    public static Locale getLanguage(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("Settings", 0);
-        String prefLangKey = context.getString(R.string.key_language);
-        String defaultValue = context.getString(R.string.key_default_value);
-        String langCode = sharedPreferences.getString(prefLangKey, defaultValue);
-        if (langCode.equalsIgnoreCase(defaultValue)) {
-            return Locale.getDefault();
-        }
-        if (langCode.contains("-") || langCode.contains("_")) {
-            String[] regexSplit = langCode.split("[-_]");
-            return new Locale(regexSplit[0], regexSplit[1]);
-        } else {
-            Locale targetLocale = new Locale(langCode);
-            System.out.println(targetLocale.getCountry());
-            return targetLocale;
-        }
-    }
-
-
     public static int getOffscreenLimit() {
         return offscreenLimit;
     }
 
-    private static ThemeScheme initTheme(Context context) {
-        String h = context.getSharedPreferences("Settings", 0).getString(context.getString(R.string.key_theme_select), "dark");
-        return theme = h.equals("light") ? ThemeScheme.LIGHT : ThemeScheme.DARK;
-    }
-
     public static boolean shouldCheckForUpdates(Context context) {
-        return context.getSharedPreferences("Settings", 0).getBoolean(context.getString(R.string.key_check_update), true);
-    }
-
-    public static int getLogo() {
-        return theme == ThemeScheme.LIGHT ? R.drawable.ic_logo_dark : R.drawable.ic_logo;
+        return context.getSharedPreferences("Settings", 0).getBoolean(context.getString(R.string.preference_key_check_update), true);
     }
 
     public static Drawable getLogo(Resources resources) {
-        return ResourcesCompat.getDrawable(resources, getLogo(), null);
+        return ResourcesCompat.getDrawable(resources, R.drawable.ic_logo, null);
     }
 
     public static float getDefaultZoom() {
@@ -440,10 +389,6 @@ public class Global {
 
     public static TitleType getTitleType() {
         return titleType;
-    }
-
-    public static ThemeScheme getTheme() {
-        return theme;
     }
 
     public static boolean removeAvoidedGalleries() {
@@ -538,13 +483,14 @@ public class Global {
         );
 
         try {
+            //noinspection ResultOfMethodCallIgnored
             new File(Global.MAINFOLDER, ".nomedia").createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtility.e("Couldn't create nomedia file", e);
         }
     }
 
-    public static void updateOnlyLanguage(@NonNull Context context, @Nullable Language type) {
+    public static void updateOnlyLanguage(@NonNull Context context, @NonNull Language type) {
         context.getSharedPreferences("Settings", 0).edit().putInt(context.getString((R.string.key_only_language)), type.ordinal()).apply();
         onlyLanguage = type;
     }
@@ -588,9 +534,9 @@ public class Global {
         shareURL(context, gallery.getTitle(), Utility.getBaseUrl() + "g/" + gallery.getId());
     }
 
-    public static void setTint(Drawable drawable) {
+    public static void setTint(Context context, Drawable drawable) {
         if (drawable == null) return;
-        DrawableCompat.setTint(drawable, theme == ThemeScheme.LIGHT ? Color.BLACK : Color.WHITE);
+        DrawableCompat.setTint(drawable, context.getColor(R.color.tint_dark));
     }
 
     private static void loadNotificationChannel(@NonNull Context context) {
@@ -674,34 +620,9 @@ public class Global {
         return null;
     }
 
-    private static void updateConfigurationNightMode(Configuration c) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        c.uiMode &= (~Configuration.UI_MODE_NIGHT_MASK);//clear night mode bits
-        c.uiMode |= Configuration.UI_MODE_NIGHT_NO; //disable night mode
-    }
-
-    private static void invertFix(AppCompatActivity context) {
-        if (!invertFix) return;
-        Resources resources = context.getResources();
-        Configuration c = new Configuration(resources.getConfiguration());
-        updateConfigurationNightMode(c);
-        resources.updateConfiguration(c, resources.getDisplayMetrics());
-    }
-
     public static void initActivity(AppCompatActivity context) {
         initScreenSize(context);
         initGallerySize();
-        initLanguage(context);
-        invertFix(context);
-
-        switch (initTheme(context)) {
-            case LIGHT:
-                context.setTheme(R.style.LightTheme);
-                break;
-            case DARK:
-                context.setTheme(R.style.DarkTheme);
-                break;
-        }
     }
 
     public static void recursiveDelete(File file) {
@@ -711,6 +632,7 @@ public class Global {
             if (files == null) return;
             for (File x : files) recursiveDelete(x);
         }
+        //noinspection ResultOfMethodCallIgnored
         file.delete();
     }
 
@@ -718,9 +640,9 @@ public class Global {
     public static String getVersionName(Context context) {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return pInfo.versionName;
+            return Objects.requireNonNull(pInfo.versionName);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            LogUtility.w("Couldn't get Package Info", e);
         }
         return "0.0.0";
     }
@@ -750,8 +672,6 @@ public class Global {
         }
         return "";
     }
-
-    public enum ThemeScheme {LIGHT, DARK}
 
     public enum DataUsageType {NONE, THUMBNAIL, FULL}
 

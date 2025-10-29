@@ -1,6 +1,7 @@
 package com.maxwai.nclientv3.async;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.JsonReader;
@@ -56,9 +57,10 @@ public class VersionChecker {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                JsonReader jr = new JsonReader(response.body().charStream());
-                GitHubRelease release = parseVersionJson(jr, withPrerelease);
-                jr.close();
+                GitHubRelease release;
+                try (JsonReader jr = new JsonReader(response.body().charStream())) {
+                    release = parseVersionJson(jr, withPrerelease);
+                }
                 if (release == null) {
                     release = new GitHubRelease();
                     release.versionCode = actualVersionName;
@@ -66,7 +68,7 @@ public class VersionChecker {
                 downloadUrl = release.downloadUrl;
                 GitHubRelease finalRelease = release;
                 context.runOnUiThread(() -> {
-                    if (downloadUrl == null || extractVersion(actualVersionName) >= extractVersion(finalRelease.versionCode)) {
+                    if (downloadUrl == null || actualVersionName.compareToIgnoreCase(finalRelease.versionCode) >= 0) {
                         if (!silent)
                             Toast.makeText(context, R.string.no_updates_found, Toast.LENGTH_SHORT).show();
                     } else {
@@ -76,12 +78,6 @@ public class VersionChecker {
                 });
             }
         });
-    }
-
-    private static int extractVersion(String version) {
-        int index = version.indexOf('-');
-        if (index >= 0) version = version.substring(0, index);
-        return Integer.parseInt(version.replace(".", ""));
     }
 
     private static GitHubRelease parseVersionJson(JsonReader jr, boolean withPrerelease) throws IOException {
@@ -191,6 +187,7 @@ public class VersionChecker {
                 installApp(f);
                 return;
             }
+            //noinspection ResultOfMethodCallIgnored
             f.delete();
         }
         if (downloadUrl == null) return;
@@ -207,18 +204,19 @@ public class VersionChecker {
                 if (Global.UPDATEFOLDER == null) {
                     Global.initStorage(context);
                 }
+                //noinspection ResultOfMethodCallIgnored
                 Global.UPDATEFOLDER.mkdirs();
+                //noinspection ResultOfMethodCallIgnored
                 f.createNewFile();
-                FileOutputStream stream = new FileOutputStream(f);
-                InputStream stream1 = response.body().byteStream();
-                int read;
-                byte[] bytes = new byte[1024];
-                while ((read = stream1.read(bytes)) != -1) {
-                    stream.write(bytes, 0, read);
+                try (FileOutputStream stream = new FileOutputStream(f);
+                     InputStream stream1 = response.body().byteStream()) {
+                    int read;
+                    byte[] bytes = new byte[1024];
+                    while ((read = stream1.read(bytes)) != -1) {
+                        stream.write(bytes, 0, read);
+                    }
+                    stream.flush();
                 }
-                stream1.close();
-                stream.flush();
-                stream.close();
                 context.getSharedPreferences("Settings", 0).edit().putBoolean("downloaded", true).apply();
                 installApp(f);
             }
@@ -228,7 +226,7 @@ public class VersionChecker {
     private void installApp(File f) {
         try {
             Uri apkUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", f);
-            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+            @SuppressLint("RequestInstallPackagesPolicy") Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
             intent.setData(apkUri);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             context.startActivity(intent);

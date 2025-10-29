@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Les autres tags seront pris en compte quand un tag est sélectionné depuis la galerie</string>
     <string name="setting_on_use_account_tag">Les tags du compte seront pris en compte lors des recherches (les tags locaux auront la priorité)</string>
     <string name="setting_off_use_account_tag">Les tags du compte seront ignorés lors des recherches</string>
-    <string name="theme_summary">Sélectionner les couleurs du thème</string>
     <string name="send_crash_report">Envoyer un rapport de plantage</string>
     <string name="change_theme">Changer de thème</string>
     <string name="clear_cache">Effacer le cache</string>
@@ -295,7 +294,7 @@
     <string name="import_finished">Import terminé</string>
     <string name="download_torrent">Télécharger le torrent</string>
     <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Réponse invalide</string>
+    <string name="invalid_response">Invalid response</string>
     <string name="system_default">System default</string>
     <string name="clear_cookies">Effacer les cookies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>

@@ -1,12 +1,15 @@
 package com.maxwai.nclientv3.async.downloader;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.JobIntentService;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import com.maxwai.nclientv3.api.SimpleGallery;
 import com.maxwai.nclientv3.api.components.Gallery;
@@ -17,10 +20,14 @@ import com.maxwai.nclientv3.utility.Utility;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
-public class DownloadGalleryV2 extends JobIntentService {
-    private static final Object lock = new Object();
-    private static final int JOB_DOWNLOAD_GALLERY_ID = 9999;
+public class DownloadGalleryV2 extends Worker {
+    private static final ReentrantLock lock = new ReentrantLock();
+
+    public DownloadGalleryV2(@NonNull Context context, @NonNull WorkerParameters params) {
+        super(context, params);
+    }
 
     public static void downloadGallery(Context context, GenericGallery gallery) {
         if (gallery.isValid() && gallery instanceof Gallery)
@@ -67,64 +74,29 @@ public class DownloadGalleryV2 extends JobIntentService {
     }
 
     public static void startWork(@Nullable Context context) {
-        if (context != null)
-            enqueueWork(context, DownloadGalleryV2.class, JOB_DOWNLOAD_GALLERY_ID, new Intent());
-        synchronized (lock) {
-            lock.notify();
+        if (context != null) {
+            WorkRequest DownloadGalleryWorkRequest = new OneTimeWorkRequest.Builder(DownloadGalleryV2.class).build();
+            WorkManager.getInstance(context).enqueue(DownloadGalleryWorkRequest);
         }
     }
 
+    @NonNull
     @Override
-    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        int startCommand = super.onStartCommand(intent, flags, startId);
-        if (intent != null) {
-            int id = intent.getIntExtra(getPackageName() + ".ID", -1);
-            String mode = intent.getStringExtra(getPackageName() + ".MODE");
-            LogUtility.d("" + mode);
-            GalleryDownloaderManager manager = DownloadQueue.managerFromId(id);
-            if (manager != null) {
-                LogUtility.d("IntentAction: " + mode + " for id " + id);
-                assert mode != null;
-                switch (mode) {
-                    case "STOP":
-                        DownloadQueue.remove(id, true);
-                        break;
-                    case "PAUSE":
-                        manager.downloader().setStatus(GalleryDownloaderV2.Status.PAUSED);
-                        break;
-                    case "START":
-                        manager.downloader().setStatus(GalleryDownloaderV2.Status.NOT_STARTED);
-                        DownloadQueue.givePriority(manager.downloader());
-                        startWork(this);
-                        break;
-                }
-            }
-        }
-        return startCommand;
-    }
-
-    @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-        //noinspection InfiniteLoopStatement
-        for (; ; ) {
+    public Result doWork() {
+        lock.lock();
+        try {
             obtainData();
             GalleryDownloaderManager entry = DownloadQueue.fetch();
-            if (entry == null) {
-                synchronized (lock) {
-                    try {
-                        lock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            if (entry != null) {
+                LogUtility.d("Downloading: " + entry.downloader().getId());
+                if (entry.downloader().downloadGalleryData()) {
+                    entry.downloader().download();
                 }
-                continue;
             }
-            LogUtility.d("Downloading: " + entry.downloader().getId());
-            if (entry.downloader().downloadGalleryData()) {
-                entry.downloader().download();
-            }
-            Utility.threadSleep(1000);
+        } finally {
+            lock.unlock();
         }
+        return Result.success();
     }
 
     private void obtainData() {

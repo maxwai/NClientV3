@@ -2,13 +2,14 @@ package com.maxwai.nclientv3;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.ImageViewCompat;
 
@@ -19,6 +20,8 @@ import com.maxwai.nclientv3.settings.Favorites;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Objects;
 
 public class RandomActivity extends GeneralActivity {
     public static Gallery loadedGallery = null;
@@ -52,9 +55,10 @@ public class RandomActivity extends GeneralActivity {
 
         //init toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(R.string.random_manga);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(R.string.random_manga);
 
 
         if (loadedGallery != null) loadGallery(loadedGallery);
@@ -76,21 +80,35 @@ public class RandomActivity extends GeneralActivity {
         favorite.setOnClickListener(v -> {
             if (loadedGallery != null) {
                 if (isFavorite) {
-                    if (Favorites.removeFavorite(loadedGallery)) isFavorite = false;
-                } else if (Favorites.addFavorite(loadedGallery)) isFavorite = true;
+                    Favorites.removeFavorite(loadedGallery);
+                    isFavorite = false;
+                } else {
+                    Favorites.addFavorite(loadedGallery);
+                    isFavorite = true;
+                }
             }
             favoriteUpdateButton();
         });
 
-        ColorStateList colorStateList = ColorStateList.valueOf(Global.getTheme() == Global.ThemeScheme.LIGHT ? Color.WHITE : Color.BLACK);
+        ColorStateList colorStateList = ColorStateList.valueOf(getColor(R.color.tint_light));
 
         ImageViewCompat.setImageTintList(shuffle, colorStateList);
         ImageViewCompat.setImageTintList(share, colorStateList);
         ImageViewCompat.setImageTintList(favorite, colorStateList);
 
-        Global.setTint(shuffle.getContentBackground());
-        Global.setTint(share.getDrawable());
-        Global.setTint(favorite.getDrawable());
+        Global.setTint(this, shuffle.getContentBackground());
+        Global.setTint(this, share.getDrawable());
+        Global.setTint(this, favorite.getDrawable());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                loadedGallery = null;
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+            }
+        });
     }
 
     @Override
@@ -118,13 +136,7 @@ public class RandomActivity extends GeneralActivity {
     private void favoriteUpdateButton() {
         runOnUiThread(() -> {
             ImageDownloadUtility.loadImage(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border, favorite);
-            Global.setTint(favorite.getDrawable());
+            Global.setTint(this, favorite.getDrawable());
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        loadedGallery = null;
-        getOnBackPressedDispatcher().onBackPressed();
     }
 }

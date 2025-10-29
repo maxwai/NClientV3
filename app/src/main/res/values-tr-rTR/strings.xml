@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Diğer etiketler galeri menüsünden bir etiket seçildiğinde listelenecek</string>
     <string name="setting_on_use_account_tag">Hesap etiketlerini aramada kullan (Yerel etiketler daha önceliklidir)</string>
     <string name="setting_off_use_account_tag">Hesap etiketleri aramada dikkate alınmayacak</string>
-    <string name="theme_summary">Tema rengini seç</string>
     <string name="send_crash_report">Otomatik çökme raporu gönder</string>
     <string name="change_theme">Tema değiştir</string>
     <string name="clear_cache">Önbelleği temizle</string>
@@ -57,8 +56,6 @@
     <string name="image">Fotoğraf</string>
     <string name="next">Sıradaki</string>
     <string name="create_pdf">PDF oluştur</string>
-    <string name="create_pdf_format" formatted="true">%s PDF\'ini oluştur</string>
-    <string name="create_zip_format" formatted="true">%s ZIP\'ini oluştur</string>
     <string name="created_pdf">PDF başarıyla oluşturuldu</string>
     <string name="error_pdf">PDF oluşturulurken bir hata meydana geldi</string>
     <string name="parsing_pages">Sayfalar ayrıştırılıyor</string>
@@ -71,8 +68,6 @@
     <string name="next_page">Sıradaki sayfa</string>
     <string name="downloaded_manga">İndirilenler</string>
     <string name="download_gallery">Bu galeriyi indir</string>
-    <string name="delete_gallery_size_format" formatted="true">Galeriyi sil? (%.2fMB)</string>
-    <string name="delete_gallery_format" formatted="true">Bu galeriyi silmek istiyor musunuz? %s</string>
     <string name="share_with">Şununla paylaş</string>
     <string name="link_copied_to_clipboard">Link panoya kopyalandı</string>
     <string name="open_in_browser">Tarayıcıda aç</string>
@@ -155,9 +150,6 @@
     <string name="cancel">İptal</string>
     <string name="no">Hayır</string>
     <string name="yes">Evet</string>
-    <string name="start_all_downloads">Tüm indirmeleri başlat</string>
-    <string name="pause_all_downloads">Tüm indirmeleri duraklat</string>
-    <string name="cancel_all_downloads">Tüm indirmeleri durdur</string>
     <string name="disable_lock_title">Ekranı açık tut</string>
     <string name="download_all_galleries_in_this_page">Bu sayfadaki tüm galerileri indir</string>
     <string name="download_all_galleries">Tüm galerileri indir</string>
@@ -174,7 +166,6 @@
     <string name="start_page">Başlangıç sayfası</string>
     <string name="end_page">Bitiş sayfası</string>
     <string name="invalid_range_selected">Geçersiz aralık seçildi</string>
-    <string name="column_count_select">Sütun sayısı seç</string>
     <string name="send_with_title">Başlıkla gönder?</string>
     <string name="caption_send_with_title">Fotoğrafa URL yi çeviri olarak ekle?</string>
     <string name="history_size">Geçmiş boyutu</string>
@@ -187,7 +178,6 @@
     <string name="downloading_format">İndiriliyor: %s</string>
     <string name="toggle_favorite">Favorilere ekle/çıkar</string>
     <string name="resume">Devam et</string>
-    <string name="pause">Duraklat</string>
     <string name="title_copied_to_clipboard">Başlık panoya kopyalandı</string>
     <string name="setting_zoom_one_column">Yakınlaştırmayı galeride tek sütun modunda aktifleştir</string>
     <string name="zoom_one_column">Yakınlaştırmayı etkinleştir</string>
@@ -255,11 +245,9 @@
     <string name="title">Başlık</string>
     <string name="download_date">İndirme tarihi</string>
     <string name="page_count">Sayfa sayısı</string>
-    <string name="size">Boyut</string>
     <string name="descending_order">Azalan</string>
     <string name="minimum_comment_length" formatted="true">Yorum en az %d karakter olmalıdır</string>
     <string name="change_scroll_type">Kaydırma tipini değiştir</string>
-    <string name="exported_backup_file_toast" formatted="true">Yedekleme dosyası şuraya çıkartıldı: %s</string>
     <string name="export_data">Verileri dışa aktar</string>
     <string name="import_data">Verileri dışarıdan yükle</string>
     <string name="default_status_1">Okunuyor</string>
@@ -280,8 +268,6 @@
     <string name="requesting_storage_access">Depolamaya erişim izni isteniyor</string>
     <string name="request_storage_manager_summary">Android 11\'de depolama erişimine yönelik bazı kısıtlamalar nedeniyle, bu uygulama özel yolları kullanmak için ek izin vermenizi gerektirecektir. \nBu izinleri vermek istiyorsanız, lütfen sonraki iletişim kutusunda uygulamaya izin verin.</string>
     <string name="summary_beta">Beta sürümüne geçerseniz, uygulamayı kaldırmadan kararlı sürümlere dönemezsiniz</string>
-    <string name="fix_inverted_title">Ters renkli resimleri düzelt</string>
-    <string name="fix_inverted_summary">Eğer resimlerin renkleri ters görünüyorsa aktifleştirin (Cihaz temasını değiştirebilir)</string>
     <string name="navigation_settings_per_screen">Sayfa Ayarları</string>
     <string name="downloaded_update_at" formatted="true">Güncelleme %s konumuna indirildi</string>
     <string name="summary_offscreen_limit">Bir galeriyi okurken önyüklenecek sayfa sayısını seçin</string>
@@ -294,8 +280,6 @@
     <string name="export_finished">Dışa Aktarma Tamamlandı</string>
     <string name="import_finished">İçe Alma Tammalandı</string>
     <string name="download_torrent">Torrent İndir</string>
-    <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Geçersiz Sunucu Yanıtı</string>
     <string name="system_default">Sistem Varsayılanı</string>
     <string name="clear_cookies">Çerezleri Temizle</string>
     <string name="fetching_cloudflare_token">Cloudflare tokeni alınıyor…</string>

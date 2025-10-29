@@ -31,11 +31,11 @@ public class NotificationSettings {
 
     public static void initializeNotificationManager(Context context) {
         notificationSettings = new NotificationSettings(NotificationManagerCompat.from(context.getApplicationContext()));
-        maximumNotification = context.getSharedPreferences("Settings", 0).getInt(context.getString(R.string.key_maximum_notification), 25);
+        maximumNotification = context.getSharedPreferences("Settings", 0).getInt(context.getString(R.string.preference_key_maximum_notification), 25);
         trimArray();
     }
 
-    public static void notify(Context context, String channel, int notificationId, Notification notification) {
+    public static void notify(Context context, int notificationId, Notification notification) {
         if (maximumNotification == 0) return;
         notificationArray.remove(Integer.valueOf(notificationId));
         notificationArray.add(notificationId);
@@ -54,7 +54,7 @@ public class NotificationSettings {
         notificationSettings.notificationManager.notify(notificationId, notification);
     }
 
-    public static void cancel(String channel, int notificationId) {
+    public static void cancel(int notificationId) {
         notificationSettings.notificationManager.cancel(notificationId);
         notificationArray.remove(Integer.valueOf(notificationId));
     }

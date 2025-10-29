@@ -97,7 +97,7 @@ public class InspectorV3 extends Thread implements Parcelable {
             galleries = new ArrayList<>();
             galleries.addAll(tmpList);
         }
-        tags = new HashSet<>(in.createTypedArrayList(Tag.CREATOR));
+        tags = new HashSet<>(Objects.requireNonNull(in.createTypedArrayList(Tag.CREATOR)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ranges = in.readParcelable(Ranges.class.getClassLoader(), Ranges.class);
         } else {
@@ -300,9 +300,11 @@ public class InspectorV3 extends Thread implements Parcelable {
                     builder.append(URLEncoder.encode(tt.toQueryTag(), Charset.defaultCharset()));
                 } else {
                     try {
+                        //noinspection CharsetObjectCanBeUsed
                         builder.append(URLEncoder.encode(tt.toQueryTag(), Charset.defaultCharset().name()));
                     } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                        LogUtility.wtf("This should not happen since we used the default charset", e);
+                        return;
                     }
                 }
             }
@@ -324,10 +326,10 @@ public class InspectorV3 extends Thread implements Parcelable {
 
     public boolean createDocument() throws IOException {
         if (htmlDocument != null) return true;
-        Response response = Global.getClient(context.get()).newCall(new Request.Builder().url(url).build()).execute();
-        setHtmlDocument(Jsoup.parse(response.body().byteStream(), "UTF-8", Utility.getBaseUrl()));
-        response.close();
-        return response.code() == HttpURLConnection.HTTP_OK;
+        try (Response response = Global.getClient(context.get()).newCall(new Request.Builder().url(url).build()).execute()) {
+            setHtmlDocument(Jsoup.parse(response.body().byteStream(), "UTF-8", Utility.getBaseUrl()));
+            return response.code() == HttpURLConnection.HTTP_OK;
+        }
     }
 
     public void parseDocument() throws IOException, InvalidResponseException {
@@ -394,7 +396,7 @@ public class InspectorV3 extends Thread implements Parcelable {
             rel = new Elements();
         boolean isFavorite;
         try {
-            isFavorite = document.getElementById("favorite").getElementsByTag("span").get(0).text().equals("Unfavorite");
+            isFavorite = Objects.requireNonNull(document.getElementById("favorite")).getElementsByTag("span").get(0).text().equals("Unfavorite");
         } catch (Exception e) {
             isFavorite = false;
         }
@@ -418,18 +420,20 @@ public class InspectorV3 extends Thread implements Parcelable {
         galleries = new ArrayList<>(gal.size());
         for (Element e : gal) galleries.add(new SimpleGallery(context.get(), e));
         gal = document.getElementsByClass("last");
-        pageCount = gal.isEmpty() ? Math.max(1, page) : findTotal(gal.last());
+        pageCount = gal.isEmpty()? Math.max(1, page) : findTotal(gal.last());
         if (document.getElementById("content") == null)
             throw new InvalidResponseException();
         if (Global.isExactTagMatch())
             filterDocumentTags();
     }
 
-    private int findTotal(Element e) {
+    private int findTotal(@Nullable Element e) {
+        if (e == null)
+            return 1;
         String temp = e.attr("href");
 
         try {
-            return Integer.parseInt(Uri.parse(temp).getQueryParameter("page"));
+            return Integer.parseInt(Objects.requireNonNull(Uri.parse(temp).getQueryParameter("page")));
         } catch (Exception ignore) {
             return 1;
         }

@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Andere Tags werden gesucht, wenn du einen Tag von einer Galerie auswählst</string>
     <string name="setting_on_use_account_tag">Benutze online Tags in deiner Suche (lokale Tags haben Priorität)</string>
     <string name="setting_off_use_account_tag">Online Tags werden bei deiner Suche ignoriert</string>
-    <string name="theme_summary">Farbschema wählen</string>
     <string name="send_crash_report">Sende Absturzbericht</string>
     <string name="change_theme">Thema ändern</string>
     <string name="clear_cache">Cache löschen</string>
@@ -57,8 +56,6 @@
     <string name="image">Bild</string>
     <string name="next">Nächste</string>
     <string name="create_pdf">Erstelle PDF</string>
-    <string name="create_pdf_format" formatted="true">Erstelle PDF von: \"%s\"</string>
-    <string name="create_zip_format" formatted="true">Erstelle ZIP von: \"%s\"</string>
     <string name="created_pdf">PDF erfolgreich erstellt</string>
     <string name="error_pdf">Fehler während des Erstellens des PDFs</string>
     <string name="parsing_pages">Analysiere Seiten</string>
@@ -71,8 +68,6 @@
     <string name="next_page">Nächste Seite</string>
     <string name="downloaded_manga">Heruntergeladene Manga</string>
     <string name="download_gallery">Galerie herunterladen</string>
-    <string name="delete_gallery_size_format" formatted="true">Lösche Galerie (%.2fMB)</string>
-    <string name="delete_gallery_format" formatted="true">Möchtest du die Galerie löschen:\n%s</string>
     <string name="share_with">Teilen mit</string>
     <string name="link_copied_to_clipboard">Link in die Zwischenablage kopiert</string>
     <string name="open_in_browser">Im Browser öffnen</string>
@@ -155,9 +150,6 @@
     <string name="cancel">Abbrechen</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
-    <string name="start_all_downloads">Alle Downloads starten</string>
-    <string name="pause_all_downloads">Alle Downloads pausieren</string>
-    <string name="cancel_all_downloads">Alle Downloads abbrechen</string>
     <string name="disable_lock_title">Deaktiviere Bildschirm Standby während des lesen</string>
     <string name="download_all_galleries_in_this_page">Lade alle Galerien auf dieser Seite herunter</string>
     <string name="download_all_galleries">Lade alle Galerien herunter</string>
@@ -174,7 +166,6 @@
     <string name="start_page">Startseite</string>
     <string name="end_page">Endseite</string>
     <string name="invalid_range_selected">Ungültigen Bereich ausgewählt</string>
-    <string name="column_count_select">Spaltenanzahl auswählen</string>
     <string name="send_with_title">Mit Titel senden?</string>
     <string name="caption_send_with_title">URL als Beschreibung zum Bild hinzufügen?</string>
     <string name="history_size">Verlauf Größe</string>
@@ -187,7 +178,6 @@
     <string name="downloading_format">Lade: %s</string>
     <string name="toggle_favorite">Favoriten umschalten</string>
     <string name="resume">Fortsetzen</string>
-    <string name="pause">Pausieren</string>
     <string name="title_copied_to_clipboard">Titel in die Zwischenablage kopiert</string>
     <string name="setting_zoom_one_column">Zoom aktivieren wenn im Einspalten Modus in einer Galerie</string>
     <string name="zoom_one_column">Zoom aktivieren</string>
@@ -255,11 +245,9 @@
     <string name="title">Titel</string>
     <string name="download_date">Download Datum</string>
     <string name="page_count">Seitenanzahl</string>
-    <string name="size">Größe</string>
     <string name="descending_order">Absteigende Reihenfolge</string>
     <string name="minimum_comment_length" formatted="true">Der Kommentar muss mindestens %d Zeichen haben</string>
     <string name="change_scroll_type">Ändere Scroll-Art</string>
-    <string name="exported_backup_file_toast" formatted="true">Backup nach %s exportiert</string>
     <string name="export_data">Exportiere Daten</string>
     <string name="import_data">Importiere Daten</string>
     <string name="default_status_1">Lesen</string>
@@ -280,8 +268,6 @@
     <string name="requesting_storage_access">Fordere Berechtigungen für den Gerätespeicher</string>
     <string name="request_storage_manager_summary">Aufgrund einer Einschränkung des Speicherzugriffs in Android 11 erfordert diese App eine zusätzliche Berechtigung zur Verwendung benutzerdefinierter Pfade.\nWenn Sie diese Berechtigung erteilen möchten, aktivieren Sie die Einstellung im nächsten Dialogfeld.</string>
     <string name="summary_beta">Das Aktualisieren auf eine Beta-Version kann dazu führen, dass Sie ohne Deinstallation nicht zu einer stabilen Version zurückkehren können</string>
-    <string name="fix_inverted_title">Repariere invertierte Bilder</string>
-    <string name="fix_inverted_summary">Aktivieren, wenn Bilder mit invertierten Farben angezeigt werden (Auf manchen Geräten führt das zum ändern des Gerätethemas zu weiß. Deaktivieren der Einstellung wird dies wieder ändern.)</string>
     <string name="navigation_settings_per_screen">Navigationseinstellungen pro Bild</string>
     <string name="downloaded_update_at" formatted="true">Update zu %s heruntergeladen</string>
     <string name="summary_offscreen_limit">Anzahl an Seiten die vorgeladen werden beim lesen einer Galerie</string>
@@ -294,8 +280,6 @@
     <string name="export_finished">Export fertig</string>
     <string name="import_finished">Import fertig</string>
     <string name="download_torrent">Torrent herunterladen</string>
-    <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Ungültige Antwort</string>
     <string name="system_default">Systemstandard</string>
     <string name="clear_cookies">Lösche Cookies</string>
     <string name="fetching_cloudflare_token">Cloudflare Token kriegen…</string>

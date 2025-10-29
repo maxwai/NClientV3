@@ -3,6 +3,7 @@ package com.maxwai.nclientv3;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -13,23 +14,27 @@ import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.os.LocaleListCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.RequestManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.maxwai.nclientv3.adapters.ListAdapter;
 import com.maxwai.nclientv3.api.InspectorV3;
 import com.maxwai.nclientv3.api.components.Gallery;
@@ -46,8 +51,6 @@ import com.maxwai.nclientv3.async.ScrapeTags;
 import com.maxwai.nclientv3.async.VersionChecker;
 import com.maxwai.nclientv3.async.database.Queries;
 import com.maxwai.nclientv3.async.downloader.DownloadGalleryV2;
-import com.maxwai.nclientv3.components.CookieInterceptor;
-import com.maxwai.nclientv3.components.GlideX;
 import com.maxwai.nclientv3.components.activities.BaseActivity;
 import com.maxwai.nclientv3.components.views.PageSwitcher;
 import com.maxwai.nclientv3.components.widgets.CustomGridLayoutManager;
@@ -57,21 +60,14 @@ import com.maxwai.nclientv3.settings.TagV2;
 import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-
-import okhttp3.Cookie;
 
 public class MainActivity extends BaseActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,31 +88,7 @@ public class MainActivity extends BaseActivity
             LogUtility.d("STARTED");
         }
     };
-    private final CookieInterceptor.Manager MANAGER = new CookieInterceptor.Manager() {
-        boolean tokenFound = false;
-
-        @Override
-        public void applyCookie(String key, String value) {
-            Cookie cookie = Cookie.parse(Login.BASE_HTTP_URL, key + "=" + value + "; Max-Age=31449600; Path=/; SameSite=Lax");
-            Global.client.cookieJar().saveFromResponse(Login.BASE_HTTP_URL, Collections.singletonList(cookie));
-            tokenFound |= key.equals("csrftoken");
-        }
-
-        @Override
-        public boolean endInterceptor() {
-            if (tokenFound) return true;
-            String cookies = CookieManager.getInstance().getCookie(Utility.getBaseUrl());
-            if (cookies == null) return false;
-            return cookies.contains("csrftoken");
-        }
-
-        @Override
-        public void onFinish() {
-            inspector = inspector.cloneInspector(MainActivity.this, resetDataset);
-            inspector.start();
-        }
-    };
-    private final Handler changeLanguageTimeHandler = new Handler(Looper.myLooper());
+    private final Handler changeLanguageTimeHandler = new Handler(Objects.requireNonNull(Looper.myLooper()));
     public ListAdapter adapter;
     private final InspectorV3.InspectorResponse addDataset = new MainInspectorResponse() {
         @Override
@@ -150,7 +122,7 @@ public class MainActivity extends BaseActivity
     };
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private Setting setting = null;
+    private boolean setting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +152,19 @@ public class MainActivity extends BaseActivity
         } else {
             LogUtility.e(getIntent().getExtras());
         }
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START))
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                    setEnabled(true);
+                }
+            }
+        });
     }
 
     private void manageDrawer() {
@@ -193,21 +178,22 @@ public class MainActivity extends BaseActivity
     }
 
     private void setActivityTitle() {
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
         switch (modeType) {
             case FAVORITE:
-                getSupportActionBar().setTitle(R.string.favorite_online_manga);
+                actionBar.setTitle(R.string.favorite_online_manga);
                 break;
             case SEARCH:
-                getSupportActionBar().setTitle(inspector.getSearchTitle());
+                actionBar.setTitle(inspector.getSearchTitle());
                 break;
             case TAG:
-                getSupportActionBar().setTitle(inspector.getTag().getName());
+                actionBar.setTitle(inspector.getTag().getName());
                 break;
             case NORMAL:
-                getSupportActionBar().setTitle(R.string.app_name);
+                actionBar.setTitle(R.string.app_name);
                 break;
             default:
-                getSupportActionBar().setTitle("WTF");
+                actionBar.setTitle("WTF");
                 break;
         }
     }
@@ -260,7 +246,7 @@ public class MainActivity extends BaseActivity
      * Check if the last gallery has been shown
      **/
     private boolean lastGalleryReached(CustomGridLayoutManager manager) {
-        return manager.findLastVisibleItemPosition() >= (recycler.getAdapter().getItemCount() - 1 - manager.getSpanCount());
+        return recycler.getAdapter() != null && manager.findLastVisibleItemPosition() >= (recycler.getAdapter().getItemCount() - 1 - manager.getSpanCount());
     }
 
     private void initializeNavigationView() {
@@ -473,19 +459,11 @@ public class MainActivity extends BaseActivity
     }
 
     private void changeNavigationImage(NavigationView navigationView) {
-        boolean light = Global.getTheme() == Global.ThemeScheme.LIGHT;
         View view = navigationView.getHeaderView(0);
         ImageView imageView = view.findViewById(R.id.imageView);
         View layoutHeader = view.findViewById(R.id.layout_header);
-        ImageDownloadUtility.loadImage(light ? R.drawable.ic_logo_dark : R.drawable.ic_logo, imageView);
-        layoutHeader.setBackgroundResource(light ? R.drawable.side_nav_bar_light : R.drawable.side_nav_bar_dark);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
-            drawerLayout.closeDrawer(GravityCompat.START);
-        else getOnBackPressedDispatcher().onBackPressed();
+        ImageDownloadUtility.loadImage(R.drawable.ic_logo, imageView);
+        layoutHeader.setBackgroundResource(R.drawable.side_nav_bar);
     }
 
     public void hidePageSwitcher() {
@@ -507,7 +485,7 @@ public class MainActivity extends BaseActivity
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setIcon(R.drawable.ic_exit_to_app).setTitle(R.string.logout).setMessage(R.string.are_you_sure);
         builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-            Login.logout(this);
+            Login.logout();
             onlineFavoriteManager.setVisible(false);
             loginItem.setTitle(R.string.login);
         }).setNegativeButton(R.string.no, null).show();
@@ -517,7 +495,6 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        Global.updateACRAReportStatus(this);
         com.maxwai.nclientv3.settings.Login.initLogin(this);
         if (idOpenedGallery != -1) {
             adapter.updateColor(idOpenedGallery);
@@ -525,20 +502,20 @@ public class MainActivity extends BaseActivity
         }
         loadStringLogin();
         onlineFavoriteManager.setVisible(com.maxwai.nclientv3.settings.Login.isLogged());
-        if (setting != null) {
+        SharedPreferences settings = getSharedPreferences("Settings", 0);
+        LocaleListCompat setLocaleList = AppCompatDelegate.getApplicationLocales();
+        settings.edit().putString(getString(R.string.preference_key_language),
+            setLocaleList.isEmpty() ? getString(R.string.key_default_value) :
+                Objects.requireNonNull(setLocaleList.get(0)).toLanguageTag()).apply();
+        if (setting) {
             Global.initFromShared(this);//restart all settings
             inspector = inspector.cloneInspector(this, resetDataset);
             inspector.start();//restart inspector
-            if (setting.theme != Global.getTheme() || !Objects.equals(setting.locale, Global.initLanguage(this))) {
-                RequestManager manager = GlideX.with(getApplicationContext());
-                if (manager != null) manager.pauseAllRequestsRecursive();
-                recreate();
-            }
             adapter.notifyDataSetChanged();//restart adapter
             adapter.resetStatuses();
             showPageSwitcher(inspector.getPage(), inspector.getPageCount());//restart page switcher
             changeLayout(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
-            setting = null;
+            setting = false;
         } else if (filteringTag) {
             inspector = InspectorV3.basicInspector(this, 1, resetDataset);
             inspector.start();
@@ -571,7 +548,7 @@ public class MainActivity extends BaseActivity
             TagStatus ts = inspector.getTag().getStatus();
             updateTagStatus(item, ts);
         }
-        Utility.tintMenu(menu);
+        Utility.tintMenu(this, menu);
         return true;
     }
 
@@ -579,12 +556,12 @@ public class MainActivity extends BaseActivity
         if (modeType != ModeType.FAVORITE)
             item.setActionView(null);
         else {
-            ((SearchView) item.getActionView()).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            ((SearchView) Objects.requireNonNull(item.getActionView())).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     inspector = InspectorV3.favoriteInspector(MainActivity.this, query, 1, resetDataset);
                     inspector.start();
-                    getSupportActionBar().setTitle(query);
+                    Objects.requireNonNull(getSupportActionBar()).setTitle(query);
                     return true;
                 }
 
@@ -598,7 +575,7 @@ public class MainActivity extends BaseActivity
 
     private void popularItemDispay(MenuItem item) {
         item.setTitle(getString(R.string.sort_type_title_format, getString(Global.getSortType().getNameId())));
-        Global.setTint(item.getIcon());
+        Global.setTint(this, item.getIcon());
     }
 
     private void showLanguageIcon(MenuItem item) {
@@ -620,7 +597,7 @@ public class MainActivity extends BaseActivity
                 item.setIcon(R.drawable.ic_world);
                 break;
         }
-        Global.setTint(item.getIcon());
+        Global.setTint(this, item.getIcon());
     }
 
     @Override
@@ -748,7 +725,7 @@ public class MainActivity extends BaseActivity
                 item.setIcon(R.drawable.ic_check);
                 break;
         }
-        Global.setTint(item.getIcon());
+        Global.setTint(this, item.getIcon());
     }
 
     @Override
@@ -768,7 +745,7 @@ public class MainActivity extends BaseActivity
             intent = new Intent(this, FavoriteActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.action_settings) {
-            setting = new Setting();
+            setting = true;
             intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.online_favorite_manager) {
@@ -862,16 +839,6 @@ public class MainActivity extends BaseActivity
             return true;
             //loadWebVewUrl(inspector.getUrl());
             //return inspector.canParseDocument();
-        }
-    }
-
-    private class Setting {
-        final Global.ThemeScheme theme;
-        final Locale locale;
-
-        Setting() {
-            this.theme = Global.getTheme();
-            this.locale = Global.initLanguage(MainActivity.this);
         }
     }
 }

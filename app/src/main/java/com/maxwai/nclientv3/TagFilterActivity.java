@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -30,6 +31,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TagFilterActivity extends GeneralActivity {
     static {
@@ -48,7 +50,8 @@ public class TagFilterActivity extends GeneralActivity {
         //init toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -59,14 +62,12 @@ public class TagFilterActivity extends GeneralActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabs);
 
-
-        LogUtility.d("ISNULL?" + (tabLayout == null));
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 TagTypePage page = getFragment(position);
                 if (page != null) {
-                    ((TagsAdapter) page.getRecyclerView().getAdapter()).addItem();
+                    ((TagsAdapter) Objects.requireNonNull(page.getRecyclerView().getAdapter())).addItem();
                 }
             }
         });
@@ -138,7 +139,7 @@ public class TagFilterActivity extends GeneralActivity {
     private void updateSortItem(MenuItem item) {
         item.setIcon(TagV2.isSortedByName() ? R.drawable.ic_sort_by_alpha : R.drawable.ic_sort);
         item.setTitle(TagV2.isSortedByName() ? R.string.sort_by_title : R.string.sort_by_popular);
-        Global.setTint(item.getIcon());
+        Global.setTint(this, item.getIcon());
     }
 
     @Override
@@ -147,7 +148,7 @@ public class TagFilterActivity extends GeneralActivity {
         getMenuInflater().inflate(R.menu.menu_tag_filter, menu);
         updateSortItem(menu.findItem(R.id.sort_by_name));
         searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        Objects.requireNonNull(searchView).setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return true;

@@ -44,43 +44,46 @@ public class Exporter {
 
     private static void dumpDB(OutputStream stream) throws IOException {
         SQLiteDatabase db = Database.getDatabase();
-        JsonWriter writer = new JsonWriter(new OutputStreamWriter(stream));
-        writer.beginObject();
-        for (String s : SCHEMAS) {
-            Cursor cur = db.query(s, null, null, null, null, null, null);
-            writer.name(s).beginArray();
-            if (cur.moveToFirst()) {
-                do {
-                    writer.beginObject();
-                    for (int i = 0; i < cur.getColumnCount(); i++) {
-                        writer.name(cur.getColumnName(i));
-                        if (cur.isNull(i)) {
-                            writer.nullValue();
-                        } else {
-                            switch (cur.getType(i)) {
-                                case Cursor.FIELD_TYPE_INTEGER:
-                                    writer.value(cur.getLong(i));
-                                    break;
-                                case Cursor.FIELD_TYPE_FLOAT:
-                                    writer.value(cur.getDouble(i));
-                                    break;
-                                case Cursor.FIELD_TYPE_STRING:
-                                    writer.value(cur.getString(i));
-                                    break;
-                                case Cursor.FIELD_TYPE_BLOB:
-                                case Cursor.FIELD_TYPE_NULL:
-                                    break;
+        if (db == null)
+            throw new IOException("Can't export Database, don't have database connection yet");
+        try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(stream))) {
+            writer.beginObject();
+            for (String s : SCHEMAS) {
+                try (Cursor cur = db.query(s, null, null, null, null, null, null)) {
+                    writer.name(s).beginArray();
+                    if (cur.moveToFirst()) {
+                        do {
+                            writer.beginObject();
+                            for (int i = 0; i < cur.getColumnCount(); i++) {
+                                writer.name(cur.getColumnName(i));
+                                if (cur.isNull(i)) {
+                                    writer.nullValue();
+                                } else {
+                                    switch (cur.getType(i)) {
+                                        case Cursor.FIELD_TYPE_INTEGER:
+                                            writer.value(cur.getLong(i));
+                                            break;
+                                        case Cursor.FIELD_TYPE_FLOAT:
+                                            writer.value(cur.getDouble(i));
+                                            break;
+                                        case Cursor.FIELD_TYPE_STRING:
+                                            writer.value(cur.getString(i));
+                                            break;
+                                        case Cursor.FIELD_TYPE_BLOB:
+                                        case Cursor.FIELD_TYPE_NULL:
+                                            break;
+                                    }
+                                }
                             }
-                        }
+                            writer.endObject();
+                        } while (cur.moveToNext());
                     }
-                    writer.endObject();
-                } while (cur.moveToNext());
+                    writer.endArray();
+                }
             }
-            writer.endArray();
-            cur.close();
+            writer.endObject();
+            writer.flush();
         }
-        writer.endObject();
-        writer.flush();
     }
 
     public static String defaultExportName(SettingsActivity context) {
@@ -93,20 +96,19 @@ public class Exporter {
     public static void exportData(SettingsActivity context, Uri selectedFile) throws IOException {
 
         OutputStream outputStream = context.getContentResolver().openOutputStream(selectedFile);
-        ZipOutputStream zip = new ZipOutputStream(outputStream);
-        zip.setLevel(Deflater.BEST_COMPRESSION);
+        try (ZipOutputStream zip = new ZipOutputStream(outputStream)) {
+            zip.setLevel(Deflater.BEST_COMPRESSION);
 
-        zip.putNextEntry(new ZipEntry(DB_ZIP_FILE));
-        dumpDB(zip);
-        zip.closeEntry();
-
-        for (String shared : SHARED_FILES) {
-            zip.putNextEntry(new ZipEntry(shared + ".json"));
-            exportSharedPreferences(context, shared, zip);
+            zip.putNextEntry(new ZipEntry(DB_ZIP_FILE));
+            dumpDB(zip);
             zip.closeEntry();
-        }
 
-        zip.close();
+            for (String shared : SHARED_FILES) {
+                zip.putNextEntry(new ZipEntry(shared + ".json"));
+                exportSharedPreferences(context, shared, zip);
+                zip.closeEntry();
+            }
+        }
 
     }
 
@@ -129,8 +131,15 @@ public class Exporter {
             } else if (val instanceof Set) {
                 writer.beginObject().name(SharedType.STRING_SET.name());
                 writer.beginArray();
-                for (String s : (Set<String>) val) {
-                    writer.value(s);
+                Set<?> val2 = (Set<?>) val;
+                if (!val2.isEmpty()) {
+                    for (Object s : (Set<?>) val) {
+                        if (s instanceof String) {
+                            writer.value((String) s);
+                        } else {
+                            LogUtility.e("Missing export class: " + val.getClass().getName());
+                        }
+                    }
                 }
                 writer.endArray();
                 writer.endObject();
