@@ -35,7 +35,7 @@
     <string name="only_japanese">Japonais uniquement</string>
     <string name="only_chinese">Chinois uniquement</string>
     <string name="all_languages">Toutes les langues</string>
-    <string name="unknown_language">Unknown language</string>
+    <string name="unknown_language">Langage inconnu</string>
     <string name="login">Se connecter</string>
     <string name="login_formatted" formatted="true">Connecté en tant que %s</string>
     <string name="logout">Se déconnecter</string>
@@ -56,6 +56,8 @@
     <string name="image">Image</string>
     <string name="next">Suivant</string>
     <string name="create_pdf">Créer un PDF</string>
+    <string name="create_pdf_format" formatted="true">Créer un PDF de : \"%s\"</string>
+    <string name="create_zip_format" formatted="true">Créer un ZIP de : \"%s\"</string>
     <string name="created_pdf">PDF créé avec succès</string>
     <string name="error_pdf">Erreur lors de la création du PDF</string>
     <string name="parsing_pages">Analyse des pages</string>
@@ -68,6 +70,8 @@
     <string name="next_page">Page suivante</string>
     <string name="downloaded_manga">Télécharger les galeries</string>
     <string name="download_gallery">Télécharger la galerie</string>
+    <string name="delete_gallery_size_format" formatted="true">Supprimer la galerie (%.2fMo)</string>
+    <string name="delete_gallery_format" formatted="true">Voulez-vous supprimer la galerie :\n%s</string>
     <string name="share_with">Partager avec</string>
     <string name="link_copied_to_clipboard">Lien copié dans le presse-papiers</string>
     <string name="open_in_browser">Ouvrir dans le navigateur</string>
@@ -150,6 +154,9 @@
     <string name="cancel">Annuler</string>
     <string name="no">Non</string>
     <string name="yes">Oui</string>
+    <string name="start_all_downloads">Lancer tous les téléchargements</string>
+    <string name="pause_all_downloads">Suspendre tous les téléchargements</string>
+    <string name="cancel_all_downloads">Annuler tous les téléchargements</string>
     <string name="disable_lock_title">Désactiver le verouillage de l\'écran durant la lecture</string>
     <string name="download_all_galleries_in_this_page">Télécharger toutes les galeries de cette page</string>
     <string name="download_all_galleries">Télécharger toutes les galeries</string>
@@ -166,6 +173,7 @@
     <string name="start_page">Première page</string>
     <string name="end_page">Dernière page</string>
     <string name="invalid_range_selected">Plage sélectionnée invalide</string>
+    <string name="column_count_select">Sélection du nombre de colonnes</string>
     <string name="send_with_title">Envoyer avec l\'URL ?</string>
     <string name="caption_send_with_title">Joindre l\'url du titre correspondant à l\'image ?</string>
     <string name="history_size">Taille de l\'historique</string>
@@ -178,6 +186,7 @@
     <string name="downloading_format">Téléchargement de : %s</string>
     <string name="toggle_favorite">Ajout/Suppression du favori</string>
     <string name="resume">Reprendre</string>
+    <string name="pause">Suspendre</string>
     <string name="title_copied_to_clipboard">Titre copié dans le presse-papiers</string>
     <string name="setting_zoom_one_column">Activer le zoom dans les galeries en mode une colonne</string>
     <string name="zoom_one_column">Activer le zoom</string>
@@ -245,9 +254,11 @@
     <string name="title">Titre</string>
     <string name="download_date">Date de téléchargement</string>
     <string name="page_count">Nombre de pages</string>
+    <string name="size">Taille</string>
     <string name="descending_order">Ordre décroissant</string>
     <string name="minimum_comment_length" formatted="true">Le commentaire doit faire au moins %d caractères</string>
     <string name="change_scroll_type">Changer le type de défilement</string>
+    <string name="exported_backup_file_toast" formatted="true">Fichier de sauvegarde exporté dans %s</string>
     <string name="export_data">Exporter les données</string>
     <string name="import_data">Importer des données</string>
     <string name="default_status_1">En cours</string>
@@ -268,6 +279,8 @@
     <string name="requesting_storage_access">Demande d\'accès au stockage</string>
     <string name="request_storage_manager_summary">En raison de restrictions dans Android 11 concernant l\'accès au stockage, cette application vous demandera de donner une autorisation supplémentaire pour utiliser des emplacements personnalisés.\nSi vous souhaitez accorder cette autorisation, activez le paramètre dans la boîte de dialogue suivante.</string>
     <string name="summary_beta">Le passage à une version bêta vous empêchera de revenir aux versions stables sans désinstaller</string>
+    <string name="fix_inverted_title">Corriger les images inversées</string>
+    <string name="fix_inverted_summary">Activer si les images sont affichées avec des couleurs inversées (sur certains appareils, cela entraîne le changement du thème de l\'appareil en clair, désactiver le paramètre résoudra cela)</string>
     <string name="navigation_settings_per_screen">Paramètres de navigation par écran</string>
     <string name="downloaded_update_at" formatted="true">Mise à jour téléchargée dans %s</string>
     <string name="summary_offscreen_limit">Définissez le nombre d\'images à précharger en arrière-plan lors de la lecture d\'une galerie</string>
@@ -280,14 +293,19 @@
     <string name="export_finished">Export terminé</string>
     <string name="import_finished">Import terminé</string>
     <string name="download_torrent">Télécharger le torrent</string>
+    <string name="title_activity_captcha">CAPTCHA</string>
+    <string name="invalid_response">Invalid response</string>
     <string name="system_default">System default</string>
-    <string name="clear_cookies">Clear cookies</string>
+    <string name="clear_cookies">Effacer les cookies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">Hide</string>
     <string name="title_user_agent">Change User-Agent</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
+    <string name="copy_logs">Copy logs to file</string>
+    <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>
+    <string name="copy_logs_fail">Problem generating logfile</string>
     <string-array name="scroll_type">
         <item>Horizontal</item>
         <item>Vertical</item>

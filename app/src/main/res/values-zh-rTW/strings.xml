@@ -288,6 +288,9 @@
     <string name="hide">隱藏</string>
     <string name="title_user_agent">更改使用者代理</string>
     <string name="shuffle_contentDescription">隨機圖庫按鈕</string>
+    <string name="copy_logs">將記錄複製到檔案</string>
+    <string name="copy_logs_summary">此操作將把此應用程式的所有可用日誌匯入檔案。可用日誌可能涵蓋數天內容。此外，日誌可能包含個人資訊，發布檔案前務必確認內容。此功能可用於將日誌附加至錯誤報告。</string>
+    <string name="copy_logs_fail">生成日誌檔案時發生錯誤</string>
     <string-array name="scroll_type">
         <item>水準</item>
         <item>垂直</item>
