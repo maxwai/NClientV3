@@ -36,7 +36,7 @@
     <string name="only_japanese">Japonais uniquement</string>
     <string name="only_chinese">Chinois uniquement</string>
     <string name="all_languages">Toutes les langues</string>
-    <string name="unknown_language">Unknown language</string>
+    <string name="unknown_language">Langage inconnu</string>
     <string name="login">Se connecter</string>
     <string name="login_formatted" formatted="true">Connecté en tant que %s</string>
     <string name="logout">Se déconnecter</string>
@@ -295,15 +295,18 @@
     <string name="import_finished">Import terminé</string>
     <string name="download_torrent">Télécharger le torrent</string>
     <string name="title_activity_captcha">CAPTCHA</string>
-    <string name="invalid_response">Invalid response</string>
+    <string name="invalid_response">Réponse invalide</string>
     <string name="system_default">System default</string>
-    <string name="clear_cookies">Clear cookies</string>
+    <string name="clear_cookies">Effacer les cookies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">Hide</string>
     <string name="title_user_agent">Change User-Agent</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
+    <string name="copy_logs">Copy logs to file</string>
+    <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>
+    <string name="copy_logs_fail">Problem generating logfile</string>
     <string-array name="scroll_type">
         <item>Horizontal</item>
         <item>Vertical</item>

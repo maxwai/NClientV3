@@ -304,6 +304,9 @@
     <string name="hide">隐藏</string>
     <string name="title_user_agent">更改用户代理</string>
     <string name="shuffle_contentDescription">随机图库按钮</string>
+    <string name="copy_logs">复制日志到文件</string>
+    <string name="copy_logs_summary">此操作将把该应用的所有可用日志保存至文件中。可用日志可能涵盖多日记录。此外，日志中可能包含个人信息，发布文件前请务必核查。可将此文件作为附件提交至错误报告。</string>
+    <string name="copy_logs_fail">生成日志文件时出错</string>
     <string-array name="scroll_type">
         <item>水平</item>
         <item>垂直</item>
