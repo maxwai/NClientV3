@@ -419,10 +419,10 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
             }
 
             @SuppressLint("NotifyDataSetChanged")
+            @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.values instanceof CopyOnWriteArrayList) {
-                    //noinspection unchecked
                     filter = (CopyOnWriteArrayList<Object>) results.values;
                     context.runOnUiThread(() -> notifyDataSetChanged());
                 }
