@@ -145,23 +145,25 @@ public class Queries {
             }
         }
 
+        /**
+         * @return Cursor to favorite Table
+         * @noinspection DeprecatedIsStillUsed
+         * @deprecated This is only used to update an old database format to the newest one
+         */
         @Deprecated
         @NonNull
-        public static Cursor getAllFavoriteCursorDeprecated(CharSequence query, boolean online) {
-            LogUtility.i("FILTER IN: " + query + ";;" + online);
-            Cursor cursor;//=db.rawQuery(sql,new String[]{url,url,url,""+(online?2:1)});
+        public static Cursor getAllFavoriteCursorDeprecated() {
+            LogUtility.i("FILTER IN: %;;false");
             String sql = "SELECT * FROM " + TABLE_NAME + " WHERE (" +
                 FAVORITE + " =? OR " + FAVORITE + "=3)";
-            if (query != null && query.length() > 0) {
-                sql += " AND (" + TITLE_ENG + " LIKE ? OR " +
-                    TITLE_JP + " LIKE ? OR " +
-                    TITLE_PRETTY + " LIKE ? )";
-                String q = '%' + query.toString() + '%';
-                cursor = db.rawQuery(sql, new String[]{"" + (online ? 2 : 1), q, q, q});
-            } else cursor = db.rawQuery(sql, new String[]{"" + (online ? 2 : 1)});
+            sql += " AND (" + TITLE_ENG + " LIKE ? OR " +
+                TITLE_JP + " LIKE ? OR " +
+                TITLE_PRETTY + " LIKE ? )";
+            String q = "%%%";
+            Cursor cursor = db.rawQuery(sql, new String[]{"1", q, q, q});
             LogUtility.d(sql);
             LogUtility.d("AFTER FILTERING: " + cursor.getCount());
-            LogUtility.i("END FILTER IN: " + query + ";;" + online);
+            LogUtility.i("END FILTER IN: %;;false");
             return cursor;
         }
 

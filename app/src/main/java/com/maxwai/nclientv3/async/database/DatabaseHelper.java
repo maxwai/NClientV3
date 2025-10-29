@@ -124,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @SuppressLint("Range")
     private int[] getAllFavoriteIndex() {
         //noinspection deprecation
-        try (Cursor c = Queries.GalleryTable.getAllFavoriteCursorDeprecated("%", false)) {
+        try (Cursor c = Queries.GalleryTable.getAllFavoriteCursorDeprecated()) {
             int[] favorites = new int[c.getCount()];
             int i = 0;
             if (c.moveToFirst()) {
