@@ -202,10 +202,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <meta-data
-            android:name="com.maxwai.nclientv3.components.classes.integration.OkHttpGlideModule"
-            android:value="GlideModule" />
-
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"

@@ -24,6 +24,7 @@ allprojects {
         tasks.withType(JavaCompile).tap {
             configureEach {
                 //options.compilerArgs << "-Xlint:deprecation"
+                //options.compilerArgs << "-Xlint:unchecked"
                 options.compilerArgs << "-Werror"
             }
         }
