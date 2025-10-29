@@ -1,7 +1,6 @@
 package com.maxwai.nclientv3.components.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.multidex.MultiDexApplication;
 
-import com.maxwai.nclientv3.BuildConfig;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.async.ScrapeTags;
 import com.maxwai.nclientv3.async.database.DatabaseHelper;
@@ -23,10 +21,6 @@ import com.maxwai.nclientv3.settings.Database;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.TagV2;
 import com.maxwai.nclientv3.utility.network.NetworkUtil;
-
-import org.acra.ACRA;
-import org.acra.ReportField;
-import org.acra.config.CoreConfigurationBuilder;
 
 public class CrashApplication extends MultiDexApplication {
 
@@ -67,23 +61,6 @@ public class CrashApplication extends MultiDexApplication {
         Global.recursiveDelete(Global.UPDATEFOLDER);
         //noinspection ResultOfMethodCallIgnored
         Global.UPDATEFOLDER.mkdir();
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(newBase);
-
-        CoreConfigurationBuilder builder = new CoreConfigurationBuilder()
-            .withBuildConfigClass(BuildConfig.class)
-            .withReportContent(ReportField.PACKAGE_NAME,
-                ReportField.BUILD_CONFIG,
-                ReportField.APP_VERSION_CODE,
-                ReportField.STACK_TRACE,
-                ReportField.ANDROID_VERSION,
-                ReportField.LOGCAT);
-
-        ACRA.init(this, builder);
-        ACRA.getErrorReporter().setEnabled(getSharedPreferences("Settings", 0).getBoolean(getString(R.string.preference_key_send_report), false));
     }
 
     private static class CustomActivityLifecycleCallback implements ActivityLifecycleCallbacks {

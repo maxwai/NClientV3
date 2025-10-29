@@ -11,7 +11,6 @@
     <string name="preference_key_theme_select" translatable="false">theme_select</string>
     <string name="preference_key_cache" translatable="false">cache</string>
     <string name="preference_key_use_account_tag" translatable="false">use_account_tags</string>
-    <string name="preference_key_send_report" translatable="false">send_report</string>
     <string name="preference_key_use_rtl" translatable="false">use_rtl</string>
     <string name="preference_key_show_titles" translatable="false">show_titles</string>
     <string name="preference_key_exact_title_match" translatable="false">precise_tag</string>
@@ -77,7 +76,6 @@
     <string name="setting_off_ignore_tags">Other tags will be queried when a tag is selected from the gallery menu</string>
     <string name="setting_on_use_account_tag">Use the account tags into the search query (Local tags will have priority)</string>
     <string name="setting_off_use_account_tag">Account tags will be ignored for the query</string>
-    <string name="send_crash_report">Send crash report</string>
     <string name="change_theme">Change theme</string>
     <string name="clear_cache">Clear cache</string>
     <string name="infinite_scroll">Infinite scroll</string>

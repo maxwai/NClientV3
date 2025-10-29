@@ -205,11 +205,6 @@
             android:key="@string/preference_key_override_volume"
             android:title="@string/volume_change_setting"
             app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="@string/preference_key_send_report"
-            android:title="@string/send_crash_report"
-            app:iconSpaceReserved="false" />
         <Preference
             android:key="@string/preference_key_copy_settings"
             android:title="@string/copy_settings_to_clipboard"

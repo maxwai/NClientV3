@@ -495,7 +495,6 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        Global.updateACRAReportStatus(this);
         com.maxwai.nclientv3.settings.Login.initLogin(this);
         if (idOpenedGallery != -1) {
             adapter.updateColor(idOpenedGallery);
