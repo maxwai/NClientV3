@@ -304,9 +304,9 @@
     <string name="hide">Verstecken</string>
     <string name="title_user_agent">User-Agent ändern</string>
     <string name="shuffle_contentDescription">Zufällige Galerie Knopf</string>
-    <string name="copy_logs">Copy logs to file</string>
-    <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>
-    <string name="copy_logs_fail">Problem generating logfile</string>
+    <string name="copy_logs">Logs in Datei speichern</string>
+    <string name="copy_logs_summary">Dadurch werden alle verfügbaren Logs dieser App in einer Datei gespeichert. Die verfügbaren Logs können sich über mehrere Tage erstrecken. Außerdem ist es möglich, dass die Logs personenbezogene Daten enthalten. Überprüfe dies daher unbedingt, bevor du die Datei veröffentlichst. Verwenden diese Funktion, um Protokolle an einen Fehlerbericht anzuhängen.</string>
+    <string name="copy_logs_fail">Fehler beim Erstellen der Logdatei</string>
     <string-array name="scroll_type">
         <item>Horizontal</item>
         <item>Vertikal</item>
