@@ -342,6 +342,13 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             });
         }
         {
+            Preference bug = Objects.requireNonNull(findPreference(getString(R.string.preference_key_copy_logs)));
+            bug.setOnPreferenceClickListener(preference -> {
+                act.exportLogs();
+                return true;
+            });
+        }
+        {
             Preference copySettings = Objects.requireNonNull(findPreference(getString(R.string.preference_key_copy_settings)));
             copySettings.setOnPreferenceClickListener(preference -> {
                 try {
