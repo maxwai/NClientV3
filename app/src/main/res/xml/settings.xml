@@ -12,7 +12,7 @@
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true" />
         <ListPreference
-            android:defaultValue="dark"
+            android:defaultValue="light"
             android:entries="@array/theme"
             android:entryValues="@array/theme_data"
             android:key="@string/preference_key_theme_select"
