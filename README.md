@@ -80,13 +80,12 @@ If your desired language is missing, write an issue, the language will be added.
 
 ## Libraries
 
-- PersistentCookieJar ([License](https://github.com/franmontiel/PersistentCookieJar/blob/master/LICENSE.txt))
 - OKHttp ([License](https://github.com/square/okhttp/blob/master/LICENSE.txt))
-- multiline-collapsingtoolbar ([License](https://github.com/opacapp/multiline-collapsingtoolbar/blob/master/LICENSE))
-- PhotoView ([License](https://github.com/chrisbanes/PhotoView/blob/master/LICENSE))
+- PersistentCookieJar ([License](https://github.com/franmontiel/PersistentCookieJar/blob/master/LICENSE.txt))
 - JSoup ([License](https://github.com/jhy/jsoup/blob/master/LICENSE))
-- ACRA ([License](https://github.com/ACRA/acra/blob/master/LICENSE))
 - Glide ([License](https://github.com/bumptech/glide/blob/master/LICENSE))
+- AmbilWarna ([License](https://github.com/yukuku/ambilwarna/blob/master/LICENSE))
+- AndroidFastScroll ([License](https://github.com/zhanghai/AndroidFastScroll/blob/master/LICENSE))
 
 ## License
 

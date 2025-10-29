@@ -1,6 +1,7 @@
 package com.maxwai.nclientv3.components.activities;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.multidex.MultiDexApplication;
 
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.async.ScrapeTags;
@@ -22,7 +22,7 @@ import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.TagV2;
 import com.maxwai.nclientv3.utility.network.NetworkUtil;
 
-public class CrashApplication extends MultiDexApplication {
+public class CrashApplication extends Application {
 
     @Override
     public void onCreate() {

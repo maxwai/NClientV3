@@ -7,58 +7,58 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = file(keystoreProperties['storeFile'])
+            storePassword = keystoreProperties['storePassword']
         }
     }
     compileSdk = 36
     defaultConfig {
-        applicationId "com.maxwai.nclientv3"
+        applicationId = "com.maxwai.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
-        versionCode 410002
-        multiDexEnabled true
-        versionName "4.1.0_pre3"
-        vectorDrawables.useSupportLibrary true
+        versionCode = 410002
+        multiDexEnabled = true
+        versionName = "4.1.0_pre3"
+        vectorDrawables.useSupportLibrary = true
         proguardFiles 'proguard-rules.pro'
     }
     flavorDimensions = ["sdk"]
     productFlavors {
         post28 {
-            dimension "sdk"
+            dimension = "sdk"
             targetSdk = 36
             minSdkVersion 28
         }
         pre28 {
-            dimension "sdk"
+            dimension = "sdk"
             targetSdk = 28
             minSdkVersion 26
         }
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
-            versionNameSuffix "-release"
+            versionNameSuffix = "-release"
             resValue "string", "app_name", "NClientV3"
-            signingConfig signingConfigs.release
+            signingConfig = signingConfigs.release
         }
         debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
             resValue "string", "app_name", "NClientV3 Debug"
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     lint {
-        abortOnError false
-        checkReleaseBuilds false
+        abortOnError = false
+        checkReleaseBuilds = false
         disable 'RestrictedApi'
     }
     bundle {
@@ -70,12 +70,12 @@ android {
             enableSplit = false
         }
     }
-    namespace 'com.maxwai.nclientv3'
+    namespace = 'com.maxwai.nclientv3'
     buildFeatures {
-        buildConfig true
+        buildConfig  = true
     }
     androidResources {
-        generateLocaleConfig true
+        generateLocaleConfig = true
     }
 }
 
@@ -91,7 +91,7 @@ android.applicationVariants.configureEach { variant ->
 }
 
 dependencies {
-// AndroidX
+// Android
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
@@ -99,30 +99,25 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    implementation 'com.google.android.material:material:1.13.0'
     implementation 'androidx.work:work-runtime:2.11.0'
     implementation "androidx.core:core-splashscreen:1.0.1"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.android.material:material:1.13.0'
 
 // Other
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.2.1' //Because of min SDK
+    // For Http Connection
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.2.1'
+    // Used to store the cookies between runs
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
-    //implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    // To parse HTML
     implementation 'org.jsoup:jsoup:1.21.2'
-
-    implementation 'ch.acra:acra-core:5.13.1'
-    compileOnly("com.google.auto.service:auto-service-annotations:1.1.1")
-    annotationProcessor("com.google.auto.service:auto-service:1.1.1")
-    implementation 'com.google.guava:guava:33.5.0-android'
-
+    // image loading and caching
     implementation('com.github.bumptech.glide:glide:5.0.5') {
         exclude group: "com.android.support"
     }
-    implementation "androidx.multidex:multidex:2.0.1"
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:5.0.5'
+    // color picker
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
+    // fast scroll
     implementation 'me.zhanghai.android.fastscroll:library:1.3.0'
-
-    implementation 'com.github.opacapp:multiline-collapsingtoolbar:v27.1.0'
-    implementation 'com.zeugmasolutions.localehelper:locale-helper-android:1.5.1'
 }

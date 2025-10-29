@@ -20,13 +20,14 @@ allprojects {
         mavenCentral()
         maven { url "https://jitpack.io" }
     }
-//    gradle.projectsEvaluated {
-//        tasks.withType(JavaCompile).tap {
-//            configureEach {
-//                options.compilerArgs << "-Xlint:deprecation"
-//            }
-//        }
-//    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile).tap {
+            configureEach {
+                //options.compilerArgs << "-Xlint:deprecation"
+                options.compilerArgs << "-Werror"
+            }
+        }
+    }
 }
 
 tasks.register('clean', Delete) {
