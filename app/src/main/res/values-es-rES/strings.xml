@@ -4,7 +4,6 @@
     <string name="setting_off_ignore_tags">Otras etiquetas sí seran agregadas cuando una etiqueta es seleccionada desde el menu de la galería (excepto el lenguaje)</string>
     <string name="setting_on_use_account_tag">Usar las etiquetas de la cuenta para la busqueda (las etiquetas locales tendrán prioridad)</string>
     <string name="setting_off_use_account_tag">Las etiquetas de la cuenta serán ignoradas</string>
-    <string name="send_crash_report">Enviar reporte de error</string>
     <string name="change_theme">Cambiar tema</string>
     <string name="clear_cache">Limpiar caché</string>
     <string name="infinite_scroll">Scroll infinito</string>
@@ -304,4 +303,7 @@
         <item>Japonés</item>
         <item>Arreglado</item>
     </string-array>
+    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
+    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
+    <string name="send_image_error">Error creating Image to send</string>
 </resources>
