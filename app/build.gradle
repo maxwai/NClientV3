@@ -100,7 +100,7 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'androidx.work:work-runtime:2.11.0'
-    implementation "androidx.core:core-splashscreen:1.0.1"
+    implementation "androidx.core:core-splashscreen:1.2.0"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.android.material:material:1.13.0'
 
@@ -112,7 +112,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:okhttp3-integration:5.0.5@aar'
     annotationProcessor 'com.github.bumptech.glide:compiler:5.0.5'
     // For Http Connection
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.2.1'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.3.2'
     // Used to store the cookies between runs
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     // To parse HTML
