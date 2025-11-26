@@ -28,3 +28,9 @@ jobs:
                 run: ./gradlew assembleDebug
             -   name: Bundle Debug with Gradle
                 run: ./gradlew bundleDebug
+            -   name: Upload Artifact
+                uses: actions/upload-artifact@v4
+                with:
+                    name: ${{ env.date_today }} - APK(s) debug generated
+                    path: app/build/outputs/apk/
+                    retention-days: 30
