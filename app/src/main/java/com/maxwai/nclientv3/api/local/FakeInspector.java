@@ -49,7 +49,7 @@ public class FakeInspector extends ThreadAsyncTask<LocalActivity, LocalActivity,
     }
 
     private void createGallery(final File file) {
-        LocalGallery lg = new LocalGallery(file, true);
+        LocalGallery lg = new LocalGallery(file, false);
         if (lg.isValid()) {
             galleries.add(lg);
             if (galleries.size() == 50){

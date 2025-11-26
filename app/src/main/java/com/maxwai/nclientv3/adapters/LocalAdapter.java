@@ -23,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.GalleryActivity;
 import com.maxwai.nclientv3.LocalActivity;
 import com.maxwai.nclientv3.R;
+import com.maxwai.nclientv3.api.enums.TagType;
 import com.maxwai.nclientv3.api.local.LocalGallery;
 import com.maxwai.nclientv3.api.local.LocalSortType;
 import com.maxwai.nclientv3.async.converters.CreatePdfOrZip;
@@ -82,6 +83,39 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
         if (d1 != d2) return Long.compare(d1, d2);
         return comparatorByName.compare(o1, o2);
     };
+    private final Comparator<Object> comparatorByArtist = (o1, o2) -> {
+        if (o1 == o2) return 0;
+        boolean b1 = o1 instanceof LocalGallery;
+        boolean b2 = o2 instanceof LocalGallery;
+        String s1 = (b1 && ((LocalGallery) o1).getGalleryData().getTags().getCount(TagType.ARTIST) > 0)
+            ? ((LocalGallery) o1).getGalleryData().getTags().getTag(TagType.ARTIST, 0).getName()
+            : "";
+        String s2 = (b2 && ((LocalGallery) o2).getGalleryData().getTags().getCount(TagType.ARTIST) > 0)
+            ? ((LocalGallery) o2).getGalleryData().getTags().getTag(TagType.ARTIST, 0).getName()
+            : "";
+        if (s1.isEmpty() && !s2.isEmpty())
+            return 1;
+        if (!s1.isEmpty() && s2.isEmpty())
+            return -1;
+        return s1.compareTo(s2);
+    };
+
+    private final Comparator<Object> comparatorByGroup = (o1, o2) -> {
+        if (o1 == o2) return 0;
+        boolean b1 = o1 instanceof LocalGallery;
+        boolean b2 = o2 instanceof LocalGallery;
+        String s1 = (b1 && ((LocalGallery) o1).getGalleryData().getTags().getCount(TagType.GROUP) > 0)
+            ? ((LocalGallery) o1).getGalleryData().getTags().getTag(TagType.GROUP, 0).getName()
+            : "";
+        String s2 = (b2 && ((LocalGallery) o2).getGalleryData().getTags().getCount(TagType.GROUP) > 0)
+            ? ((LocalGallery) o2).getGalleryData().getTags().getTag(TagType.GROUP, 0).getName()
+            : "";
+        if (s1.isEmpty() && !s2.isEmpty())
+            return 1;
+        if (!s1.isEmpty() && s2.isEmpty())
+            return -1;
+        return s1.compareTo(s2);
+    };
 
     private List<Object> filter;
     @NonNull
@@ -140,15 +174,6 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
         sortElements();
     }
 
-    public void addGalleries(@Nullable List<LocalGallery> gallery) {
-        if (gallery != null && !gallery.isEmpty()) {
-            dataset.removeAll(gallery);
-            dataset.addAll(gallery);
-            sortElements();
-            context.runOnUiThread(() -> notifyItemRangeChanged(0, getItemCount()));
-        }
-    }
-
     static void startGallery(Activity context, File directory) {
         if (!directory.isDirectory()) return;
         LocalGallery ent = new LocalGallery(directory);
@@ -159,6 +184,15 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
             intent.putExtra(context.getPackageName() + ".ISLOCAL", true);
             context.runOnUiThread(() -> context.startActivity(intent));
         }).start();
+    }
+
+    public void addGalleries(@Nullable List<LocalGallery> gallery) {
+        if (gallery != null && !gallery.isEmpty()) {
+            dataset.removeAll(gallery);
+            dataset.addAll(gallery);
+            sortElements();
+            context.runOnUiThread(() -> notifyItemRangeChanged(0, getItemCount()));
+        }
     }
 
     @Override
@@ -211,6 +245,10 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
                 return comparatorByName;
             case PAGE_COUNT:
                 return comparatorByPageCount;
+            case ARTIST:
+                return comparatorByArtist;
+            case GROUP:
+                return comparatorByGroup;
             //case SIZE:return comparatorBySize;
         }
         return comparatorByName;
