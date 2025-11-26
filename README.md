@@ -51,9 +51,9 @@ If your desired language is missing, write an issue, the language will be added.
 
 |                                                                Main page                                                                 |                                                                Lateral menu                                                                 |
 |:----------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------:|
-| ![Main page](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img1.jpg) | ![Lateral menu](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img2.jpg) |
+| ![Main page](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img1.png) | ![Lateral menu](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img2.png) |
 |                                                                  Search                                                                  |                                                                Random manga                                                                 |
-|  ![Search](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img3.jpg)   | ![Random manga](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img4.jpg) |
+|  ![Search](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img3.png)   | ![Random manga](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img4.jpg) |
 
 ## Contributors
 

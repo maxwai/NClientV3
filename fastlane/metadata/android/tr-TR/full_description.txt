@@ -1,5 +1,5 @@
 Resmi Olmayan NHentai Android Görüntüleyici
-Bu uygulama API 14 (Android 4.0) ve üzerinde çalışmaktadır.
+Bu uygulama API 28 (Android 9) ve üzerinde çalışmaktadır.
 
 API Özellikleri
 

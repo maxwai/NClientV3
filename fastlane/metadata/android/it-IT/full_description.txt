@@ -1,5 +1,5 @@
 Un client non ufficiale di NHentai.
-Quest'app funziona per dispositivi dall'API 14 (Android 4.0) e superiori.
+Quest'app funziona per dispositivi dall'API 28 (Android 9) e superiori.
 
 Funzionalità:
 
