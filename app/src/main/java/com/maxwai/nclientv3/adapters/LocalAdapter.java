@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -43,6 +44,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHolder> implements Filterable {
@@ -136,6 +138,15 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
 
         DownloadQueue.addObserver(observer);
         sortElements();
+    }
+
+    public void addGalleries(@Nullable List<LocalGallery> gallery) {
+        if (gallery != null && !gallery.isEmpty()) {
+            dataset.removeAll(gallery);
+            dataset.addAll(gallery);
+            sortElements();
+            context.runOnUiThread(() -> notifyItemRangeChanged(0, getItemCount()));
+        }
     }
 
     static void startGallery(Activity context, File directory) {
@@ -329,7 +340,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
     @Override
     public long getItemId(int position) {
         if (position == -1) return -1;
-        return filter.get(position).hashCode();
+        return Objects.hash(filter.get(position).hashCode(), position);
     }
 
     @Override

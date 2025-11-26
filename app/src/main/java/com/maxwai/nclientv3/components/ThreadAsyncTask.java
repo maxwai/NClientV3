@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.maxwai.nclientv3.settings.Global;
 
-public abstract class ThreadAsyncTask<Params, Progress, Result> {
+public abstract class ThreadAsyncTask<Param, Progress, Result> {
 
     private final AppCompatActivity activity;
     /** @noinspection FieldCanBeLocal*/
@@ -13,8 +13,7 @@ public abstract class ThreadAsyncTask<Params, Progress, Result> {
         this.activity = activity;
     }
 
-    @SafeVarargs
-    public final void execute(Params... params) {
+    public final void execute(Param params) {
         thread = new AsyncThread(params);
         thread.start();
     }
@@ -25,30 +24,29 @@ public abstract class ThreadAsyncTask<Params, Progress, Result> {
     protected void onPostExecute(Result result) {
     }
 
-    protected void onProgressUpdate(Progress[] values) {
+    protected void onProgressUpdate(Progress value) {
     }
 
-    protected abstract Result doInBackground(Params[] params);
+    protected abstract Result doInBackground(Param param);
 
-    @SafeVarargs
-    protected final void publishProgress(Progress... values) {
+    protected final void publishProgress(Progress value) {
         if (!Global.isDestroyed(activity))
-            activity.runOnUiThread(() -> onProgressUpdate(values));
+            activity.runOnUiThread(() -> onProgressUpdate(value));
     }
 
     class AsyncThread extends Thread {
 
-        final Params[] params;
+        final Param param;
 
-        AsyncThread(Params[] params) {
-            this.params = params;
+        AsyncThread(Param param) {
+            this.param = param;
         }
 
         @Override
         public void run() {
             if (!Global.isDestroyed(activity))
                 activity.runOnUiThread(ThreadAsyncTask.this::onPreExecute);
-            Result result = doInBackground(params);
+            Result result = doInBackground(param);
             if (!Global.isDestroyed(activity))
                 activity.runOnUiThread(() -> onPostExecute(result));
         }

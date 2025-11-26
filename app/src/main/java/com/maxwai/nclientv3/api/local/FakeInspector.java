@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class FakeInspector extends ThreadAsyncTask<LocalActivity, LocalActivity, LocalActivity> {
     private final ArrayList<LocalGallery> galleries;
     private final ArrayList<String> invalidPaths;
+    private LocalAdapter localAdapter;
     private final File folder;
 
     public FakeInspector(LocalActivity activity, File folder) {
@@ -22,34 +23,39 @@ public class FakeInspector extends ThreadAsyncTask<LocalActivity, LocalActivity,
 
 
     @Override
-    protected LocalActivity doInBackground(LocalActivity[] voids) {
-        if (!this.folder.exists()) return voids[0];
-        publishProgress(voids[0]);
+    protected LocalActivity doInBackground(LocalActivity activity) {
+        localAdapter = new LocalAdapter(activity, new ArrayList<>());
+        activity.setAdapter(localAdapter);
+        if (!this.folder.exists()) return activity;
+        publishProgress(activity);
         File parent = this.folder;
         //noinspection ResultOfMethodCallIgnored
         parent.mkdirs();
         File[] files = parent.listFiles();
-        if (files == null) return voids[0];
+        if (files == null) return activity;
         for (File f : files) if (f.isDirectory()) createGallery(f);
         for (String x : invalidPaths) LogUtility.d("Invalid path: " + x);
-        return voids[0];
+        return activity;
     }
 
     @Override
-    protected void onProgressUpdate(LocalActivity[] values) {
-        values[0].getRefresher().setRefreshing(true);
+    protected void onProgressUpdate(LocalActivity values) {
+        values.getRefresher().setRefreshing(true);
     }
 
     @Override
-    protected void onPostExecute(LocalActivity aVoid) {
-        aVoid.getRefresher().setRefreshing(false);
-        aVoid.setAdapter(new LocalAdapter(aVoid, galleries));
+    protected void onPostExecute(LocalActivity activity) {
+        activity.getRefresher().setRefreshing(false);
     }
 
     private void createGallery(final File file) {
         LocalGallery lg = new LocalGallery(file, true);
         if (lg.isValid()) {
             galleries.add(lg);
+            if (galleries.size() == 50){
+                localAdapter.addGalleries(galleries);
+                galleries.clear();
+            }
         } else {
             LogUtility.e(lg);
             invalidPaths.add(file.getAbsolutePath());
