@@ -18,9 +18,9 @@ android {
         applicationId = "com.maxwai.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
-        versionCode = 410004
+        versionCode = 410100
         multiDexEnabled = true
-        versionName = "4.1.0"
+        versionName = "4.1.1-beta1"
         vectorDrawables.useSupportLibrary = true
         proguardFiles 'proguard-rules.pro'
     }
