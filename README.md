@@ -49,11 +49,11 @@ If your desired language is missing, write an issue, the language will be added.
 
 ## App Screen
 
-|                                                                Main page                                                                 |                                                                Lateral menu                                                                 |
-|:----------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------:|
-| ![Main page](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img1.png) | ![Lateral menu](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img2.png) |
-|                                                                  Search                                                                  |                                                                Random manga                                                                 |
-|  ![Search](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img3.png)   | ![Random manga](https://raw.githubusercontent.com/maxwai/NClientV3/master/fastlane/metadata/android/en-US/images/phoneScreenshots/img4.jpg) |
+|                                                                     Main page                                                                     |                                                                Lateral menu                                                                 |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------:|
+| ![Main page](https://raw.githubusercontent.com/maxwai/NClientV3/refs/heads/main/fastlane/metadata/android/en-US/images/phoneScreenshots/img1.png) | ![Lateral menu](https://raw.githubusercontent.com/maxwai/NClientV3/main/fastlane/metadata/android/en-US/images/phoneScreenshots/img2.png) |
+|                                                                      Search                                                                       |                                                                Random manga                                                                 |
+|        ![Search](https://raw.githubusercontent.com/maxwai/NClientV3/main/fastlane/metadata/android/en-US/images/phoneScreenshots/img3.png)        | ![Random manga](https://raw.githubusercontent.com/maxwai/NClientV3/main/fastlane/metadata/android/en-US/images/phoneScreenshots/img4.jpg) |
 
 ## Contributors
 
