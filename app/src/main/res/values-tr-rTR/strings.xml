@@ -244,6 +244,8 @@
     <string name="title">Başlık</string>
     <string name="download_date">İndirme tarihi</string>
     <string name="page_count">Sayfa sayısı</string>
+    <string name="artist">Artist</string>
+    <string name="group">Group</string>
     <string name="descending_order">Azalan</string>
     <string name="minimum_comment_length" formatted="true">Yorum en az %d karakter olmalıdır</string>
     <string name="change_scroll_type">Kaydırma tipini değiştir</string>
