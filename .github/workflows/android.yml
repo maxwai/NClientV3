@@ -31,6 +31,6 @@ jobs:
             -   name: Upload Artifact
                 uses: actions/upload-artifact@v4
                 with:
-                    name: ${{ env.date_today }} - APK(s) debug generated
+                    name: Debug APKs
                     path: app/build/outputs/apk/
                     retention-days: 30
