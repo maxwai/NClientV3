@@ -244,6 +244,8 @@
     <string name="title">タイトル</string>
     <string name="download_date">データをダウンロード</string>
     <string name="page_count">ページ数</string>
+    <string name="artist">Artist</string>
+    <string name="group">Group</string>
     <string name="descending_order">降順</string>
     <string name="minimum_comment_length" formatted="true">コメントは少なくとも%d文字である必要があります</string>
     <string name="change_scroll_type">スクロールタイプを変更</string>
