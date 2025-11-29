@@ -244,6 +244,8 @@
     <string name="title">Назва</string>
     <string name="download_date">Дата завантаження</string>
     <string name="page_count">Кількість сторінок</string>
+    <string name="artist">Artist</string>
+    <string name="group">Group</string>
     <string name="descending_order">За спаданням</string>
     <string name="minimum_comment_length" formatted="true">Коментар повинен бути принаймні %d символів</string>
     <string name="change_scroll_type">Змінити тип прокрутки</string>

@@ -244,6 +244,8 @@
     <string name="title">標題</string>
     <string name="download_date">下載日期</string>
     <string name="page_count">頁數</string>
+    <string name="artist">Artist</string>
+    <string name="group">Group</string>
     <string name="descending_order">降冪排列</string>
     <string name="minimum_comment_length" formatted="true">評論不得少於 %d 個字元</string>
     <string name="change_scroll_type">切換滾動類型</string>

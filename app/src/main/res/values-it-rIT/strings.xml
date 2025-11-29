@@ -244,6 +244,8 @@
     <string name="title">Titolo</string>
     <string name="download_date">Data di download</string>
     <string name="page_count">Numero di pagine</string>
+    <string name="artist">Artist</string>
+    <string name="group">Group</string>
     <string name="descending_order">Ordine decrescente</string>
     <string name="minimum_comment_length" formatted="true">Il commento deve essere di almeno %d caratteri</string>
     <string name="change_scroll_type">Cambia scorrimento</string>

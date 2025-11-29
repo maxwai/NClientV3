@@ -244,6 +244,8 @@
     <string name="title">标题</string>
     <string name="download_date">下载日期</string>
     <string name="page_count">页数</string>
+    <string name="artist">Artist</string>
+    <string name="group">Group</string>
     <string name="descending_order">降序排列</string>
     <string name="minimum_comment_length" formatted="true">评论不得少于 %d 个字符</string>
     <string name="change_scroll_type">切换滚动类型</string>
