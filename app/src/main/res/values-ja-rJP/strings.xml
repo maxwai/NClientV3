@@ -182,6 +182,8 @@
     <string name="zoom_one_column">ズームを有効</string>
     <string name="insert_pin">PINを挿入</string>
     <string name="confirm_pin">PINの確認</string>
+    <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
+    <string name="use_device_credentials">Use Device Credentials</string>
     <string name="wrong_pin">PINが間違っています。</string>
     <string name="rotate_image">画像を回転さ</string>
     <string name="toggle_online_favorite">オンラインのお気に入りを切り替える</string>
@@ -307,4 +309,8 @@
     <string name="online_blacklist_add_error">Error adding to online blacklist</string>
     <string name="clipboard_settings_error">Error copying settings into clipboard</string>
     <string name="send_image_error">Error creating Image to send</string>
+    <string name="unlock">Unlock</string>
+    <string name="auth_error">Authentication error</string>
+    <string name="auth_title">Biometric login for NClient</string>
+    <string name="auth_subtitle">Log in using your biometric credential</string>
 </resources>
