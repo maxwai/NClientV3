@@ -40,6 +40,7 @@ SITEMAP_TAGS_PATTERN = r"<loc>(https://nhentai\.net/sitemap/sitemap-tags-\d+\.xm
 LANGUAGE_PATTERN = r"<loc>(https://nhentai\.net/language/.+?)/</loc>"
 CATEGORY_PATTERN = r"<loc>(https://nhentai\.net/category/.+?)/</loc>"
 TAG_PATTERN = r'class="tag tag-(\d+)"'
+TAG_TYPE_ORDER = {6: 0, 7: 1, 3: 2, 4: 3, 2: 4, 1: 5, 5: 6}
 
 
 @dataclass
@@ -66,7 +67,7 @@ class TagInfo:
             if self.category == other.category:
                 return self.id_ < other.id_
             return self.category < other.category
-        return NotImplemented
+        return NotImplementedError
 
 
 def run_session_get(session: Session, url: str) -> Response:
@@ -139,12 +140,12 @@ def get_tag_type(url: str) -> int:
         if url.startswith(site_url):
             return tag_type
     print(f"Unknown Tag Type for {url}")
-    raise NotImplemented
+    raise NotImplementedError
 
 
 def process_language_and_category_urls(
     session: Session, language_and_category_urls: list[str]
-) -> Generator[TagInfo]:
+) -> Generator[TagInfo, None, None]:
     try:
         for url in language_and_category_urls:
             print(f"Processing language and category URLs... {url}")
@@ -159,7 +160,7 @@ def process_language_and_category_urls(
         exit(3)
 
 
-def process_normal_urls(session: Session) -> Generator[TagInfo]:
+def process_normal_urls(session: Session) -> Generator[TagInfo, None, None]:
     try:
         for site_url, tag_type in SITE_AND_TAG_TYPES:
             if tag_type >= 6:
@@ -225,6 +226,7 @@ def main():
         return
 
     data_tags_json: list[list[int | str]] = [x.to_list() for x in new_data_tags]
+    data_tags_json = sorted(data_tags_json, key=lambda x: TAG_TYPE_ORDER[x[-1]])
     with open(TAGS_FILE, "w") as writer:
         json.dump(data_tags_json, writer, separators=(',', ':'))
     with open(TAGS_PRETTY_FILE, "w") as writer:
