@@ -35,6 +35,8 @@ public class FakeInspector extends ThreadAsyncTask<LocalActivity, LocalActivity,
         if (files == null) return activity;
         for (File f : files) if (f.isDirectory()) createGallery(f);
         for (String x : invalidPaths) LogUtility.d("Invalid path: " + x);
+        localAdapter.addGalleries(galleries);
+        galleries.clear();
         return activity;
     }
 
