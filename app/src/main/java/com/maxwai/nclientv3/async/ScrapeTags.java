@@ -2,7 +2,6 @@ package com.maxwai.nclientv3.async;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.JsonReader;
 
 import androidx.annotation.NonNull;
 import androidx.work.OneTimeWorkRequest;
@@ -18,7 +17,11 @@ import com.maxwai.nclientv3.async.database.Queries;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.LogUtility;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +75,7 @@ public class ScrapeTags extends Worker {
             List<Tag> tags = Queries.TagTable.getAllFiltered();
             fetchTags();
             for (Tag t : tags) Queries.TagTable.updateStatus(t.getId(), t.getStatus());
-        } catch (IOException e) {
+        } catch (IOException | JSONException e) {
             LogUtility.w("Error updating Tags", e);
             return Result.failure();
         }
@@ -84,26 +87,35 @@ public class ScrapeTags extends Worker {
         return Result.success();
     }
 
-    private void fetchTags() throws IOException {
-        try (Response x = Global.getClient(getApplicationContext()).newCall(new Request.Builder().url(TAGS).build()).execute()) {
+    private void fetchTags() throws IOException, JSONException {
+        try (Response x = Global.getClient(getApplicationContext())
+            .newCall(new Request.Builder().url(TAGS).build())
+            .execute()) {
             ResponseBody body = x.body();
-            try (JsonReader reader = new JsonReader(body.charStream())) {
-                reader.beginArray();
-                while (reader.hasNext()) {
-                    Tag tag = readTag(reader);
-                    Queries.TagTable.insertScrape(tag, true);
+            JSONArray rootArray = new JSONArray(body.string());
+            int size = rootArray.length();
+            int batchSize = 5000;
+            try {
+                List<Tag> tags = new ArrayList<>(batchSize);
+                for (int i = 0; i <= size / batchSize; i++) {
+                    tags.clear();
+                    for (int j = i * batchSize; j < i * batchSize + batchSize && j < size; j++) {
+                        JSONArray entry = rootArray.getJSONArray(j);
+                        tags.add(readTag(entry));
+                    }
+                    Queries.TagTable.insertScrape(tags, true);
                 }
+            } catch (JSONException ignored) {
+                throw new JSONException("Something went wrong parsing json");
             }
         }
     }
 
-    private Tag readTag(JsonReader reader) throws IOException {
-        reader.beginArray();
-        int id = reader.nextInt();
-        String name = reader.nextString();
-        int count = reader.nextInt();
-        TagType type = TagType.values[reader.nextInt()];
-        reader.endArray();
+    private Tag readTag(JSONArray reader) throws JSONException {
+        int id = reader.getInt(0);
+        String name = reader.getString(1);
+        int count = reader.getInt(2);
+        TagType type = TagType.values[reader.getInt(3)];
         return new Tag(name, count, id, type, TagStatus.DEFAULT);
     }
 

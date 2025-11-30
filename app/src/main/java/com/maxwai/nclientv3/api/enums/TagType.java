@@ -3,6 +3,8 @@ package com.maxwai.nclientv3.api.enums;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 public class TagType implements Parcelable {
     public static final TagType UNKNOWN = new TagType(0, "", null);
     public static final TagType PARODY = new TagType(1, "parody", "parodies");
@@ -63,6 +65,12 @@ public class TagType implements Parcelable {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.single;
     }
 
     //start parcelable implementation

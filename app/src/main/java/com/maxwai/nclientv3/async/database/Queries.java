@@ -432,6 +432,7 @@ public class Queries {
         }
 
         public static void insert(Tag tag, boolean replace) {
+
             ContentValues values = new ContentValues(5);
             values.put(IDTAG, tag.getId());
             values.put(NAME, tag.getName());
@@ -560,8 +561,18 @@ public class Queries {
         }
 
         /*To avoid conflict between the import process and the ScrapeTags*/
-        public static void insertScrape(Tag tag, boolean b) {
-            if (db.isOpen()) insert(tag, b);
+        public static void insertScrape(List<Tag> tags, boolean b) {
+            if (db.isOpen()){
+                db.beginTransaction();
+                try {
+                    for (Tag tag : tags) {
+                        insert(tag, b);
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+            }
         }
     }
 

@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.maxwai.nclientv3.R;
-import com.maxwai.nclientv3.async.ScrapeTags;
 import com.maxwai.nclientv3.async.database.DatabaseHelper;
 import com.maxwai.nclientv3.async.downloader.DownloadGalleryV2;
 import com.maxwai.nclientv3.settings.Database;
@@ -31,7 +30,8 @@ public class CrashApplication extends Application {
         Global.initStorage(this);
         //noinspection resource
         Database.setDatabase(new DatabaseHelper(getApplicationContext()).getWritableDatabase());
-        String version = Global.getLastVersion(this), actualVersion = Global.getVersionName(this);
+        String version = Global.getLastVersion(this);
+        String actualVersion = Global.getVersionName(this);
         SharedPreferences preferences = getSharedPreferences("Settings", 0);
         if (!actualVersion.equals(version))
             afterUpdateChecks(preferences, version);
@@ -47,8 +47,6 @@ public class CrashApplication extends Application {
     private void afterUpdateChecks(SharedPreferences preferences, String oldVersion) {
         SharedPreferences.Editor editor = preferences.edit();
         removeOldUpdates();
-        //update tags
-        ScrapeTags.startWork(this);
         if ("0.0.0".equals(oldVersion))
             editor.putBoolean(getString(R.string.preference_key_check_update), true);
         editor.apply();
