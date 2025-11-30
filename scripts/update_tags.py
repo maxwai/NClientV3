@@ -139,7 +139,7 @@ def get_tag_type(url: str) -> int:
         if url.startswith(site_url):
             return tag_type
     print(f"Unknown Tag Type for {url}")
-    raise NotImplemented
+    raise NotImplementedError
 
 
 def process_language_and_category_urls(
