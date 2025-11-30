@@ -250,7 +250,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void initializeNavigationView() {
-        changeNavigationImage(navigationView);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> finish());
         navigationView.setNavigationItemSelectedListener(this);
@@ -456,14 +455,6 @@ public class MainActivity extends BaseActivity
         }
         inspector = InspectorV3.tagInspector(this, tag, 1, sortType, resetDataset);
         modeType = ModeType.TAG;
-    }
-
-    private void changeNavigationImage(NavigationView navigationView) {
-        View view = navigationView.getHeaderView(0);
-        ImageView imageView = view.findViewById(R.id.imageView);
-        View layoutHeader = view.findViewById(R.id.layout_header);
-        ImageDownloadUtility.loadImage(R.drawable.ic_logo, imageView);
-        layoutHeader.setBackgroundResource(R.drawable.side_nav_bar);
     }
 
     public void hidePageSwitcher() {

@@ -297,6 +297,7 @@
     <string-array name="theme">
         <item>ライトテーマ</item>
         <item>ダークテーマ</item>
+        <item>True Black</item>
     </string-array>
     <string-array name="title_type_array">
         <item>英語</item>

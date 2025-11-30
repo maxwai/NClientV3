@@ -1,5 +1,7 @@
 package com.maxwai.nclientv3.components.activities;
 
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,5 +68,15 @@ public abstract class GeneralActivity extends AppCompatActivity {
             isFastScrollerApplied = true;
             Global.applyFastScroller(findViewById(R.id.recycler));
         }
+    }
+
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        SharedPreferences preferences = getSharedPreferences("Settings", 0);
+        if (preferences.getBoolean(getString(R.string.preference_key_black_theme), false)) {
+            theme.applyStyle(R.style.AppTheme_Black, true);
+        }
+        return theme;
     }
 }

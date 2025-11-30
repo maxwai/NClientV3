@@ -297,6 +297,7 @@
     <string-array name="theme">
         <item>Hell</item>
         <item>Dunkel</item>
+        <item>Schwarz</item>
     </string-array>
     <string-array name="title_type_array">
         <item>Englisch</item>

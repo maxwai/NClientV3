@@ -223,15 +223,18 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             themeSelect.setOnPreferenceChangeListener((preference, newValue) -> {
                 String newTheme = (String) newValue;
                 String[] availableThemes = getResources().getStringArray(R.array.theme_data);
-                assert availableThemes.length == 2;
+                assert availableThemes.length == 3;
+                act.getSharedPreferences("Settings", 0)
+                    .edit()
+                    .putBoolean(getString(R.string.preference_key_black_theme), newTheme.equals(availableThemes[2])) // black
+                    .apply();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     int theme;
                     if (newTheme.equals(availableThemes[0])) { // light
                         theme = UiModeManager.MODE_NIGHT_NO;
-                    } else if (newTheme.equals(availableThemes[1])) { // dark
+                    } else if (newTheme.equals(availableThemes[1]) || newTheme.equals(availableThemes[2])) { // dark / black
                         theme = UiModeManager.MODE_NIGHT_YES;
                     } else {
-                        assert false;
                         return false;
                     }
                     UiModeManager uim = (UiModeManager) act.getSystemService(Context.UI_MODE_SERVICE);
@@ -240,10 +243,9 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
                     int theme;
                     if (newTheme.equals(availableThemes[0])) { // light
                         theme = AppCompatDelegate.MODE_NIGHT_NO;
-                    } else if (newTheme.equals(availableThemes[1])) { // dark
+                    } else if (newTheme.equals(availableThemes[1]) || newTheme.equals(availableThemes[2])) { // dark / black
                         theme = AppCompatDelegate.MODE_NIGHT_YES;
                     } else {
-                        assert false;
                         return false;
                     }
                     act.getMainExecutor().execute(() -> AppCompatDelegate.setDefaultNightMode(theme));

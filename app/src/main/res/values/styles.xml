@@ -6,7 +6,22 @@
         <item name="colorPrimaryVariant">@color/primaryColorVariant</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowSplashScreenBackground" tools:targetApi="31">#1F1F1F</item>
+        <item name="navHeaderGradient">@drawable/side_nav_bar</item>
     </style>
 
-    <style name="AppTheme.NoTitle" parent="AppTheme" />
+
+    <style name="AppTheme.Black" parent="AppTheme">
+        <item name="colorSurface">#000000</item>
+        <item name="android:windowBackground">#000000</item>
+        <item name="android:colorBackground">#000000</item>
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="navHeaderGradient">#000000</item>
+        <item name="colorPrimaryVariant">#000000</item>
+        <item name="cardViewStyle">@style/BlackCardView</item>
+    </style>
+
+    <style name="BlackCardView" parent="CardView">
+        <item name="cardBackgroundColor">#000000</item>
+    </style>
+
 </resources>

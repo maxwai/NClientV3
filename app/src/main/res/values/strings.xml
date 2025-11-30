@@ -9,6 +9,7 @@
     <string name="preference_key_title_type" translatable="false">title_type_str</string>
     <string name="preference_key_default_zoom" translatable="false">default_zoom</string>
     <string name="preference_key_theme_select" translatable="false">theme_select</string>
+    <string name="preference_key_black_theme" translatable="false">black_theme</string>
     <string name="preference_key_cache" translatable="false">cache</string>
     <string name="preference_key_use_account_tag" translatable="false">use_account_tags</string>
     <string name="preference_key_use_rtl" translatable="false">use_rtl</string>
@@ -374,11 +375,13 @@
     <string-array name="theme">
         <item>Light</item>
         <item>Dark</item>
+        <item>True Black</item>
     </string-array>
 
     <string-array name="theme_data" translatable="false">
         <item>light</item>
         <item>dark</item>
+        <item>black</item>
     </string-array>
 
     <string-array name="site_mirrors" translatable="false">

@@ -297,6 +297,7 @@
     <string-array name="theme">
         <item>Beyaz Tema</item>
         <item>Siyah Tema</item>
+        <item>True Black</item>
     </string-array>
     <string-array name="title_type_array">
         <item>İngilizce</item>

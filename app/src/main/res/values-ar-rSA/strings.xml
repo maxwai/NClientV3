@@ -297,6 +297,7 @@
     <string-array name="theme">
         <item>فاتحة</item>
         <item>داكنة</item>
+        <item>True Black</item>
     </string-array>
     <string-array name="title_type_array">
         <item>الإنجليزية</item>
