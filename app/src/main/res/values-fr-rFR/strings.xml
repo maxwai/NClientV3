@@ -182,8 +182,6 @@
     <string name="zoom_one_column">Activer le zoom</string>
     <string name="insert_pin">Insérer un code PIN</string>
     <string name="confirm_pin">Confirmer le code PIN</string>
-    <string name="setting_pin">Activer le code PIN pour ouvrir l\'appli</string>
-    <string name="use_pin">Utiliser un code PIN</string>
     <string name="wrong_pin">Mauvais code PIN</string>
     <string name="rotate_image">Pivoter l\'image</string>
     <string name="toggle_online_favorite">Ajout/Suppression du favori en ligne</string>

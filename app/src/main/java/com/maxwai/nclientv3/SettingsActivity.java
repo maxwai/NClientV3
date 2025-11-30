@@ -1,5 +1,8 @@
 package com.maxwai.nclientv3;
 
+import static android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_WEAK;
+import static android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,18 +21,17 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.async.database.export.Exporter;
 import com.maxwai.nclientv3.async.database.export.Manager;
 import com.maxwai.nclientv3.components.activities.GeneralActivity;
 import com.maxwai.nclientv3.components.views.GeneralPreferenceFragment;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.LogUtility;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.util.Objects;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -38,6 +40,7 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SettingsActivity extends GeneralActivity {
@@ -132,6 +135,8 @@ public class SettingsActivity extends GeneralActivity {
                 Toast.makeText(this, getString(R.string.copy_logs_fail), Toast.LENGTH_SHORT).show();
             }
         });
+        final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+        enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED, BIOMETRIC_WEAK | DEVICE_CREDENTIAL);
     }
 
     private void importSettings(Uri selectedFile) {

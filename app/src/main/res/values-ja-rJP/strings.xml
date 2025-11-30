@@ -182,8 +182,6 @@
     <string name="zoom_one_column">ズームを有効</string>
     <string name="insert_pin">PINを挿入</string>
     <string name="confirm_pin">PINの確認</string>
-    <string name="setting_pin">PINを有効にしてアプリを起動</string>
-    <string name="use_pin">PINを使用</string>
     <string name="wrong_pin">PINが間違っています。</string>
     <string name="rotate_image">画像を回転さ</string>
     <string name="toggle_online_favorite">オンラインのお気に入りを切り替える</string>

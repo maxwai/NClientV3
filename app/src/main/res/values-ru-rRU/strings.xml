@@ -182,8 +182,6 @@
     <string name="zoom_one_column">Включить зум</string>
     <string name="insert_pin">Введите Пин-код</string>
     <string name="confirm_pin">Подтвердите Пин-код</string>
-    <string name="setting_pin">Включить Пин-код для входа в приложение</string>
-    <string name="use_pin">Использовать Пин-код</string>
     <string name="wrong_pin">Неверный Пин-код</string>
     <string name="rotate_image">Повернуть изображение</string>
     <string name="toggle_online_favorite">Переместить в онлайн избранное</string>

@@ -182,8 +182,6 @@
     <string name="zoom_one_column">Увімкнути масштабування</string>
     <string name="insert_pin">Введіть PIN</string>
     <string name="confirm_pin">Підтвердити PIN</string>
-    <string name="setting_pin">Увімкніть PIN-код для входу у додаток</string>
-    <string name="use_pin">Використовувати PIN</string>
     <string name="wrong_pin">Невірний PIN</string>
     <string name="rotate_image">Повернути зображення</string>
     <string name="toggle_online_favorite">Ввімкнути уподобання онлайн</string>

@@ -1,28 +1,25 @@
 package com.maxwai.nclientv3;
 
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK;
+import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import com.maxwai.nclientv3.components.activities.GeneralActivity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.Executor;
 
 public class PINActivity extends GeneralActivity {
-    private static final int PIN_LENGHT = 4;
-    private List<TextView> texts;
-    private TextView text;
-    private String pin = "";
-    private String confirmPin = null;
-    private boolean setMode;
     private SharedPreferences preferences;
+    private boolean authSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,106 +27,62 @@ public class PINActivity extends GeneralActivity {
         //Global.initActivity(this);
         setContentView(R.layout.activity_pin);
         preferences = getSharedPreferences("Settings", 0);
-        setMode = getIntent().getBooleanExtra(getPackageName() + ".SET", false);
-        if (!setMode && !hasPin()) {
+        if (!hasPin()) {
             finish();
             return;
         }
-        ImageView logo = findViewById(R.id.imageView);
-        logo.setImageResource(R.drawable.ic_logo);
-        LinearLayout linear = findViewById(R.id.linearLayout);
-        text = findViewById(R.id.textView);
-        ImageButton cancelButton = findViewById(R.id.cancelButton);
-        texts = new ArrayList<>(PIN_LENGHT);
-        for (int i = 0; i < PIN_LENGHT; i++) texts.add((TextView) linear.getChildAt(i));
-        List<Button> numbers = Arrays.asList(
-            findViewById(R.id.btn0), findViewById(R.id.btn1), findViewById(R.id.btn2),
-            findViewById(R.id.btn3), findViewById(R.id.btn4), findViewById(R.id.btn5),
-            findViewById(R.id.btn6), findViewById(R.id.btn7), findViewById(R.id.btn8),
-            findViewById(R.id.btn9)
-        );
-        for (int i = 0; i < numbers.size(); i++) {
-            final int ind = i;
-            numbers.get(i).setOnClickListener(v -> {
-                pin += ind;
-                applyPinMask();
-                if (pin.length() == 4)
-                    checkPin();
-            });
-        }
-        cancelButton.setOnClickListener(v -> {
-            if (pin.isEmpty()) return;
-            pin = pin.substring(0, pin.length() - 1);
-            applyPinMask();
-        });
-        cancelButton.setOnLongClickListener(v -> {
-            pin = "";
-            applyPinMask();
-            return true;
-        });
-        ImageButton utility = findViewById(R.id.utility);
-        utility.setOnClickListener(v -> {
-            if (setMode && isConfirming()) {
-                checkPin();//will go in wrong branch
-            } else {
+        Executor executor = ContextCompat.getMainExecutor(this);
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this,
+            executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.auth_error),
+                        Toast.LENGTH_SHORT)
+                    .show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(
+                @NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                authSuccess = true;
                 finish();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.auth_error),
+                        Toast.LENGTH_SHORT)
+                    .show();
             }
         });
 
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+            .setTitle(getString(R.string.auth_title))
+            .setSubtitle(getString(R.string.auth_subtitle))
+            .setAllowedAuthenticators(BIOMETRIC_WEAK | DEVICE_CREDENTIAL)
+            .build();
+
+        Button unlockButton = findViewById(R.id.unlockButton);
+        unlockButton.setOnClickListener(view -> biometricPrompt.authenticate(promptInfo));
+        unlockButton.performClick();
     }
 
-    private boolean isConfirming() {
-        return confirmPin != null;
-    }
-
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean hasPin() {
-        return preferences.getBoolean("has_pin", false);
-    }
-
-    private void setPin(String pin) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("has_pin", true);
-        editor.putString("pin", pin);
-        editor.apply();
+        return preferences.getBoolean(getString(R.string.preference_key_has_credentials), false);
     }
 
     @Override
     public void finish() {
-        Intent i = new Intent(this, setMode ? SettingsActivity.class : MainActivity.class);
-        if (setMode || !hasPin() || pin.equals(getTruePin())) startActivity(i);
+        Intent i = new Intent(this, MainActivity.class);
+        if (!hasPin() || authSuccess) startActivity(i);
+        authSuccess = false;
         super.finish();
-    }
-
-    private String getTruePin() {
-        return preferences.getString("pin", null);
-    }
-
-    private void checkPin() {
-        if (setMode) {//if password should be set
-            if (!isConfirming()) {//now password must be confirmed
-                confirmPin = pin;
-                pin = "";
-                text.setText(R.string.confirm_pin);
-            } else if (confirmPin.equals(pin)) {//password confirmed
-                setPin(confirmPin);
-                finish();
-            } else {//wrong confirmed password
-                confirmPin = null;
-                text.setText(R.string.insert_pin);
-                pin = "";
-            }
-        } else if (pin.equals(getTruePin())) {//right password
-            finish();
-        } else {//wrong password
-            text.setText(R.string.wrong_pin);
-            pin = "";
-        }
-        applyPinMask();
-    }
-
-    private void applyPinMask() {
-        int i, len = Math.min(pin.length(), PIN_LENGHT);
-        for (i = 0; i < len; i++) texts.get(i).setText(R.string.full_circle);
-        for (; i < PIN_LENGHT; i++) texts.get(i).setText(R.string.empty_circle);
     }
 }

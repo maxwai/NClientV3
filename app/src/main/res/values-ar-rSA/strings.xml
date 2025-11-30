@@ -182,8 +182,6 @@
     <string name="zoom_one_column">فعِّل التقريب</string>
     <string name="insert_pin">أَدخِل الرقم السري</string>
     <string name="confirm_pin">أَكد الرقم السري</string>
-    <string name="setting_pin">اُطلب الرقم السري عند الدخول إلى التطبيق</string>
-    <string name="use_pin">اِستخدم الرقم السري</string>
     <string name="wrong_pin">الرقم المُدخَل خاطئ</string>
     <string name="rotate_image">أَدر الصورة</string>
     <string name="toggle_online_favorite">بدِّل التفضيل من عدمه عبر الشابكة</string>

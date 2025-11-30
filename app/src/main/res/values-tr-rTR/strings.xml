@@ -182,8 +182,6 @@
     <string name="zoom_one_column">Yakınlaştırmayı etkinleştir</string>
     <string name="insert_pin">PIN gir</string>
     <string name="confirm_pin">PIN\'i doğrula</string>
-    <string name="setting_pin">Uygulamaya girmek için PIN\'i aktifleştir</string>
-    <string name="use_pin">PIN kullan</string>
     <string name="wrong_pin">Yanlış PIN</string>
     <string name="rotate_image">Fotoğrafı çevir</string>
     <string name="toggle_online_favorite">Online favori aç/kapa</string>

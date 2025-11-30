@@ -182,8 +182,6 @@
     <string name="zoom_one_column">启用缩放</string>
     <string name="insert_pin">输入 PIN 码</string>
     <string name="confirm_pin">确认 PIN 码</string>
-    <string name="setting_pin">启用 PIN 码登录应用</string>
-    <string name="use_pin">使用 PIN 码</string>
     <string name="wrong_pin">PIN 码错误</string>
     <string name="rotate_image">旋转图片</string>
     <string name="toggle_online_favorite">切换在线收藏</string>

@@ -30,7 +30,7 @@
     <string name="preference_key_col_screen" translatable="false">col_screen</string>
     <string name="preference_key_data_screen" translatable="false">data_screen</string>
     <string name="preference_key_fetch_metadata" translatable="false">fetch_metadata</string>
-    <string name="preference_key_has_pin" translatable="false">has_pin</string>
+    <string name="preference_key_has_credentials" translatable="false">has_credentials</string>
     <string name="preference_key_version" translatable="false">version</string>
     <string name="preference_key_bug" translatable="false">bug</string>
     <string name="preference_key_copy_settings" translatable="false">copy_settings</string>
@@ -254,8 +254,8 @@
     <string name="zoom_one_column">Enable zoom</string>
     <string name="insert_pin">Insert PIN</string>
     <string name="confirm_pin">Confirm PIN</string>
-    <string name="setting_pin">Enable PIN to enter the app</string>
-    <string name="use_pin">Use PIN</string>
+    <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
+    <string name="use_device_credentials">Use Device Credentials</string>
     <string name="wrong_pin">Wrong PIN</string>
     <string name="rotate_image">Rotate image</string>
     <string name="toggle_online_favorite">Toggle online favorite</string>
@@ -399,5 +399,9 @@
     <string name="online_blacklist_add_error">Error adding to online blacklist</string>
     <string name="clipboard_settings_error">Error copying settings into clipboard</string>
     <string name="send_image_error">Error creating Image to send</string>
+    <string name="unlock">Unlock</string>
+    <string name="auth_error">Authentication error</string>
+    <string name="auth_title">Biometric login for NClient</string>
+    <string name="auth_subtitle">Log in using your biometric credential</string>
 
 </resources>

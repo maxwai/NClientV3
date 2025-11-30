@@ -1,5 +1,8 @@
 package com.maxwai.nclientv3.components.views;
 
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK;
+import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
+
 import android.annotation.SuppressLint;
 import android.app.UiModeManager;
 import android.content.ComponentName;
@@ -10,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.JsonWriter;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+import androidx.biometric.BiometricManager;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -25,7 +30,6 @@ import androidx.preference.SeekBarPreference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.CopyToClipboardActivity;
-import com.maxwai.nclientv3.PINActivity;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.SettingsActivity;
 import com.maxwai.nclientv3.StatusManagerActivity;
@@ -269,16 +273,24 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             });
         }
         {
-            Preference hasPin = Objects.requireNonNull(findPreference(getString(R.string.preference_key_has_pin)));
-            hasPin.setOnPreferenceChangeListener((preference, newValue) -> {
+            Preference hasCredentials = Objects.requireNonNull(findPreference(getString(R.string.preference_key_has_credentials)));
+            hasCredentials.setOnPreferenceChangeListener((preference, newValue) -> {
                 if (newValue.equals(Boolean.TRUE)) {
-                    Intent i = new Intent(act, PINActivity.class);
-                    i.putExtra(act.getPackageName() + ".SET", true);
-                    startActivity(i);
-                    act.finish();
-                    return false;
+                    BiometricManager biometricManager = BiometricManager.from(act);
+                    switch (biometricManager.canAuthenticate(BIOMETRIC_WEAK | DEVICE_CREDENTIAL)) {
+                        case BiometricManager.BIOMETRIC_SUCCESS:
+                            break;
+                        case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                            // Prompts the user to create credentials that your app accepts.
+                            final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+                            enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                                BIOMETRIC_WEAK | DEVICE_CREDENTIAL);
+                            startActivity(enrollIntent);
+                        case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                        case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                            return false;
+                    }
                 }
-                act.getSharedPreferences("Settings", 0).edit().remove("pin").apply();
                 return true;
             });
         }

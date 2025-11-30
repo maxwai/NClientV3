@@ -182,8 +182,6 @@
     <string name="zoom_one_column">Zoom aktivieren</string>
     <string name="insert_pin">PIN eingeben</string>
     <string name="confirm_pin">PIN bestätigen</string>
-    <string name="setting_pin">PIN verlangen, um App zu öffnen</string>
-    <string name="use_pin">PIN benutzen</string>
     <string name="wrong_pin">Falscher PIN</string>
     <string name="rotate_image">Bild drehen</string>
     <string name="toggle_online_favorite">Online Favoriten umschalten</string>
