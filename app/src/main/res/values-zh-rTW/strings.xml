@@ -182,8 +182,8 @@
     <string name="zoom_one_column">啟用縮放</string>
     <string name="insert_pin">輸入 PIN 碼</string>
     <string name="confirm_pin">確認 PIN 碼</string>
-    <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
-    <string name="use_device_credentials">Use Device Credentials</string>
+    <string name="setting_device_credentials">啟用裝置憑證以進入應用程式</string>
+    <string name="use_device_credentials">使用裝置憑證</string>
     <string name="wrong_pin">PIN 碼錯誤</string>
     <string name="rotate_image">旋轉圖片</string>
     <string name="toggle_online_favorite">切換線上收藏</string>
@@ -244,8 +244,8 @@
     <string name="title">標題</string>
     <string name="download_date">下載日期</string>
     <string name="page_count">頁數</string>
-    <string name="artist">Artist</string>
-    <string name="group">Group</string>
+    <string name="artist">藝術家</string>
+    <string name="group">團體</string>
     <string name="descending_order">降冪排列</string>
     <string name="minimum_comment_length" formatted="true">評論不得少於 %d 個字元</string>
     <string name="change_scroll_type">切換滾動類型</string>
@@ -299,18 +299,18 @@
     <string-array name="theme">
         <item>淺色</item>
         <item>暗色</item>
-        <item>True Black</item>
+        <item>純黑</item>
     </string-array>
     <string-array name="title_type_array">
         <item>英文</item>
         <item>日文</item>
         <item>簡約</item>
     </string-array>
-    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
-    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
-    <string name="send_image_error">Error creating Image to send</string>
-    <string name="unlock">Unlock</string>
-    <string name="auth_error">Authentication error</string>
-    <string name="auth_title">Biometric login for NClient</string>
-    <string name="auth_subtitle">Log in using your biometric credential</string>
+    <string name="online_blacklist_add_error">新增至線上黑名單時發生錯誤</string>
+    <string name="clipboard_settings_error">將設定複製到剪貼簿時發生錯誤</string>
+    <string name="send_image_error">建立要傳送的影像時發生錯誤</string>
+    <string name="unlock">解鎖</string>
+    <string name="auth_error">驗證錯誤</string>
+    <string name="auth_title">生物特徵登入</string>
+    <string name="auth_subtitle">使用您的生物特徵憑證登入</string>
 </resources>
