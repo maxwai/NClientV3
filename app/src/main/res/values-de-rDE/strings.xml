@@ -182,8 +182,8 @@
     <string name="zoom_one_column">Zoom aktivieren</string>
     <string name="insert_pin">PIN eingeben</string>
     <string name="confirm_pin">PIN bestätigen</string>
-    <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
-    <string name="use_device_credentials">Use Device Credentials</string>
+    <string name="setting_device_credentials">App Zugriff mit Gerätesperre sichern</string>
+    <string name="use_device_credentials">Gerätesperre benutzen</string>
     <string name="wrong_pin">Falscher PIN</string>
     <string name="rotate_image">Bild drehen</string>
     <string name="toggle_online_favorite">Online Favoriten umschalten</string>
@@ -299,7 +299,7 @@
     <string-array name="theme">
         <item>Hell</item>
         <item>Dunkel</item>
-        <item>True Black</item>
+        <item>Schwarz (für AMOLED)</item>
     </string-array>
     <string-array name="title_type_array">
         <item>Englisch</item>
@@ -309,7 +309,7 @@
     <string name="online_blacklist_add_error">Error adding to online blacklist</string>
     <string name="clipboard_settings_error">Error copying settings into clipboard</string>
     <string name="send_image_error">Error creating Image to send</string>
-    <string name="unlock">Unlock</string>
+    <string name="unlock">Entsperren</string>
     <string name="auth_error">Authentication error</string>
     <string name="auth_title">Biometric login for NClient</string>
     <string name="auth_subtitle">Log in using your biometric credential</string>
