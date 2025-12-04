@@ -310,7 +310,7 @@
     <string name="clipboard_settings_error">Error copying settings into clipboard</string>
     <string name="send_image_error">Error creating Image to send</string>
     <string name="unlock">Entsperren</string>
-    <string name="auth_error">Authentication error</string>
-    <string name="auth_title">Biometric login for NClient</string>
-    <string name="auth_subtitle">Log in using your biometric credential</string>
+    <string name="auth_error">Problem bei Authentifizierung</string>
+    <string name="auth_title">Biometrische Anmeldung für NClient</string>
+    <string name="auth_subtitle">Anmelden mit Biometrischen Daten</string>
 </resources>
