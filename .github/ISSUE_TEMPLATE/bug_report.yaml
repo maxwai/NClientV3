@@ -7,6 +7,8 @@ body:
       label: Checklist
       description: Please confirm that you have done following steps.
       options:
+        - label: I have looked at the common issues and ways to fix them in the [wiki](https://github.com/maxwai/NClientV3/wiki)
+          required: true
         - label: I have searched the existing issues for the same bug
           required: true
         - label: I have attached the log file as an attachment to this issue
