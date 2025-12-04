@@ -12,18 +12,7 @@ Releases: <https://github.com/maxwai/NClientV3/releases>
 
 ## Migrate from original NClientV2 to NClientV3
 
-Unfortunately, due to Android security features, it is not possible to create an APK that will update the original App since the same signature will not be possible. For that reason a migration is necessary.
-
-1. If not already done, move your download folder to outside the protected folders in `Settings -> Folder location`
-   1. There are a lot of tutorials online on how to access `/storage/emulated/0/Android/data`. For example here from [medium.com](https://medium.com/@naira-nicol/how-to-access-android-data-folder-c0227e0a42ef)
-   2. Be sure to not move it to `/storage/emulated/0/Android/data` but to a folder that your normal file app can see it. (Notice: `/storage/emulated/0/nclient` would work for example for a new path)
-2. Rename the subfolder in the path you set from `NClientV2` to `NClientV3`
-3. Export your data in `Settings -> Export data`
-   1. IMPORTANT: wait for the pop up message saying `Export finished`
-4. Open NClientV3
-5. Set the download folder in `Settings -> Folder location` to the same path as in NClientV2
-6. Import your data in `Settings -> Import data`, choose the zip file you created in Step 3
-   1. IMPORTANT: wait for the pop up message saying `Import finished`
+Info can be found in the [wiki](https://github.com/maxwai/NClientV3/wiki/Migrate-from-NClientV2-to-NClientV3)
 
 ## Translate App
 
