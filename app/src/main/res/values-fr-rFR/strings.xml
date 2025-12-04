@@ -182,8 +182,8 @@
     <string name="zoom_one_column">Activer le zoom</string>
     <string name="insert_pin">Insérer un code PIN</string>
     <string name="confirm_pin">Confirmer le code PIN</string>
-    <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
-    <string name="use_device_credentials">Use Device Credentials</string>
+    <string name="setting_device_credentials">Sécuriser l\'accès à l\'application avec le verrouillage de l\'appareil</string>
+    <string name="use_device_credentials">Utiliser le verrouillage de l\'appareil</string>
     <string name="wrong_pin">Mauvais code PIN</string>
     <string name="rotate_image">Pivoter l\'image</string>
     <string name="toggle_online_favorite">Ajout/Suppression du favori en ligne</string>
@@ -299,7 +299,7 @@
     <string-array name="theme">
         <item>Clair</item>
         <item>Sombre</item>
-        <item>True Black</item>
+        <item>Noir (pour AMOLED)</item>
     </string-array>
     <string-array name="title_type_array">
         <item>Anglais</item>
@@ -309,8 +309,8 @@
     <string name="online_blacklist_add_error">Error adding to online blacklist</string>
     <string name="clipboard_settings_error">Error copying settings into clipboard</string>
     <string name="send_image_error">Error creating Image to send</string>
-    <string name="unlock">Unlock</string>
-    <string name="auth_error">Authentication error</string>
-    <string name="auth_title">Biometric login for NClient</string>
-    <string name="auth_subtitle">Log in using your biometric credential</string>
+    <string name="unlock">Déverrouiller</string>
+    <string name="auth_error">Erreur d\'authentification</string>
+    <string name="auth_title">Connexion biométrique pour NClient</string>
+    <string name="auth_subtitle">Identifier à l\'aide des identifiants biométriques</string>
 </resources>
