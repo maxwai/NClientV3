@@ -12,7 +12,9 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v4
+            -   name: Checkout sources
+                uses: actions/checkout@v4
+
             -   name: set up JDK 17
                 uses: actions/setup-java@v4
                 with:
@@ -22,12 +24,16 @@ jobs:
 
             -   name: Grant execute permission for gradlew
                 run: chmod +x gradlew
+
             -   name: Add empty keystore.properties
                 run: echo "storeFile=dummy.jks" > keystore.properties
+
             -   name: Assemble Debug with Gradle
                 run: ./gradlew assembleDebug
+
             -   name: Bundle Debug with Gradle
                 run: ./gradlew bundleDebug
+
             -   name: Upload Artifact
                 uses: actions/upload-artifact@v4
                 with:

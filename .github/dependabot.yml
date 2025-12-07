@@ -1,0 +1,25 @@
+version: 2
+updates:
+    # Enable version updates for Gradle
+    -   package-ecosystem: "gradle"
+        # Look for a `build.gradle` in the `root` directory
+        directory: "/"
+        # Check for updates once a week
+        schedule:
+            interval: "weekly"
+
+    # Enable version updates for npm
+    -   package-ecosystem: "pip"
+        # Look for `package.json` and `lock` files in the `root` directory
+        directory: "/scripts"
+        # Check the npm registry for updates every day (weekdays)
+        schedule:
+            interval: "weekly"
+
+    # Enable version updates for GitHub Actions
+    -   package-ecosystem: "github-actions"
+        # Workflow files stored in the default location of `.github/workflows`
+        # You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.
+        directory: "/"
+        schedule:
+            interval: "weekly"
