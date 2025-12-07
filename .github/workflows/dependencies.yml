@@ -28,4 +28,4 @@ jobs:
                 uses: gradle/actions/dependency-submission@v5
                 with:
                     # Exclude dependencies that are only resolved in test classpaths
-                    dependency-graph-exclude-configurations: '.*(([Tt]est(Compile|Runtime)Classpath)|(android-test-plugin)).*'
+                    dependency-graph-exclude-configurations: '.*(([Tt]est(Compile|Runtime)Classpath)|(android-test-plugin)|(unified-test-platform)).*'
