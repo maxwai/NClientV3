@@ -182,6 +182,8 @@
     <string name="zoom_one_column">启用缩放</string>
     <string name="insert_pin">输入 PIN 码</string>
     <string name="confirm_pin">确认 PIN 码</string>
+    <string name="setting_device_credentials">启用设备凭据以进入应用</string>
+    <string name="use_device_credentials">使用设备凭据</string>
     <string name="wrong_pin">PIN 码错误</string>
     <string name="rotate_image">旋转图片</string>
     <string name="toggle_online_favorite">切换在线收藏</string>
@@ -242,8 +244,8 @@
     <string name="title">标题</string>
     <string name="download_date">下载日期</string>
     <string name="page_count">页数</string>
-    <string name="artist">Artist</string>
-    <string name="group">Group</string>
+    <string name="artist">艺术家</string>
+    <string name="group">团队</string>
     <string name="descending_order">降序排列</string>
     <string name="minimum_comment_length" formatted="true">评论不得少于 %d 个字符</string>
     <string name="change_scroll_type">切换滚动类型</string>
@@ -297,14 +299,18 @@
     <string-array name="theme">
         <item>亮色</item>
         <item>暗色</item>
-        <item>True Black</item>
+        <item>纯黑(AMOLED屏优化)</item>
     </string-array>
     <string-array name="title_type_array">
         <item>英文</item>
         <item>日文</item>
         <item>简约</item>
     </string-array>
-    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
-    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
-    <string name="send_image_error">Error creating Image to send</string>
+    <string name="online_blacklist_add_error">添加到在线黑名单时出错</string>
+    <string name="clipboard_settings_error">将设置复制到剪贴板时出错</string>
+    <string name="send_image_error">创建待发送图像时出错</string>
+    <string name="unlock">解锁</string>
+    <string name="auth_error">身份验证错误</string>
+    <string name="auth_title">生物识别登录</string>
+    <string name="auth_subtitle">使用您的生物识别凭证登录</string>
 </resources>
