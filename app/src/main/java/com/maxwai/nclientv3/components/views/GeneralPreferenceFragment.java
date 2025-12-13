@@ -35,6 +35,7 @@ import com.maxwai.nclientv3.SettingsActivity;
 import com.maxwai.nclientv3.StatusManagerActivity;
 import com.maxwai.nclientv3.async.MetadataFetcher;
 import com.maxwai.nclientv3.async.VersionChecker;
+import com.maxwai.nclientv3.components.activities.CrashApplication;
 import com.maxwai.nclientv3.components.launcher.LauncherCalculator;
 import com.maxwai.nclientv3.components.launcher.LauncherReal;
 import com.maxwai.nclientv3.settings.Global;
@@ -49,6 +50,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -224,6 +226,9 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
                 String newTheme = (String) newValue;
                 String[] availableThemes = getResources().getStringArray(R.array.theme_data);
                 assert availableThemes.length == 3;
+                if (Arrays.stream(availableThemes).noneMatch(newTheme::equals)) {
+                    return false;
+                }
                 act.getSharedPreferences("Settings", 0)
                     .edit()
                     .putBoolean(getString(R.string.preference_key_black_theme), newTheme.equals(availableThemes[2])) // black
@@ -240,15 +245,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
                     UiModeManager uim = (UiModeManager) act.getSystemService(Context.UI_MODE_SERVICE);
                     uim.setApplicationNightMode(theme);
                 } else {
-                    int theme;
-                    if (newTheme.equals(availableThemes[0])) { // light
-                        theme = AppCompatDelegate.MODE_NIGHT_NO;
-                    } else if (newTheme.equals(availableThemes[1]) || newTheme.equals(availableThemes[2])) { // dark / black
-                        theme = AppCompatDelegate.MODE_NIGHT_YES;
-                    } else {
-                        return false;
-                    }
-                    act.getMainExecutor().execute(() -> AppCompatDelegate.setDefaultNightMode(theme));
+                    CrashApplication.setDarkLightTheme(newTheme, act);
                 }
                 return true;
             });

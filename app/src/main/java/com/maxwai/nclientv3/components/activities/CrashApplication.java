@@ -2,10 +2,13 @@ package com.maxwai.nclientv3.components.activities;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.DeprecatedSinceApi;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -22,6 +25,18 @@ import com.maxwai.nclientv3.settings.TagV2;
 import com.maxwai.nclientv3.utility.network.NetworkUtil;
 
 public class CrashApplication extends Application {
+
+    /**
+     * Don't use on API >= 31 (S)
+     */
+    @DeprecatedSinceApi(api = Build.VERSION_CODES.S)
+    public static void setDarkLightTheme(String theme, Context ctx) {
+        String[] availableThemes = ctx.getResources().getStringArray(R.array.theme_data);
+        ctx.getMainExecutor().execute(() ->
+            AppCompatDelegate.setDefaultNightMode(theme.equals(availableThemes[0]) ? // light
+                AppCompatDelegate.MODE_NIGHT_NO :
+                AppCompatDelegate.MODE_NIGHT_YES));
+    }
 
     @Override
     public void onCreate() {
@@ -42,6 +57,10 @@ public class CrashApplication extends Application {
         TagV2.initSortByName(this);
         DownloadGalleryV2.loadDownloads(this);
         registerActivityLifecycleCallbacks(new CustomActivityLifecycleCallback());
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            String theme = preferences.getString(getString(R.string.preference_key_theme_select), "");
+            setDarkLightTheme(theme, this);
+        }
     }
 
     private void afterUpdateChecks(SharedPreferences preferences, String oldVersion) {
