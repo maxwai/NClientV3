@@ -183,6 +183,7 @@
     <string name="insert_pin">Введите Пин-код</string>
     <string name="confirm_pin">Подтвердите Пин-код</string>
     <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
+    <string name="setting_device_credentials_low_sdk">Only available for Android 11 or higher</string>
     <string name="use_device_credentials">Use Device Credentials</string>
     <string name="wrong_pin">Неверный Пин-код</string>
     <string name="rotate_image">Повернуть изображение</string>
