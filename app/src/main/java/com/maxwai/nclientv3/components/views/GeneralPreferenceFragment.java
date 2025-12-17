@@ -274,25 +274,33 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         }
         {
             Preference hasCredentials = Objects.requireNonNull(findPreference(getString(R.string.preference_key_has_credentials)));
-            hasCredentials.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (newValue.equals(Boolean.TRUE)) {
-                    BiometricManager biometricManager = BiometricManager.from(act);
-                    switch (biometricManager.canAuthenticate(BIOMETRIC_WEAK | DEVICE_CREDENTIAL)) {
-                        case BiometricManager.BIOMETRIC_SUCCESS:
-                            break;
-                        case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                            // Prompts the user to create credentials that your app accepts.
-                            final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
-                            enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                                BIOMETRIC_WEAK | DEVICE_CREDENTIAL);
-                            startActivity(enrollIntent);
-                        case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                        case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                            return false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                hasCredentials.setOnPreferenceChangeListener((preference, newValue) -> {
+                    if (newValue.equals(Boolean.TRUE)) {
+                        BiometricManager biometricManager = BiometricManager.from(act);
+                        switch (biometricManager.canAuthenticate(BIOMETRIC_WEAK | DEVICE_CREDENTIAL)) {
+                            case BiometricManager.BIOMETRIC_SUCCESS:
+                                break;
+                            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                                // Prompts the user to create credentials that your app accepts.
+                                final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+                                enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                                    BIOMETRIC_WEAK | DEVICE_CREDENTIAL);
+                                startActivity(enrollIntent);
+                            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                            case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
+                            case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+                            case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
+                                return false;
+                        }
                     }
-                }
-                return true;
-            });
+                    return true;
+                });
+            } else {
+                hasCredentials.setEnabled(false);
+                hasCredentials.setSummary(R.string.setting_device_credentials_low_sdk);
+            }
         }
 
         {

@@ -1,8 +1,5 @@
 package com.maxwai.nclientv3;
 
-import static android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_WEAK;
-import static android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -135,8 +132,6 @@ public class SettingsActivity extends GeneralActivity {
                 Toast.makeText(this, getString(R.string.copy_logs_fail), Toast.LENGTH_SHORT).show();
             }
         });
-        final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
-        enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED, BIOMETRIC_WEAK | DEVICE_CREDENTIAL);
     }
 
     private void importSettings(Uri selectedFile) {
