@@ -183,6 +183,7 @@
     <string name="insert_pin">PIN eingeben</string>
     <string name="confirm_pin">PIN bestätigen</string>
     <string name="setting_device_credentials">App Zugriff mit Gerätesperre sichern</string>
+    <string name="setting_device_credentials_low_sdk">Only available for Android 11 or higher</string>
     <string name="use_device_credentials">Gerätesperre benutzen</string>
     <string name="wrong_pin">Falscher PIN</string>
     <string name="rotate_image">Bild drehen</string>
