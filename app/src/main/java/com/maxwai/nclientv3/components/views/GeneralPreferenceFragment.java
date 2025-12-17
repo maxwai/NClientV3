@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.biometric.BiometricManager;
+import androidx.core.content.ContextCompat;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -259,7 +260,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
                 } else {
                     newLocale = LocaleListCompat.forLanguageTags((String) newValue);
                 }
-                act.getMainExecutor().execute(() -> AppCompatDelegate.setApplicationLocales(newLocale));
+                ContextCompat.getMainExecutor(act).execute(() -> AppCompatDelegate.setApplicationLocales(newLocale));
                 return true;
             });
         }

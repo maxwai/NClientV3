@@ -12,6 +12,7 @@ import androidx.annotation.DeprecatedSinceApi;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -32,7 +33,7 @@ public class CrashApplication extends Application {
     @DeprecatedSinceApi(api = Build.VERSION_CODES.S)
     public static void setDarkLightTheme(String theme, Context ctx) {
         String[] availableThemes = ctx.getResources().getStringArray(R.array.theme_data);
-        ctx.getMainExecutor().execute(() ->
+        ContextCompat.getMainExecutor(ctx).execute(() ->
             AppCompatDelegate.setDefaultNightMode(theme.equals(availableThemes[0]) ? // light
                 AppCompatDelegate.MODE_NIGHT_NO :
                 AppCompatDelegate.MODE_NIGHT_YES));
