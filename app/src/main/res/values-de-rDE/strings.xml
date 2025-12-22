@@ -183,7 +183,7 @@
     <string name="insert_pin">PIN eingeben</string>
     <string name="confirm_pin">PIN bestätigen</string>
     <string name="setting_device_credentials">App Zugriff mit Gerätesperre sichern</string>
-    <string name="setting_device_credentials_low_sdk">Only available for Android 11 or higher</string>
+    <string name="setting_device_credentials_low_sdk">Nur für Android 11 oder höher verfügbar</string>
     <string name="use_device_credentials">Gerätesperre benutzen</string>
     <string name="wrong_pin">Falscher PIN</string>
     <string name="rotate_image">Bild drehen</string>
@@ -245,8 +245,8 @@
     <string name="title">Titel</string>
     <string name="download_date">Download Datum</string>
     <string name="page_count">Seitenanzahl</string>
-    <string name="artist">Artist</string>
-    <string name="group">Group</string>
+    <string name="artist">Künstler</string>
+    <string name="group">Gruppe</string>
     <string name="descending_order">Absteigende Reihenfolge</string>
     <string name="minimum_comment_length" formatted="true">Der Kommentar muss mindestens %d Zeichen haben</string>
     <string name="change_scroll_type">Ändere Scroll-Art</string>
@@ -307,9 +307,9 @@
         <item>Japanisch</item>
         <item>Schön</item>
     </string-array>
-    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
-    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
-    <string name="send_image_error">Error creating Image to send</string>
+    <string name="online_blacklist_add_error">Fehler beim Hinzufügen der online Blackliste</string>
+    <string name="clipboard_settings_error">Fehler beim Kopieren der Einstellungen</string>
+    <string name="send_image_error">Fehler beim Erstellen des Bildes zum Senden</string>
     <string name="unlock">Entsperren</string>
     <string name="auth_error">Problem bei Authentifizierung</string>
     <string name="auth_title">Biometrische Anmeldung für NClient</string>
