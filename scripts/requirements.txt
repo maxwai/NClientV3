@@ -1,2 +1,2 @@
 beautifulsoup4~=4.14.3
-curl_cffi~=0.13.0
+curl_cffi~=0.14.0
