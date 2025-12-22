@@ -10,7 +10,7 @@
     <string name="ignore_tags">Ignorar outras tags</string>
     <string name="use_account_tag">Usar tags da conta</string>
     <string name="title_activity_gallery">Galeria</string>
-    <string name="title_activity_zoom">Zoom Activity</string>
+    <string name="title_activity_zoom">Atividade de Zoom</string>
     <string name="title_activity_tag_filter">Filtro de tags</string>
     <string name="title_activity_login">Login</string>
     <string name="parodies">Paródias</string>
@@ -25,8 +25,8 @@
     <string name="channel2_name">Criar PDF</string>
     <string name="channel3_name">Criar ZIP</string>
     <string name="channel1_description">Usado para mostrar o progresso do download de uma galeria</string>
-    <string name="channel2_description">Used to show progress of the creation of the PDF</string>
-    <string name="channel3_description">Used to show progress of the creation of the ZIP</string>
+    <string name="channel2_description">Usado para mostrar o progresso da criação do PDF</string>
+    <string name="channel3_description">Usado para mostrar o progresso da criação do ZIP</string>
     <string name="channel2_title">Criando PDF:</string>
     <string name="channel3_title">Criando ZIP:</string>
     <string name="tags_max_reached" formatted="true">Você pode ter um máximo de %d tags selecionadas.</string>
@@ -70,8 +70,8 @@
     <string name="share_with">Compartilhar com</string>
     <string name="link_copied_to_clipboard">Link copiado para a área de transferência</string>
     <string name="open_in_browser">Abrir no navegador</string>
-    <string name="go_online">Go online</string>
-    <string name="update_tag_status">Update tag status</string>
+    <string name="go_online">Ficar online</string>
+    <string name="update_tag_status">Atualizar status da tag</string>
     <string name="change_view">Mudar visualização</string>
     <string name="tag_preference">Preferência de tags</string>
     <string name="manage_tags">Gerenciar tags</string>
@@ -83,10 +83,10 @@
     <string name="upload_date_format" formatted="true">Enviado em %s as %s</string>
     <string name="favorite_count_format" formatted="true">%d favoritos</string>
     <string name="favorite_manga">Galerias favoritas</string>
-    <string name="setting_on_remove_ignored">The galleries with ignored tags will not be shown</string>
-    <string name="setting_off_remove_ignored">The galleries with ignored tags will be blurred</string>
-    <string name="remove_ignored_galleries">Remove ignored galleries</string>
-    <string name="clear_tag_preferences">Clear tag preferences</string>
+    <string name="setting_on_remove_ignored">As galerias com tags ignoradas não serão exibidas</string>
+    <string name="setting_off_remove_ignored">As galerias com tags ignoradas serão borradas</string>
+    <string name="remove_ignored_galleries">Remover galerias ignoradas</string>
+    <string name="clear_tag_preferences">Limpar preferência de tags</string>
     <string name="check_for_update_on_startup">Check for update on startup</string>
     <string name="check_for_updates">Check for updates</string>
     <string name="no_updates_found">No updates found</string>
