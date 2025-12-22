@@ -2,7 +2,7 @@
 <resources>
     <string name="setting_on_ignore_tags">Інші теги не будуть використані, якщо тег вибрано з меню галереї(окрім мови)</string>
     <string name="setting_off_ignore_tags">Інші теги будуть використані, якщо тег вибрано з меню галереї</string>
-    <string name="setting_on_use_account_tag">Використовувати теги аккаунту у пошуковому запиті (Локальні теги будуть мати більший пріоритет)</string>
+    <string name="setting_on_use_account_tag">Використовувати теги акаунту у пошуковому запиті (Локальні теги будуть мати більший пріоритет)</string>
     <string name="setting_off_use_account_tag">Теги аккаунту будуть ігноруватися при запиті</string>
     <string name="change_theme">Змінити тему</string>
     <string name="clear_cache">Очистити кеш</string>
@@ -34,7 +34,7 @@
     <string name="only_japanese">Тільки японською</string>
     <string name="only_chinese">Тільки китайською</string>
     <string name="all_languages">Усі мови</string>
-    <string name="unknown_language">Unknown language</string>
+    <string name="unknown_language">Невідома мова</string>
     <string name="login">Увійти</string>
     <string name="login_formatted" formatted="true">Авторизовано як %s</string>
     <string name="logout">Вийти</string>
@@ -182,9 +182,9 @@
     <string name="zoom_one_column">Увімкнути масштабування</string>
     <string name="insert_pin">Введіть PIN</string>
     <string name="confirm_pin">Підтвердити PIN</string>
-    <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
-    <string name="setting_device_credentials_low_sdk">Only available for Android 11 or higher</string>
-    <string name="use_device_credentials">Use Device Credentials</string>
+    <string name="setting_device_credentials">Використовувати спосіб блокування пристрою для входу в застосунок</string>
+    <string name="setting_device_credentials_low_sdk">Доступно тільки для Android 11 або вище</string>
+    <string name="use_device_credentials">Використовувати спосіб блокування пристрою</string>
     <string name="wrong_pin">Невірний PIN</string>
     <string name="rotate_image">Повернути зображення</string>
     <string name="toggle_online_favorite">Ввімкнути уподобання онлайн</string>
@@ -245,8 +245,8 @@
     <string name="title">Назва</string>
     <string name="download_date">Дата завантаження</string>
     <string name="page_count">Кількість сторінок</string>
-    <string name="artist">Artist</string>
-    <string name="group">Group</string>
+    <string name="artist">Художник</string>
+    <string name="group">Група</string>
     <string name="descending_order">За спаданням</string>
     <string name="minimum_comment_length" formatted="true">Коментар повинен бути принаймні %d символів</string>
     <string name="change_scroll_type">Змінити тип прокрутки</string>
@@ -282,15 +282,15 @@
     <string name="export_finished">Експорт завершено</string>
     <string name="import_finished">Імпорт завершено</string>
     <string name="download_torrent">Завантажити торрент</string>
-    <string name="system_default">System default</string>
-    <string name="clear_cookies">Clear cookies</string>
-    <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
-    <string name="exact_title_match_title">Exact tag match only</string>
-    <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
-    <string name="hide">Hide</string>
-    <string name="title_user_agent">Change User-Agent</string>
-    <string name="shuffle_contentDescription">Random Gallery Button</string>
-    <string name="copy_logs">Copy logs to file</string>
+    <string name="system_default">Мова системи</string>
+    <string name="clear_cookies">Очистити cookies</string>
+    <string name="fetching_cloudflare_token">Отримання токену Cloudfare …</string>
+    <string name="exact_title_match_title">Тільки точна відповідність тегам</string>
+    <string name="exact_title_match_summary">Приховати галереї, які з\'явилися б на сайті, але не містять всі шукані теги</string>
+    <string name="hide">Приховати</string>
+    <string name="title_user_agent">Змінити User-Agent</string>
+    <string name="shuffle_contentDescription">Кнопка випадкової галереї</string>
+    <string name="copy_logs">Скопіювати логи до файлу</string>
     <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>
     <string name="copy_logs_fail">Problem generating logfile</string>
     <string-array name="scroll_type">
