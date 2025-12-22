@@ -27,8 +27,8 @@
     <string name="channel1_description">Used to show progress of the download of a gallery</string>
     <string name="channel2_description">Used to show progress of the creation of the PDF</string>
     <string name="channel3_description">Used to show progress of the creation of the ZIP</string>
-    <string name="channel2_title">Creating PDF:</string>
-    <string name="channel3_title">Creating ZIP:</string>
+    <string name="channel2_title">Criando PDF:</string>
+    <string name="channel3_title">Criando ZIP:</string>
     <string name="tags_max_reached" formatted="true">You can have a maximum of %d selected tags.</string>
     <string name="only_english">Somente inglês</string>
     <string name="only_japanese">Somente japonês</string>
