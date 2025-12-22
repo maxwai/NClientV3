@@ -2,8 +2,8 @@
 <resources>
     <string name="setting_on_ignore_tags">Outras tags não serão pesquisadas quando uma tag for selecionada no menu de galeria (exceto idioma)</string>
     <string name="setting_off_ignore_tags">Outras tags serão pesquisadas quando uma tag for selecionada no menu de galeria</string>
-    <string name="setting_on_use_account_tag">Use the account tags into the search query (Local tags will have priority)</string>
-    <string name="setting_off_use_account_tag">Account tags will be ignored for the query</string>
+    <string name="setting_on_use_account_tag">Usar as tags da conta na pesquisa (Tags locais terão prioridade)</string>
+    <string name="setting_off_use_account_tag">As tags da conta serão ignoradas na pesquisa</string>
     <string name="change_theme">Mudar tema</string>
     <string name="clear_cache">Limpar cache</string>
     <string name="infinite_scroll">Rolagem infinita</string>
@@ -11,7 +11,7 @@
     <string name="use_account_tag">Usar tags da conta</string>
     <string name="title_activity_gallery">Galeria</string>
     <string name="title_activity_zoom">Zoom Activity</string>
-    <string name="title_activity_tag_filter">Tag Filter</string>
+    <string name="title_activity_tag_filter">Filtro de tags</string>
     <string name="title_activity_login">Login</string>
     <string name="parodies">Paródias</string>
     <string name="characters">Personagens</string>
@@ -24,12 +24,12 @@
     <string name="channel1_name">Baixar Galeria</string>
     <string name="channel2_name">Criar PDF</string>
     <string name="channel3_name">Criar ZIP</string>
-    <string name="channel1_description">Used to show progress of the download of a gallery</string>
+    <string name="channel1_description">Usado para mostrar o progresso do download de uma galeria</string>
     <string name="channel2_description">Used to show progress of the creation of the PDF</string>
     <string name="channel3_description">Used to show progress of the creation of the ZIP</string>
     <string name="channel2_title">Criando PDF:</string>
     <string name="channel3_title">Criando ZIP:</string>
-    <string name="tags_max_reached" formatted="true">You can have a maximum of %d selected tags.</string>
+    <string name="tags_max_reached" formatted="true">Você pode ter um máximo de %d tags selecionadas.</string>
     <string name="only_english">Somente inglês</string>
     <string name="only_japanese">Somente japonês</string>
     <string name="only_chinese">Somente chinês</string>
@@ -38,12 +38,12 @@
     <string name="login">Login</string>
     <string name="login_formatted" formatted="true">Logado como %s</string>
     <string name="logout">Sair</string>
-    <string name="favorite_online_manga">Favorite online galleries</string>
+    <string name="favorite_online_manga">Galerias favoritas online</string>
     <string name="online_tags">Tags online</string>
     <string name="add_to_online_favorite">Adicionar aos favoritos online</string>
     <string name="remove_from_online_favorites">Remover dos favoritos online</string>
-    <string name="add_to_online_blacklist">Add to online blacklist?</string>
-    <string name="tag_already_in_blacklist">Tag already in blacklist</string>
+    <string name="add_to_online_blacklist">Adicionar à lista negra online?</string>
+    <string name="tag_already_in_blacklist">Tag já está na lista negra</string>
     <string name="are_you_sure">Você tem certeza?</string>
     <string name="thumbnail">Miniatura</string>
     <string name="settings">Configurações</string>
@@ -57,32 +57,32 @@
     <string name="create_pdf">Criar PDF</string>
     <string name="created_pdf">PDF criado com sucesso</string>
     <string name="error_pdf">Erro ao criar PDF</string>
-    <string name="parsing_pages">Parsing pages</string>
-    <string name="writing_pdf">Writing PDF</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_subtitle">NHentai unofficial client</string>
-    <string name="change_page">Change page:</string>
-    <string name="prev_page">Previous page</string>
-    <string name="next_page">Next page</string>
-    <string name="downloaded_manga">Downloaded galleries</string>
-    <string name="download_gallery">Download gallery</string>
-    <string name="share_with">Share with</string>
-    <string name="link_copied_to_clipboard">Link copied to clipboard</string>
-    <string name="open_in_browser">Open in browser</string>
+    <string name="parsing_pages">Analisando páginas</string>
+    <string name="writing_pdf">Escrevendo PDF</string>
+    <string name="navigation_drawer_open">Abrir gaveta de navegação</string>
+    <string name="navigation_drawer_close">Fechar gaveta de navegação</string>
+    <string name="nav_header_subtitle">Cliente não oficial do NHentai</string>
+    <string name="change_page">Mudar página:</string>
+    <string name="prev_page">Página Anterior</string>
+    <string name="next_page">Próxima página</string>
+    <string name="downloaded_manga">Galerias baixadas</string>
+    <string name="download_gallery">Baixar galeria</string>
+    <string name="share_with">Compartilhar com</string>
+    <string name="link_copied_to_clipboard">Link copiado para a área de transferência</string>
+    <string name="open_in_browser">Abrir no navegador</string>
     <string name="go_online">Go online</string>
     <string name="update_tag_status">Update tag status</string>
-    <string name="change_view">Change view</string>
-    <string name="tag_preference">Tag preference</string>
-    <string name="manage_tags">Manage tags</string>
-    <string name="applied_filters">Applied filters</string>
+    <string name="change_view">Mudar visualização</string>
+    <string name="tag_preference">Preferência de tags</string>
+    <string name="manage_tags">Gerenciar tags</string>
+    <string name="applied_filters">Filtros aplicados</string>
     <string name="show_related">Mostrar galerias relacionadas</string>
     <string name="random_manga">Galeria aleatória</string>
     <string name="save_page">Salvar página</string>
     <string name="page_count_format" formatted="true">%d páginas</string>
-    <string name="upload_date_format" formatted="true">Uploaded on %s at %s</string>
-    <string name="favorite_count_format" formatted="true">%d favorites</string>
-    <string name="favorite_manga">Favorite galleries</string>
+    <string name="upload_date_format" formatted="true">Enviado em %s as %s</string>
+    <string name="favorite_count_format" formatted="true">%d favoritos</string>
+    <string name="favorite_manga">Galerias favoritas</string>
     <string name="setting_on_remove_ignored">The galleries with ignored tags will not be shown</string>
     <string name="setting_off_remove_ignored">The galleries with ignored tags will be blurred</string>
     <string name="remove_ignored_galleries">Remove ignored galleries</string>
