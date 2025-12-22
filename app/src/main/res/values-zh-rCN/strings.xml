@@ -183,6 +183,7 @@
     <string name="insert_pin">输入 PIN 码</string>
     <string name="confirm_pin">确认 PIN 码</string>
     <string name="setting_device_credentials">启用设备凭据以进入应用</string>
+    <string name="setting_device_credentials_low_sdk">Only available for Android 11 or higher</string>
     <string name="use_device_credentials">使用设备凭据</string>
     <string name="wrong_pin">PIN 码错误</string>
     <string name="rotate_image">旋转图片</string>
