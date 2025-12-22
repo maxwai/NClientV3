@@ -40,9 +40,9 @@ If your desired language is missing, write an issue, the language will be added.
 
 |                                                                     Main page                                                                     |                                                                Lateral menu                                                                 |
 |:-------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------:|
-| ![Main page](https://raw.githubusercontent.com/maxwai/NClientV3/refs/heads/main/fastlane/metadata/android/en-US/images/phoneScreenshots/img1.png) | ![Lateral menu](https://raw.githubusercontent.com/maxwai/NClientV3/main/fastlane/metadata/android/en-US/images/phoneScreenshots/img2.png) |
+| ![Main page](https://raw.githubusercontent.com/maxwai/NClientV3/refs/heads/main/docs/images/phoneScreenshots/img1.png) | ![Lateral menu](https://raw.githubusercontent.com/maxwai/NClientV3/main/docs/images/phoneScreenshots/img2.png) |
 |                                                                      Search                                                                       |                                                                Random manga                                                                 |
-|        ![Search](https://raw.githubusercontent.com/maxwai/NClientV3/main/fastlane/metadata/android/en-US/images/phoneScreenshots/img3.png)        | ![Random manga](https://raw.githubusercontent.com/maxwai/NClientV3/main/fastlane/metadata/android/en-US/images/phoneScreenshots/img4.jpg) |
+|        ![Search](https://raw.githubusercontent.com/maxwai/NClientV3/main/docs/images/phoneScreenshots/img3.png)        | ![Random manga](https://raw.githubusercontent.com/maxwai/NClientV3/main/docs/images/phoneScreenshots/img4.jpg) |
 
 ## Contributors
 
@@ -89,17 +89,17 @@ If your desired language is missing, write an issue, the language will be added.
 ## License
 
 ```text
-   Copyright 2024 maxwai
+Copyright 2024 maxwai
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
