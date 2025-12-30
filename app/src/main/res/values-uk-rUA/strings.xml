@@ -291,7 +291,7 @@
     <string name="title_user_agent">Змінити User-Agent</string>
     <string name="shuffle_contentDescription">Кнопка випадкової галереї</string>
     <string name="copy_logs">Скопіювати логи до файлу</string>
-    <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>
+    <string name="copy_logs_summary"></string>
     <string name="copy_logs_fail">Problem generating logfile</string>
     <string-array name="scroll_type">
         <item>Горизонтально</item>
