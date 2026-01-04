@@ -183,6 +183,7 @@
     <string name="insert_pin">Insérer un code PIN</string>
     <string name="confirm_pin">Confirmer le code PIN</string>
     <string name="setting_device_credentials">Sécuriser l\'accès à l\'application avec le verrouillage de l\'appareil</string>
+    <string name="setting_device_credentials_low_sdk">Seulement disponible pour Android 11 ou supérieur</string>
     <string name="use_device_credentials">Utiliser le verrouillage de l\'appareil</string>
     <string name="wrong_pin">Mauvais code PIN</string>
     <string name="rotate_image">Pivoter l\'image</string>
@@ -244,8 +245,8 @@
     <string name="title">Titre</string>
     <string name="download_date">Date de téléchargement</string>
     <string name="page_count">Nombre de pages</string>
-    <string name="artist">Artist</string>
-    <string name="group">Group</string>
+    <string name="artist">Artiste</string>
+    <string name="group">Groupe</string>
     <string name="descending_order">Ordre décroissant</string>
     <string name="minimum_comment_length" formatted="true">Le commentaire doit faire au moins %d caractères</string>
     <string name="change_scroll_type">Changer le type de défilement</string>
@@ -306,9 +307,9 @@
         <item>Japonais</item>
         <item>Abrégé (anglais, titre seulement)</item>
     </string-array>
-    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
-    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
-    <string name="send_image_error">Error creating Image to send</string>
+    <string name="online_blacklist_add_error">Erreur lors de l\'ajout à la blackliste en ligne</string>
+    <string name="clipboard_settings_error">Erreur lors de la copie des paramètres</string>
+    <string name="send_image_error">Erreur lors de la création de l\'image à envoyer</string>
     <string name="unlock">Déverrouiller</string>
     <string name="auth_error">Erreur d\'authentification</string>
     <string name="auth_title">Connexion biométrique pour NClient</string>
