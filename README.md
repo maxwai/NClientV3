@@ -50,6 +50,9 @@ If your desired language is missing, write an issue, the language will be added.
 - [w0x8m](https://github.com/w0x8m) for the new language picker & Chinese Simplified & Traditional translation
 - [ananas7](https://github.com/ananas7) for Arabic translation
 - [raymi7066](https://github.com/raymi7066) for Chinese Simplified translation
+- Худі Таджик (tadzikhudi) for Ukrainian translation
+- [PegadaDLancha](https://github.com/PegadaDLancha) for Brazilian Portuguese translation
+- Ivan Lost (dovakin1886) for Ukrainian translation
 
 ## Contributors of original Project
 
