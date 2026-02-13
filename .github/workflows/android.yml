@@ -26,7 +26,11 @@ jobs:
                 run: chmod +x gradlew
 
             -   name: Add empty keystore.properties
-                run: echo "storeFile=dummy.jks" > keystore.properties
+                run: |
+                    echo "storePassword=dummy" > keystore.properties
+                    echo "keyPassword=dummy" > keystore.properties
+                    echo "keyAlias=dummy" > keystore.properties
+                    echo "storeFile=dummy.jks" > keystore.properties
 
             -   name: Assemble Debug with Gradle
                 run: ./gradlew assembleDebug

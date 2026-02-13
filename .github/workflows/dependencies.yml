@@ -22,7 +22,11 @@ jobs:
                     distribution: 'temurin'
 
             -   name: Add empty keystore.properties
-                run: echo "storeFile=dummy.jks" > keystore.properties
+                run: |
+                    echo "storePassword=dummy" > keystore.properties
+                    echo "keyPassword=dummy" > keystore.properties
+                    echo "keyAlias=dummy" > keystore.properties
+                    echo "storeFile=dummy.jks" > keystore.properties
 
             -   name: Generate and submit dependency graph
                 uses: gradle/actions/dependency-submission@v5
