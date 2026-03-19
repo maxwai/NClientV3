@@ -287,7 +287,7 @@
     <string name="fetching_cloudflare_token">Cloudflareトークンを取得しています …</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
-    <string name="hide">Hide</string>
+    <string name="hide">非表示</string>
     <string name="title_user_agent">Change User-Agent</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string name="copy_logs">Copy logs to file</string>
