@@ -53,6 +53,7 @@ If your desired language is missing, write an issue, the language will be added.
 - Худі Таджик (tadzikhudi) for Ukrainian translation
 - [PegadaDLancha](https://github.com/PegadaDLancha) for Brazilian Portuguese translation
 - Ivan Lost (dovakin1886) for Ukrainian translation
+- crorcetn for Japanese translation
 
 ## Contributors of original Project
 
