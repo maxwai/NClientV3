@@ -2,8 +2,6 @@ import com.android.build.api.artifact.SingleArtifact
 import java.io.FileInputStream
 import java.util.Properties
 import com.android.build.api.variant.BuiltArtifactsLoader
-import com.android.build.api.variant.VariantOutputConfiguration
-import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
@@ -11,7 +9,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.extensions.stdlib.capitalized
 
@@ -38,9 +35,9 @@ android {
         applicationId = "com.maxwai.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
-        versionCode = 410500
+        versionCode = 410600
         multiDexEnabled = true
-        versionName = "4.1.5"
+        versionName = "4.1.6"
         vectorDrawables.useSupportLibrary = true
         proguardFiles("proguard-rules.pro")
     }
