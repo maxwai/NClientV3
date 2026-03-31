@@ -117,7 +117,11 @@ public class GalleryData implements Parcelable {
                     pageCount = jr.nextInt();
                     break;
                 case "media_id":
-                    mediaId = jr.nextInt();
+                    if (jr.peek() == JsonToken.STRING) {
+                        mediaId = Integer.parseInt(jr.nextString());
+                    } else {
+                        mediaId = jr.nextInt();
+                    }
                     break;
                 case "id":
                     id = jr.nextInt();

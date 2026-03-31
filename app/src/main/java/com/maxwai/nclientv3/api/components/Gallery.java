@@ -74,6 +74,17 @@ public class Gallery extends GenericGallery {
         onlineFavorite = isFavorite;
     }
 
+    public Gallery(Context context, String json, List<SimpleGallery> relatedList, boolean isFavorite) throws IOException {
+        LogUtility.d("Found JSON: " + json);
+        JsonReader reader = new JsonReader(new StringReader(json));
+        this.related = relatedList != null ? relatedList : new ArrayList<>();
+        galleryData = new GalleryData(reader);
+        folder = GalleryFolder.fromId(context, galleryData.getId());
+        calculateSizes(galleryData);
+        language = loadLanguage(getTags());
+        onlineFavorite = isFavorite;
+    }
+
     public Gallery(Cursor cursor, TagList tags) throws IOException {
         maxSize.setWidth(cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.MAX_WIDTH)));
         maxSize.setHeight(cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.MAX_HEIGHT)));
