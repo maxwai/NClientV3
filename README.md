@@ -54,6 +54,7 @@ If your desired language is missing, write an issue, the language will be added.
 - [PegadaDLancha](https://github.com/PegadaDLancha) for Brazilian Portuguese translation
 - Ivan Lost (dovakin1886) for Ukrainian translation
 - crorcetn for Japanese translation
+- [Inori333](https://github.com/inori-3333) for the initial implementation of the new api
 
 ## Contributors of original Project
 
