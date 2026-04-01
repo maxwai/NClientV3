@@ -142,7 +142,7 @@ public class FavoriteActivity extends BaseActivity {
             adapter.setSortByTitle(sortByTitle);
             item.setTitle(sortByTitle ? R.string.sort_by_latest : R.string.sort_by_title);
         } else if (item.getItemId() == R.id.random_favorite) {
-            adapter.randomGallery();
+            startActivity(new Intent(this, RandomFavoriteActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

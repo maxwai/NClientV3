@@ -176,6 +176,9 @@
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".RandomFavoriteActivity"
+            android:parentActivityName=".FavoriteActivity" />
+        <activity
             android:name=".CopyToClipboardActivity"
             android:icon="@drawable/ic_content_copy"
             android:label="@string/copyURL" />

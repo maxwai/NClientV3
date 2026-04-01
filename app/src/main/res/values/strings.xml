@@ -151,6 +151,7 @@
     <string name="applied_filters">Applied filters</string>
     <string name="show_related">Show related galleries</string>
     <string name="random_manga">Random gallery</string>
+    <string name="random_favorite">Random favorite</string>
     <string name="save_page">Save page</string>
     <string name="page_count_format" formatted="true">%d pages</string>
     <string name="upload_date_format" formatted="true">Uploaded on %s at %s</string>
