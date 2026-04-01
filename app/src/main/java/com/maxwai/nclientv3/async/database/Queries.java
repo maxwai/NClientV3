@@ -30,6 +30,8 @@ import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.TagV2;
 import com.maxwai.nclientv3.utility.LogUtility;
 
+import org.json.JSONException;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -135,11 +137,11 @@ public class Queries {
          *
          * @param id id of the gallery to retrieve
          */
-        public static Gallery galleryFromId(int id) throws IOException {
+        public static Gallery galleryFromId(Context context, int id) throws IOException {
             try (Cursor cursor = db.query(true, TABLE_NAME, null, IDGALLERY + "=?", new String[]{"" + id}, null, null, null, null)) {
                 Gallery g = null;
                 if (cursor.moveToFirst()) {
-                    g = cursorToGallery(cursor);
+                    g = cursorToGallery(context, cursor);
                 }
                 return g;
             }
@@ -170,13 +172,13 @@ public class Queries {
         /**
          * Retrieve all galleries inside the DB
          */
-        public static List<Gallery> getAllGalleries() throws IOException {
+        public static List<Gallery> getAllGalleries(Context context) throws IOException {
             String query = "SELECT * FROM " + TABLE_NAME;
             try (Cursor cursor = db.rawQuery(query, null)) {
                 List<Gallery> galleries = new ArrayList<>(cursor.getCount());
                 if (cursor.moveToFirst()) {
                     do {
-                        galleries.add(cursorToGallery(cursor));
+                        galleries.add(cursorToGallery(context, cursor));
                     } while (cursor.moveToNext());
                 }
                 return galleries;
@@ -209,11 +211,11 @@ public class Queries {
          * @param cursor Cursor to scroll
          * @return ArrayList of galleries
          */
-        static List<Gallery> cursorToList(Cursor cursor) throws IOException {
+        static List<Gallery> cursorToList(Context context, Cursor cursor) throws IOException {
             List<Gallery> galleries = new ArrayList<>(cursor.getCount());
             if (cursor.moveToFirst()) {
                 do {
-                    galleries.add(GalleryTable.cursorToGallery(cursor));
+                    galleries.add(GalleryTable.cursorToGallery(context, cursor));
                 } while (cursor.moveToNext());
             }
             return galleries;
@@ -229,8 +231,8 @@ public class Queries {
         /**
          * Convert a row of a cursor to a {@link Gallery}
          */
-        public static Gallery cursorToGallery(Cursor cursor) throws IOException {
-            return new Gallery(cursor, GalleryBridgeTable.getTagsForGallery(cursor.getInt(getColumnFromName(cursor, IDGALLERY))));
+        public static Gallery cursorToGallery(Context context, Cursor cursor) throws IOException {
+            return new Gallery(context, cursor, GalleryBridgeTable.getTagsForGallery(cursor.getInt(getColumnFromName(cursor, IDGALLERY))));
         }
 
         /**
@@ -618,7 +620,7 @@ public class Queries {
                 GalleryDownloaderManager m;
                 if (c.moveToFirst()) {
                     do {
-                        x = GalleryTable.cursorToGallery(c);
+                        x = GalleryTable.cursorToGallery(context, c);
                         m = new GalleryDownloaderManager(context, x, c.getInt(c.getColumnIndex(RANGE_START)), c.getInt(c.getColumnIndex(RANGE_END)));
                         managers.add(m);
                     } while (c.moveToNext());
@@ -653,7 +655,7 @@ public class Queries {
             values.put(ID, gallery.getId());
             values.put(MEDIAID, gallery.getMediaId());
             values.put(TITLE, gallery.getTitle());
-            values.put(THUMB, gallery.getThumb().ordinal());
+            values.put(THUMB, gallery.getThumbnail().toString());
             values.put(TIME, new Date().getTime());
             db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             cleanHistory();
@@ -861,9 +863,9 @@ public class Queries {
         /**
          * Retrieve all favorite galleries
          */
-        static List<Gallery> getAllFavoriteGalleries() throws IOException {
+        static List<Gallery> getAllFavoriteGalleries(Context context) throws IOException {
             try (Cursor c = getAllFavoriteGalleriesCursor()) {
-                return GalleryTable.cursorToList(c);
+                return GalleryTable.cursorToList(context, c);
             }
         }
 

@@ -1,5 +1,6 @@
 package com.maxwai.nclientv3.api.components;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,12 +8,14 @@ import android.util.JsonReader;
 import android.util.JsonToken;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.maxwai.nclientv3.api.enums.ImageExt;
 import com.maxwai.nclientv3.api.enums.ImageType;
 import com.maxwai.nclientv3.components.classes.Size;
+import com.maxwai.nclientv3.utility.Utility;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class Page implements Parcelable {
     public static final Creator<Page> CREATOR = new Creator<>() {
@@ -28,12 +31,13 @@ public class Page implements Parcelable {
     };
     private final int page;
     private final ImageType imageType;
-    private ImageExt imageExt;
+    private Uri path;
+    @Nullable
+    private Uri thumbPath;
     private Size size = new Size(0, 0);
 
     Page() {
         this.imageType = ImageType.PAGE;
-        this.imageExt = ImageExt.JPG;
         this.page = 0;
     }
 
@@ -41,13 +45,14 @@ public class Page implements Parcelable {
         this(type, reader, 0);
     }
 
-    public Page(ImageType type, ImageExt ext) {
-        this(type, ext, 0);
+    public Page(ImageType type, Uri path) {
+        this(type, path, null, 0);
     }
 
-    public Page(ImageType type, ImageExt ext, int page) {
+    public Page(ImageType type, Uri path, @Nullable Uri thumbPath, int page) {
         this.imageType = type;
-        this.imageExt = ext;
+        this.path = path;
+        this.thumbPath = thumbPath;
         this.page = page;
     }
 
@@ -57,13 +62,17 @@ public class Page implements Parcelable {
         reader.beginObject();
         while (reader.peek() != JsonToken.END_OBJECT) {
             switch (reader.nextName()) {
-                case "t":
-                    imageExt = stringToExt(reader.nextString());
+                case "path":
+                    String prefix = imageType == ImageType.PAGE ? "i1" : "t1";
+                    path = Uri.parse("https://" + prefix + "." + Utility.getHost() + "/" + reader.nextString());
                     break;
-                case "w":
+                case "thumbnail":
+                    thumbPath = Uri.parse("https://t1." + Utility.getHost() + "/" + reader.nextString());
+                    break;
+                case "width":
                     size.setWidth(reader.nextInt());
                     break;
-                case "h":
+                case "height":
                     size.setHeight(reader.nextInt());
                     break;
                 default:
@@ -81,38 +90,10 @@ public class Page implements Parcelable {
         } else {
             size = in.readParcelable(Size.class.getClassLoader());
         }
-        imageExt = ImageExt.values()[in.readByte()];
+        path = Uri.parse(in.readString());
+        String thumbString = in.readString();
+        thumbPath = Objects.requireNonNull(thumbString).isEmpty() ? null : Uri.parse(thumbString);
         imageType = ImageType.values()[in.readByte()];
-    }
-
-    public static ImageExt stringToExt(String ext) {
-        switch (ext.toLowerCase()) {
-            case "gif":
-            case "g":
-                return ImageExt.GIF;
-            case "png":
-            case "p":
-                return ImageExt.PNG;
-            case "jpg":
-            case "j":
-                return ImageExt.JPG;
-            case "webp":
-            case "w":
-                return ImageExt.WEBP;
-            case "gif.webp":
-                return ImageExt.GIF_WEBP;
-            case "png.webp":
-                return ImageExt.PNG_WEBP;
-            case "jpg.webp":
-                return ImageExt.JPG_WEBP;
-            case "webp.webp":
-                return ImageExt.WEBP_WEBP;
-        }
-        return null;
-    }
-
-    public String extToString() {
-        return imageExt.getName();
     }
 
     @Override
@@ -124,16 +105,22 @@ public class Page implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(page);
         dest.writeParcelable(size, flags);
-        dest.writeByte((byte) (imageExt == null ? ImageExt.JPG.ordinal() : imageExt.ordinal()));
+        dest.writeString(path.toString());
+        dest.writeString(thumbPath == null ? "" : thumbPath.toString());
         dest.writeByte((byte) (imageType == null ? ImageType.PAGE.ordinal() : imageType.ordinal()));
     }
 
-    public ImageExt getImageExt() {
-        return imageExt;
+    public Uri getImagePath() {
+        return path;
     }
 
-    public void setImageExt(ImageExt imageExt) {
-        this.imageExt = imageExt;
+    public void setImagePath(Uri path) {
+        this.path = path;
+    }
+
+    @NonNull
+    public Uri getThumbnailPath() {
+        return thumbPath == null ? path : thumbPath;
     }
 
     public Size getSize() {
@@ -145,7 +132,8 @@ public class Page implements Parcelable {
     public String toString() {
         return "Page{" +
             "page=" + page +
-            ", imageExt=" + imageExt +
+            ", path=" + path +
+            ", thumbPath=" + thumbPath +
             ", imageType=" + imageType +
             ", size=" + size +
             '}';

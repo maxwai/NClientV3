@@ -1,6 +1,8 @@
 package com.maxwai.nclientv3.api.components;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,21 +10,31 @@ import android.util.JsonReader;
 import android.util.JsonToken;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.maxwai.nclientv3.api.enums.ImageExt;
 import com.maxwai.nclientv3.api.enums.ImageType;
 import com.maxwai.nclientv3.api.enums.SpecialTagIds;
 import com.maxwai.nclientv3.api.enums.TitleType;
 import com.maxwai.nclientv3.async.database.Queries;
+import com.maxwai.nclientv3.files.GalleryFolder;
+import com.maxwai.nclientv3.settings.Global;
+import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
+
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class GalleryData implements Parcelable {
     public static final Creator<GalleryData> CREATOR = new Creator<>() {
@@ -49,15 +61,21 @@ public class GalleryData implements Parcelable {
     private ArrayList<Page> pages = new ArrayList<>();
     private boolean valid = true;
     private boolean checkedExt = false;
+    @Nullable
+    private final Context context;
+    private boolean changedInfo = false;
 
-    private GalleryData() {
+    private GalleryData(@Nullable Context context) {
+        this.context = context;
     }
 
     public GalleryData(JsonReader jr) throws IOException {
+        this((Context) null);
         parseJSON(jr);
     }
 
-    public GalleryData(Cursor cursor, @NonNull TagList tagList) throws IOException {
+    public GalleryData(@NonNull Context context, Cursor cursor, @NonNull TagList tagList) throws IOException {
+        this(context);
         id = cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.IDGALLERY));
         mediaId = cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.MEDIAID));
         favoriteCount = cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.FAVORITE_COUNT));
@@ -67,7 +85,7 @@ public class GalleryData implements Parcelable {
         titles[TitleType.ENGLISH.ordinal()] = cursor.getString(Queries.getColumnFromName(cursor, Queries.GalleryTable.TITLE_ENG));
 
         uploadDate = new Date(cursor.getLong(Queries.getColumnFromName(cursor, Queries.GalleryTable.UPLOAD)));
-        readPagePath(cursor.getString(Queries.getColumnFromName(cursor, Queries.GalleryTable.PAGES)));
+        readPagePath(cursor.getString(Queries.getColumnFromName(cursor, Queries.GalleryTable.PAGES)), id);
         pageCount = pages.size();
         this.tags = tagList;
     }
@@ -80,10 +98,12 @@ public class GalleryData implements Parcelable {
         mediaId = in.readInt();
         titles = Objects.requireNonNull(in.createStringArray());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context = in.readParcelable(Context.class.getClassLoader(), Context.class);
             tags = Objects.requireNonNull(in.readParcelable(TagList.class.getClassLoader(), TagList.class));
             cover = Objects.requireNonNull(in.readParcelable(Page.class.getClassLoader(), Page.class));
             thumbnail = Objects.requireNonNull(in.readParcelable(Page.class.getClassLoader(), Page.class));
         } else {
+            context = in.readParcelable(Context.class.getClassLoader());
             tags = Objects.requireNonNull(in.readParcelable(TagList.class.getClassLoader()));
             cover = Objects.requireNonNull(in.readParcelable(Page.class.getClassLoader()));
             thumbnail = Objects.requireNonNull(in.readParcelable(Page.class.getClassLoader()));
@@ -93,7 +113,7 @@ public class GalleryData implements Parcelable {
     }
 
     public static GalleryData fakeData() {
-        GalleryData galleryData = new GalleryData();
+        GalleryData galleryData = new GalleryData((Context) null);
         galleryData.id = SpecialTagIds.INVALID_ID;
         galleryData.favoriteCount = -1;
         galleryData.pageCount = -1;
@@ -101,6 +121,10 @@ public class GalleryData implements Parcelable {
         galleryData.pages.trimToSize();
         galleryData.valid = false;
         return galleryData;
+    }
+
+    public boolean hasUpdatedInfo() {
+        return changedInfo;
     }
 
     private void parseJSON(JsonReader jr) throws IOException {
@@ -126,8 +150,19 @@ public class GalleryData implements Parcelable {
                 case "id":
                     id = jr.nextInt();
                     break;
-                case "images":
-                    readImages(jr);
+                case "cover":
+                    cover = new Page(ImageType.COVER, jr);
+                    break;
+                case "thumbnail":
+                    thumbnail = new Page(ImageType.THUMBNAIL, jr);
+                    break;
+                case "pages":
+                    int actualPage = 0;
+                    jr.beginArray();
+                    while (jr.hasNext())
+                        pages.add(new Page(ImageType.PAGE, jr, actualPage++));
+                    jr.endArray();
+                    pages.trimToSize();
                     break;
                 case "title":
                     readTitles(jr);
@@ -184,32 +219,6 @@ public class GalleryData implements Parcelable {
         tags.sort((o1, o2) -> o2.getCount() - o1.getCount());
     }
 
-    private void readImages(JsonReader jr) throws IOException {
-        int actualPage = 0;
-        jr.beginObject();
-        while (jr.peek() != JsonToken.END_OBJECT) {
-            switch (jr.nextName()) {
-                case "cover":
-                    cover = new Page(ImageType.COVER, jr);
-                    break;
-                case "thumbnail":
-                    thumbnail = new Page(ImageType.THUMBNAIL, jr);
-                    break;
-                case "pages":
-                    jr.beginArray();
-                    while (jr.hasNext())
-                        pages.add(new Page(ImageType.PAGE, jr, actualPage++));
-                    jr.endArray();
-                    break;
-                default:
-                    jr.skipValue();
-                    break;
-            }
-        }
-        jr.endObject();
-        pages.trimToSize();
-    }
-
     @NonNull
     public Date getUploadDate() {
         return uploadDate;
@@ -231,8 +240,12 @@ public class GalleryData implements Parcelable {
         return pageCount;
     }
 
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
+    public void setPageInfo(GalleryFolder folder) {
+        this.pageCount = folder.getPageCount();
+        if (pageCount > 0) {
+            this.cover.setImagePath(folder.getPage(1).toUri());
+            this.thumbnail.setImagePath(folder.getPage(1).toUri());
+        }
     }
 
     public void setCheckedExt() {
@@ -292,6 +305,10 @@ public class GalleryData implements Parcelable {
         dest.writeInt(pageCount);
         dest.writeInt(mediaId);
         dest.writeStringArray(titles);
+        if (context instanceof Parcelable)
+            dest.writeParcelable((Parcelable) context, flags);
+        else
+            dest.writeParcelable(null, flags);
         dest.writeParcelable(tags, flags);
         dest.writeParcelable(cover, flags);
         dest.writeParcelable(thumbnail, flags);
@@ -299,55 +316,67 @@ public class GalleryData implements Parcelable {
         dest.writeByte((byte) (valid ? 1 : 0));
     }
 
-    private void writeInterval(StringWriter writer, int intervalLen, ImageExt referencePage) {
-        writer.write(Integer.toString(intervalLen));
-        writer.write(";");
-        writer.write(referencePage.getName());
-        writer.write(";");
-    }
-
     public String createPagePath() {
         StringWriter writer = new StringWriter();
         writer.write(Integer.toString(pages.size()));
         writer.write(";");
-        writer.write(cover.extToString());
+        writer.write(cover.getThumbnailPath().toString());
         writer.write(";");
-        writer.write(thumbnail.extToString());
+        writer.write(thumbnail.getThumbnailPath().toString());
         writer.write(";");
         if (pages.isEmpty()) return writer.toString();
-        ImageExt referencePage = pages.get(0).getImageExt(), actualPage;
-        int intervalLen = 1;
-        for (int i = 1; i < pages.size(); i++) {
-            actualPage = pages.get(i).getImageExt();
-            if (actualPage != referencePage) {
-                writeInterval(writer, intervalLen, referencePage);
-                referencePage = actualPage;
-                intervalLen = 1;
-            } else intervalLen++;
+        for (Page page : pages) {
+            writer.write(page.getImagePath().toString());
+            writer.write(";");
         }
-        writeInterval(writer, intervalLen, referencePage);
         return writer.toString();
     }
 
-    private void readPagePathNew(String path) {
-        System.out.println(path);
+    private void readPagePathNew(String path, int galleryId) {
+        LogUtility.d(path);
         String[] parts = path.split(";");
-        cover = new Page(ImageType.COVER, Page.stringToExt(parts[1]));
-        thumbnail = new Page(ImageType.THUMBNAIL, Page.stringToExt(parts[2]));
-        int absolutePage = 0;
-        for (int i = 3; i < parts.length; i += 2) {
-            for (int j = 0; j < Integer.parseInt(parts[i]); j++) {//add pageOfType time a page of actualChar
-                pages.add(new Page(ImageType.PAGE, Page.stringToExt(parts[i+1]), absolutePage++));
+        if (!parts[1].startsWith("http")) { // TODO: To be removed in next major version
+            Thread updateThread = new Thread(() -> {
+                // Old entry, needs to be updated
+                String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + galleryId;
+                try (Response resp = Global.getClient(Objects.requireNonNull(context)).newCall(new Request.Builder().url(detailUrl).build()).execute()) {
+                    String body = resp.body().string();
+                    if (resp.code() == HttpURLConnection.HTTP_OK) {
+                        JSONObject v2 = new JSONObject(body);
+                        Gallery gallery = new Gallery(context, v2.toString(), null, false);
+                        cover = new Page(ImageType.COVER, gallery.getCover());
+                        thumbnail = new Page(ImageType.THUMBNAIL, gallery.getThumbnail());
+                        for (int i = 0; i < gallery.getPageCount(); i++) {
+                            pages.add(new Page(ImageType.PAGE, gallery.getHighPage(i), null, i));
+                        }
+                    }
+                } catch (IOException | JSONException e) {
+                    LogUtility.e(e);
+                }
+            });
+            updateThread.start();
+            try {
+                updateThread.join();
+                changedInfo = true;
+            } catch (InterruptedException e) {
+                LogUtility.w(e);
             }
+            return;
+        }
+        cover = new Page(ImageType.COVER, Uri.parse(parts[1]));
+        thumbnail = new Page(ImageType.THUMBNAIL, Uri.parse(parts[2]));
+        int absolutePage = 0;
+        for (int i = 3; i < parts.length; i++) {
+            pages.add(new Page(ImageType.PAGE, Uri.parse(parts[i]), null, absolutePage++));
         }
     }
 
-    private void readPagePath(String path) throws IOException {
+    private void readPagePath(String path, int galleryId) throws IOException {
         if (path.contains(";")) {
-            readPagePathNew(path);
+            readPagePathNew(path, galleryId);
             return;
         }
-        System.out.println(path);
+        LogUtility.d(path);
         StringReader reader = new StringReader(path + "e");//flag for the end
         int absolutePage = 0;
         int actualChar;
@@ -368,12 +397,12 @@ public class GalleryData implements Parcelable {
                     if (extension == null)
                         extension = "webp";
                     if (specialImages) {
-                        cover = new Page(ImageType.COVER, Page.stringToExt(extension));
-                        thumbnail = new Page(ImageType.THUMBNAIL, Page.stringToExt(extension));
+                        cover = new Page(ImageType.COVER, Uri.parse(extension));
+                        thumbnail = new Page(ImageType.THUMBNAIL, Uri.parse(extension));
                         specialImages = false;
                     } else {
                         for (int j = 0; j < pageOfType; j++) {//add pageOfType time a page of actualChar
-                            pages.add(new Page(ImageType.PAGE, Page.stringToExt(extension), absolutePage++));
+                            pages.add(new Page(ImageType.PAGE, Uri.parse(extension), null, absolutePage++));
                         }
                     }
                     pageOfType = 0;//reset digits

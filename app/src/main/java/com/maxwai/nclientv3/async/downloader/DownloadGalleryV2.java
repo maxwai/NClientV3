@@ -18,6 +18,8 @@ import com.maxwai.nclientv3.async.database.Queries;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;

@@ -9,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.SparseArrayCompat;
 
-import com.maxwai.nclientv3.api.components.Page;
-import com.maxwai.nclientv3.api.enums.ImageExt;
 import com.maxwai.nclientv3.api.enums.SpecialTagIds;
 import com.maxwai.nclientv3.settings.Global;
 
@@ -133,9 +131,7 @@ public class GalleryFolder implements Parcelable, Iterable<PageFile> {
 
     private void elaboratePage(File f, Matcher matcher) {
         int page = Integer.parseInt(Objects.requireNonNull(matcher.group(1)));
-        ImageExt ext = Page.stringToExt(Objects.requireNonNull(matcher.group(2)));
-        if (ext == null) return;
-        pageArray.append(page, new PageFile(ext, f, page));
+        pageArray.append(page, new PageFile(f, page));
         if (page > max) max = page;
         if (page < min) min = page;
     }
