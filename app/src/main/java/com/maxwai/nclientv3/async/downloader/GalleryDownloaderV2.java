@@ -262,7 +262,7 @@ public class GalleryDownloaderV2 {
         File filePath = new File(folder, page.getPageName());
         LogUtility.d("Saving into: " + filePath + "," + page.url);
         if (filePath.exists() && !isCorrupted(filePath)) return true;
-        try (Response r = Global.getClient(context).newCall(new Request.Builder().url(page.url).build()).execute()) {
+        try (Response r = Global.getClient(context).newCall(new Request.Builder().url(page.url.toString()).build()).execute()) {
             if (r.code() != 200) {
                 return false;
             }
@@ -297,7 +297,7 @@ public class GalleryDownloaderV2 {
     private void checkPages() {
         File filePath;
         for (int i = 0; i < urls.size(); i++) {
-            if(urls.get(i)==null){
+            if (urls.get(i) == null) {
                 urls.remove(i--);
                 continue;
             }
@@ -309,7 +309,7 @@ public class GalleryDownloaderV2 {
 
     private void createPages() {
         for (int i = start; i <= end && i < gallery.getPageCount(); i++)
-            urls.add(new PageContainer(i + 1, gallery.getHighPage(i).toString(), gallery.getPageExtensionString(i)));
+            urls.add(new PageContainer(i + 1, gallery.getHighPage(i)));
     }
 
     private void createFolder() {
@@ -361,16 +361,16 @@ public class GalleryDownloaderV2 {
 
     public static class PageContainer {
         public final int page;
-        public final String url, ext;
+        public final Uri url;
 
-        public PageContainer(int page, String url, String ext) {
+        public PageContainer(int page, Uri url) {
             this.page = page;
             this.url = url;
-            this.ext = ext;
         }
 
         public String getPageName() {
-            return String.format(Locale.US, "%03d.%s", page, ext);
+            String fileName = Objects.requireNonNull(url.getLastPathSegment());
+            return String.format(Locale.US, "%03d.%s", page, fileName.substring(fileName.indexOf('.') + 1));
         }
     }
 }

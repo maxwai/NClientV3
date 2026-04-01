@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.maxwai.nclientv3.api.SimpleGallery;
-import com.maxwai.nclientv3.api.enums.ImageExt;
 import com.maxwai.nclientv3.api.enums.Language;
 import com.maxwai.nclientv3.api.enums.SpecialTagIds;
 import com.maxwai.nclientv3.api.enums.TagStatus;
@@ -24,10 +23,6 @@ import com.maxwai.nclientv3.files.GalleryFolder;
 import com.maxwai.nclientv3.files.PageFile;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.LogUtility;
-import com.maxwai.nclientv3.utility.Utility;
-
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -36,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -62,11 +56,10 @@ public class Gallery extends GenericGallery {
     private Language language = Language.UNKNOWN;
     private Size maxSize = new Size(0, 0), minSize = new Size(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
-    public Gallery(Context context, String json, Elements related, boolean isFavorite) throws IOException {
+    public Gallery(Context context, String json, List<SimpleGallery> relatedList, boolean isFavorite) throws IOException {
         LogUtility.d("Found JSON: " + json);
         JsonReader reader = new JsonReader(new StringReader(json));
-        this.related = new ArrayList<>(related.size());
-        for (Element e : related) this.related.add(new SimpleGallery(context, e));
+        this.related = relatedList != null ? relatedList : new ArrayList<>();
         galleryData = new GalleryData(reader);
         folder = GalleryFolder.fromId(context, galleryData.getId());
         calculateSizes(galleryData);
@@ -74,12 +67,12 @@ public class Gallery extends GenericGallery {
         onlineFavorite = isFavorite;
     }
 
-    public Gallery(Cursor cursor, TagList tags) throws IOException {
+    public Gallery(Context context, Cursor cursor, TagList tags) throws IOException {
         maxSize.setWidth(cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.MAX_WIDTH)));
         maxSize.setHeight(cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.MAX_HEIGHT)));
         minSize.setWidth(cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.MIN_WIDTH)));
         minSize.setHeight(cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.MIN_HEIGHT)));
-        galleryData = new GalleryData(cursor, tags);
+        galleryData = new GalleryData(context, cursor, tags);
         folder = GalleryFolder.fromId(null, galleryData.getId());
         this.language = loadLanguage(tags);
         onlineFavorite = false;
@@ -163,17 +156,11 @@ public class Gallery extends GenericGallery {
 
     public Uri getCover() {
         if (Global.getDownloadPolicy() == Global.DataUsageType.THUMBNAIL) return getThumbnail();
-        if (galleryData.getCover().getImageExt() == ImageExt.GIF) return getHighPage(0);
-        return Uri.parse(String.format(Locale.US, "https://t1." + Utility.getHost() + "/galleries/%d/cover.%s", getMediaId(), galleryData.getCover().extToString()));
-    }
-
-    public ImageExt getThumb() {
-        return galleryData.getThumbnail().getImageExt();
+        return galleryData.getCover().getThumbnailPath();
     }
 
     public Uri getThumbnail() {
-        if (galleryData.getCover().getImageExt() == ImageExt.GIF) return getHighPage(0);
-        return Uri.parse(String.format(Locale.US, "https://t1." + Utility.getHost() + "/galleries/%d/thumb.%s", getMediaId(), galleryData.getThumbnail().extToString()));
+        return galleryData.getThumbnail().getThumbnailPath();
     }
 
     private @Nullable
@@ -192,32 +179,13 @@ public class Gallery extends GenericGallery {
     }
 
     public Uri getHighPage(int page) {
-        return Uri.parse(String.format(Locale.US, "https://i1." + Utility.getHost() + "/galleries/%d/%d.%s", getMediaId(), page + 1, getPageExtensionString(page)));
+        return getPage(page).getImagePath();
     }
 
     public Uri getLowPage(int page) {
         Uri uri = getFileUri(page);
         if (uri != null) return uri;
-        return Uri.parse(String.format(Locale.US, "https://t1." + Utility.getHost() + "/galleries/%d/%dt.%s", getMediaId(), page + 1, getPageExtensionString(page)));
-    }
-
-    public String getPageExtensionString(int page) {
-        return getPage(page).extToString();
-    }
-
-    public ImageExt getPageExtension(int page) {
-        return getPage(page).getImageExt();
-    }
-
-    public void setPageExtension(int page, ImageExt ext) {
-        getPage(page).setImageExt(ext);
-    }
-
-    public void setPageExtensionFrom(int page, ImageExt ext) {
-        for (int i = page; i < getPageCount(); i++)
-            getPage(i).setImageExt(ext);
-        galleryData.getThumbnail().setImageExt(ext);
-        galleryData.getCover().setImageExt(ext);
+        return getPage(page).getThumbnailPath();
     }
 
     private Page getPage(int index) {

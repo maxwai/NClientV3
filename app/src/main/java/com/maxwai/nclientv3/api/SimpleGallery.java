@@ -11,12 +11,11 @@ import androidx.annotation.NonNull;
 import com.maxwai.nclientv3.api.components.Gallery;
 import com.maxwai.nclientv3.api.components.GalleryData;
 import com.maxwai.nclientv3.api.components.GenericGallery;
-import com.maxwai.nclientv3.api.components.Page;
 import com.maxwai.nclientv3.api.components.Tag;
 import com.maxwai.nclientv3.api.components.TagList;
-import com.maxwai.nclientv3.api.enums.ImageExt;
 import com.maxwai.nclientv3.api.enums.Language;
 import com.maxwai.nclientv3.api.enums.TagStatus;
+import com.maxwai.nclientv3.api.enums.TagType;
 import com.maxwai.nclientv3.async.database.Queries;
 import com.maxwai.nclientv3.components.classes.Size;
 import com.maxwai.nclientv3.files.GalleryFolder;
@@ -24,11 +23,11 @@ import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
 
-import org.jsoup.nodes.Element;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Collection;
-import java.util.Locale;
-import java.util.Objects;
 
 public class SimpleGallery extends GenericGallery {
     public static final Creator<SimpleGallery> CREATOR = new Creator<>() {
@@ -43,7 +42,7 @@ public class SimpleGallery extends GenericGallery {
         }
     };
     private final String title;
-    private final ImageExt thumbnail;
+    private final Uri thumbnail;
     private final int id, mediaId;
     private Language language = Language.UNKNOWN;
     private TagList tags;
@@ -52,12 +51,8 @@ public class SimpleGallery extends GenericGallery {
         title = in.readString();
         id = in.readInt();
         mediaId = in.readInt();
-        thumbnail = ImageExt.values()[in.readByte()];
+        thumbnail = Uri.parse(in.readString());
         language = Language.values()[in.readByte()];
-    }
-
-    public boolean hasTags(Collection<Tag> tags) {
-        return this.tags.hasTags(tags);
     }
 
     @SuppressLint("Range")
@@ -65,38 +60,95 @@ public class SimpleGallery extends GenericGallery {
         title = c.getString(c.getColumnIndex(Queries.HistoryTable.TITLE));
         id = c.getInt(c.getColumnIndex(Queries.HistoryTable.ID));
         mediaId = c.getInt(c.getColumnIndex(Queries.HistoryTable.MEDIAID));
-        thumbnail = ImageExt.values()[c.getInt(c.getColumnIndex(Queries.HistoryTable.THUMB))];
+        thumbnail = Uri.parse(c.getString(c.getColumnIndex(Queries.HistoryTable.THUMB)));
     }
 
-    public SimpleGallery(Context context, Element e) {
-        String temp;
-        String tags = e.attr("data-tags").replace(' ', ',');
-        this.tags = Queries.TagTable.getTagsFromListOfInt(tags);
-        language = Gallery.loadLanguage(this.tags);
-        Element a = e.getElementsByTag("a").first();
-        temp = Objects.requireNonNull(a).attr("href");
-        id = Integer.parseInt(temp.substring(3, temp.length() - 1));
-        a = e.getElementsByTag("img").first();
-        temp = Objects.requireNonNull(a).hasAttr("data-src") ? a.attr("data-src") : a.attr("src");
-        mediaId = Integer.parseInt(temp.substring(temp.indexOf("galleries") + 10, temp.lastIndexOf('/')));
-        String extension = temp.substring(temp.indexOf('.', temp.lastIndexOf('/')) + 1);
-        thumbnail = Page.stringToExt(extension);
-        title = Objects.requireNonNull(e.getElementsByTag("div").first()).text();
-        if (context != null && id > Global.getMaxId()) Global.updateMaxId(context, id);
+    private SimpleGallery(String title, int id, int mediaId, Uri thumbnail, Language language, TagList tags) {
+        this.title = title;
+        this.id = id;
+        this.mediaId = mediaId;
+        this.thumbnail = thumbnail;
+        this.language = language;
+        this.tags = tags;
     }
 
     public SimpleGallery(Gallery gallery) {
         title = gallery.getTitle();
         mediaId = gallery.getMediaId();
         id = gallery.getId();
-        thumbnail = gallery.getThumb();
+        thumbnail = gallery.getThumbnail();
     }
 
-    private static String extToString(ImageExt ext) {
-        if (ext == null) {
-            return null;
+    /**
+     * Create a SimpleGallery from API v2 GalleryListItem JSON.
+     * v2 list items have: id, media_id(string), thumbnail(path string),
+     * english_title, japanese_title, tag_ids(int array), num_pages
+     */
+    public static SimpleGallery fromV2ListItem(Context context, JSONObject json) throws JSONException {
+        int id = json.getInt("id");
+        int mediaId;
+        try {
+            mediaId = Integer.parseInt(json.getString("media_id"));
+        } catch (NumberFormatException e) {
+            mediaId = 0;
         }
-        return ext.getName();
+        // Title: v2 list items use english_title/japanese_title directly
+        String englishTitle = json.optString("english_title", "");
+        String japaneseTitle = json.optString("japanese_title", "");
+        // But v2 detail/related items may use a title object
+        JSONObject titleObj = json.optJSONObject("title");
+        String title;
+        if (titleObj != null) {
+            String pretty = titleObj.optString("pretty", "");
+            String english = titleObj.optString("english", "");
+            String japanese = titleObj.optString("japanese", "");
+            title = !pretty.isEmpty() ? pretty : (!english.isEmpty() ? english : japanese);
+        } else {
+            title = !englishTitle.isEmpty() ? englishTitle : japaneseTitle;
+        }
+        String thumbPath = json.optString("thumbnail", "");
+        // Tags: v2 list items only have tag_ids, look them up from local DB
+        JSONArray tagIdsArr = json.optJSONArray("tag_ids");
+        TagList tags;
+        Language language = Language.UNKNOWN;
+        if (tagIdsArr != null && tagIdsArr.length() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < tagIdsArr.length(); i++) {
+                if (i > 0) sb.append(',');
+                sb.append(tagIdsArr.getInt(i));
+            }
+            tags = Queries.TagTable.getTagsFromListOfInt(sb.toString());
+            language = Gallery.loadLanguage(tags);
+        } else {
+            // v2 detail related items may have full tag objects
+            JSONArray tagsArray = json.optJSONArray("tags");
+            if (tagsArray != null && tagsArray.length() > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < tagsArray.length(); i++) {
+                    JSONObject tagObj = tagsArray.getJSONObject(i);
+                    Tag tag = new Tag(
+                        tagObj.getString("name"),
+                        tagObj.optInt("count", 0),
+                        tagObj.getInt("id"),
+                        TagType.typeByName(tagObj.getString("type")),
+                        TagStatus.DEFAULT
+                    );
+                    Queries.TagTable.insert(tag);
+                    if (i > 0) sb.append(',');
+                    sb.append(tag.getId());
+                }
+                tags = Queries.TagTable.getTagsFromListOfInt(sb.toString());
+                language = Gallery.loadLanguage(tags);
+            } else {
+                tags = new TagList();
+            }
+        }
+        if (context != null && id > Global.getMaxId()) Global.updateMaxId(context, id);
+        return new SimpleGallery(title, id, mediaId, Uri.parse("https://t1." + Utility.getHost() + "/" + thumbPath), language, tags);
+    }
+
+    public boolean hasTags(Collection<Tag> tags) {
+        return this.tags.hasTags(tags);
     }
 
     public Language getLanguage() {
@@ -159,24 +211,17 @@ public class SimpleGallery extends GenericGallery {
         dest.writeString(title);
         dest.writeInt(id);
         dest.writeInt(mediaId);
-        dest.writeByte((byte) thumbnail.ordinal());
+        dest.writeString(thumbnail.toString());
         dest.writeByte((byte) language.ordinal());
         //TAGS AREN'T WRITTEN
     }
 
     public Uri getThumbnail() {
-        if (thumbnail == ImageExt.GIF) {
-            return Uri.parse(String.format(Locale.US, "https://i1." + Utility.getHost() + "/galleries/%d/1.gif", mediaId));
-        }
-        return Uri.parse(String.format(Locale.US, "https://t1." + Utility.getHost() + "/galleries/%d/thumb.%s", mediaId, extToString(thumbnail)));
+        return thumbnail;
     }
 
     public int getMediaId() {
         return mediaId;
-    }
-
-    public ImageExt getThumb() {
-        return thumbnail;
     }
 
     @Override

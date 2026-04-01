@@ -20,6 +20,8 @@ import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.maxwai.nclientv3.utility.LogUtility;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.Locale;
 
@@ -79,7 +81,7 @@ public class StatusViewerAdapter extends RecyclerView.Adapter<GenericAdapter.Vie
     private Gallery positionToGallery(int position) {
         try {
             if (galleries != null && galleries.moveToPosition(position)) {
-                return Queries.GalleryTable.cursorToGallery(galleries);
+                return Queries.GalleryTable.cursorToGallery(context, galleries);
             }
         } catch (IOException ignore) {
         }

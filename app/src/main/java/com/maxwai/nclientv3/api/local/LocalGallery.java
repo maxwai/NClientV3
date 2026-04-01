@@ -65,7 +65,7 @@ public class LocalGallery extends GenericGallery {
         //Start search pages
         //Find page with max number
         if (folder != null)
-            galleryData.setPageCount(folder.getMax());
+            galleryData.setPageInfo(folder);
         valid = folder != null && folder.getPageCount() > 0;
     }
 

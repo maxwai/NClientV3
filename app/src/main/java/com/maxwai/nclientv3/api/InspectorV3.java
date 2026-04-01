@@ -1,7 +1,6 @@
 package com.maxwai.nclientv3.api;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -25,10 +24,9 @@ import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -69,7 +67,7 @@ public class InspectorV3 extends Thread implements Parcelable {
     private Ranges ranges = null;
     private InspectorResponse response;
     private WeakReference<Context> context;
-    private Document htmlDocument;
+    private String jsonResponse;
 
     protected InspectorV3(Parcel in) {
         sortType = SortType.values()[in.readByte()];
@@ -239,7 +237,7 @@ public class InspectorV3 extends Thread implements Parcelable {
     public String getSearchTitle() {
         //triggered only when in searchMode
         if (!query.isEmpty()) return query;
-        return url.replace(Utility.getBaseUrl() + "search/?q=", "").replace('+', ' ');
+        return url.replace(Utility.getBaseUrl() + "api/v2/search?query=", "").replace('+', ' ');
     }
 
     public void initialize(Context context, InspectorResponse response) {
@@ -280,19 +278,21 @@ public class InspectorV3 extends Thread implements Parcelable {
         } catch (UnsupportedEncodingException ignore) {
             query = this.query;
         }
-        StringBuilder builder = new StringBuilder(Utility.getBaseUrl());
-        if (requestType == ApiRequestType.BYALL) builder.append("?page=").append(page);
-        else if (requestType == ApiRequestType.RANDOM) builder.append("random/");
-        else if (requestType == ApiRequestType.RANDOM_FAVORITE) builder.append("favorites/random");
-        else if (requestType == ApiRequestType.BYSINGLE) builder.append("g/").append(id);
-        else if (requestType == ApiRequestType.FAVORITE) {
-            builder.append("favorites/");
+        StringBuilder builder = new StringBuilder(Utility.getBaseUrl()).append("api/v2/");
+        if (requestType == ApiRequestType.BYALL) {
+            builder.append("galleries?page=").append(page);
+        } else if (requestType == ApiRequestType.RANDOM) {
+            builder.append("galleries/random");
+        } else if (requestType == ApiRequestType.RANDOM_FAVORITE) {
+            builder.append("favorites/random");
+        } else if (requestType == ApiRequestType.BYSINGLE) {
+            builder.append("galleries/").append(id).append("?include=related");
+        } else if (requestType == ApiRequestType.FAVORITE) {
+            builder.append("favorites?page=").append(page);
             if (query != null && !query.isEmpty())
-                builder.append("?q=").append(query).append('&');
-            else builder.append('?');
-            builder.append("page=").append(page);
+                builder.append("&q=").append(query);
         } else if (requestType == ApiRequestType.BYSEARCH || requestType == ApiRequestType.BYTAG) {
-            builder.append("search/?q=").append(query);
+            builder.append("search?query=").append(query);
             for (Tag tt : tags) {
                 if (builder.toString().contains(tt.toQueryTag(TagStatus.ACCEPTED))) continue;
                 builder.append('+');
@@ -311,7 +311,7 @@ public class InspectorV3 extends Thread implements Parcelable {
             if (ranges != null)
                 builder.append('+').append(ranges.toQuery());
             builder.append("&page=").append(page);
-            if (sortType.getUrlAddition() != null) {
+            if (sortType != null && sortType.getUrlAddition() != null) {
                 builder.append("&sort=").append(sortType.getUrlAddition());
             }
         }
@@ -325,21 +325,22 @@ public class InspectorV3 extends Thread implements Parcelable {
     }
 
     public boolean createDocument() throws IOException {
-        if (htmlDocument != null) return true;
+        if (jsonResponse != null) return true;
         try (Response response = Global.getClient(context.get()).newCall(new Request.Builder().url(url).build()).execute()) {
-            setHtmlDocument(Jsoup.parse(response.body().byteStream(), "UTF-8", Utility.getBaseUrl()));
+            jsonResponse = response.body().string();
             return response.code() == HttpURLConnection.HTTP_OK;
         }
     }
 
     public void parseDocument() throws IOException, InvalidResponseException {
-        if (requestType.isSingle()) doSingle(htmlDocument.body());
-        else doSearch(htmlDocument.body());
-        htmlDocument = null;
-    }
-
-    public void setHtmlDocument(Document htmlDocument) {
-        this.htmlDocument = htmlDocument;
+        try {
+            if (requestType.isSingle()) doSingleV2();
+            else doSearchV2();
+        } catch (JSONException e) {
+            LogUtility.e("JSON parse error: " + e.getMessage(), e);
+            throw new InvalidResponseException();
+        }
+        jsonResponse = null;
     }
 
     @Override
@@ -380,67 +381,63 @@ public class InspectorV3 extends Thread implements Parcelable {
         galleries.addAll(galleryTag);
     }
 
-    private void doSingle(Element document) throws IOException, InvalidResponseException {
+    /**
+     * Parse single gallery from API v2 response.
+     * For RANDOM, the response is just {"id": N}, so we fetch the full detail.
+     */
+    private void doSingleV2() throws IOException, JSONException {
         galleries = new ArrayList<>(1);
-        Elements scripts = document.getElementsByTag("script");
-        if (scripts.isEmpty())
-            throw new InvalidResponseException();
-        String json = trimScriptTag(scripts.get(1).html());
-        if (json == null)
-            throw new InvalidResponseException();
-        Element relContainer = document.getElementById("related-container");
-        Elements rel;
-        if (relContainer != null)
-            rel = relContainer.getElementsByClass("gallery");
-        else
-            rel = new Elements();
-        boolean isFavorite;
-        try {
-            isFavorite = Objects.requireNonNull(document.getElementById("favorite")).getElementsByTag("span").get(0).text().equals("Unfavorite");
-        } catch (Exception e) {
-            isFavorite = false;
+        JSONObject v2 = new JSONObject(jsonResponse);
+        if (v2.has("error")) return;
+
+        // Random endpoint returns only {"id": N} — fetch full gallery detail
+        if (!v2.has("title") && v2.has("id")) {
+            int galleryId = v2.getInt("id");
+            String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + galleryId + "?include=related";
+            try (Response resp = Global.getClient(context.get()).newCall(new Request.Builder().url(detailUrl).build()).execute()) {
+                String body = resp.body().string();
+                if (resp.code() != HttpURLConnection.HTTP_OK) return;
+                v2 = new JSONObject(body);
+            }
         }
-        LogUtility.d("is favorite? " + isFavorite);
-        galleries.add(new Gallery(context.get(), json, rel, isFavorite));
+
+        // Handle related galleries
+        List<SimpleGallery> relatedList = new ArrayList<>();
+        JSONArray relatedArr = v2.optJSONArray("related");
+        if (relatedArr != null) {
+            for (int i = 0; i < relatedArr.length(); i++) {
+                relatedList.add(SimpleGallery.fromV2ListItem(context.get(), relatedArr.getJSONObject(i)));
+            }
+        }
+
+        boolean isFavorite = v2.optBoolean("is_favorited", false);
+
+        Gallery gallery = new Gallery(context.get(), v2.toString(), relatedList, isFavorite);
+        galleries.add(gallery);
     }
 
-    @Nullable
-    private String trimScriptTag(String scriptHtml) {
-        int s = scriptHtml.indexOf("parse");
-        if (s < 0) return null;
-        s += 7;
-        scriptHtml = scriptHtml.substring(s, scriptHtml.lastIndexOf(");") - 1);
-        scriptHtml = Utility.unescapeUnicodeString(scriptHtml);
-        if (scriptHtml.isEmpty()) return null;
-        return scriptHtml;
-    }
-
-    private void doSearch(Element document) throws InvalidResponseException {
-        Elements gal = document.getElementsByClass("gallery");
-        galleries = new ArrayList<>(gal.size());
-        for (Element e : gal) galleries.add(new SimpleGallery(context.get(), e));
-        gal = document.getElementsByClass("last");
-        pageCount = gal.isEmpty()? Math.max(1, page) : findTotal(gal.last());
-        if (document.getElementById("content") == null)
+    /**
+     * Parse search/list results from API v2 response.
+     * v2 list items have: id, media_id, thumbnail, english_title, japanese_title, tag_ids, num_pages
+     */
+    private void doSearchV2() throws InvalidResponseException, JSONException {
+        JSONObject json = new JSONObject(jsonResponse);
+        if (!json.has("result"))
             throw new InvalidResponseException();
+        JSONArray results = json.getJSONArray("result");
+        galleries = new ArrayList<>(results.length());
+        for (int i = 0; i < results.length(); i++) {
+            galleries.add(SimpleGallery.fromV2ListItem(context.get(), results.getJSONObject(i)));
+        }
+        pageCount = json.optInt("num_pages", Math.max(1, page));
         if (Global.isExactTagMatch())
             filterDocumentTags();
     }
 
-    private int findTotal(@Nullable Element e) {
-        if (e == null)
-            return 1;
-        String temp = e.attr("href");
-
-        try {
-            return Integer.parseInt(Objects.requireNonNull(Uri.parse(temp).getQueryParameter("page")));
-        } catch (Exception ignore) {
-            return 1;
-        }
-    }
-
     public void setSortType(SortType sortType) {
         this.sortType = sortType;
+        if (this.requestType == ApiRequestType.BYALL)
+            tryByAllPopular();
         createUrl();
     }
 

@@ -17,6 +17,8 @@ import com.maxwai.nclientv3.components.status.StatusManager;
 import com.maxwai.nclientv3.settings.Database;
 import com.maxwai.nclientv3.utility.LogUtility;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -86,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion <= 5) updateGalleryWithSizes(db);
         if (oldVersion <= 6) db.execSQL(Queries.DownloadTable.CREATE_TABLE);
         if (oldVersion <= 7) db.execSQL(Queries.HistoryTable.CREATE_TABLE);
-        if (oldVersion <= 8) insertFavorite(db);
+        if (oldVersion <= 8) insertFavorite(context, db);
         if (oldVersion <= 9) addRangeColumn(db);
         if (oldVersion <= 10) db.execSQL(Queries.ResumeTable.CREATE_TABLE);
         if (oldVersion <= 11) updateFavoriteTable(db);
@@ -144,12 +146,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * insert all galleries again
      * populate favorite
      */
-    private void insertFavorite(SQLiteDatabase db) {
+    private void insertFavorite(Context context, SQLiteDatabase db) {
         Database.setDatabase(db);
         db.execSQL(Queries.FavoriteTable.CREATE_TABLE);
         try {
             int[] favorites = getAllFavoriteIndex();
-            List<Gallery> allGalleries = Queries.GalleryTable.getAllGalleries();
+            List<Gallery> allGalleries = Queries.GalleryTable.getAllGalleries(context);
             db.execSQL(Queries.GalleryTable.DROP_TABLE);
             db.execSQL(Queries.GalleryTable.CREATE_TABLE);
             for (Gallery g : allGalleries) Queries.GalleryTable.insert(g);
