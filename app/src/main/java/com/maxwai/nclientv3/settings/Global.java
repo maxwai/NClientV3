@@ -356,6 +356,7 @@ public class Global {
                     new SharedPrefsCookiePersistor(preferences)
                 )
             );
+        builder.addInterceptor(new ApiAuthInterceptor(context.getApplicationContext()));
         builder.addInterceptor(new CustomInterceptor(context.getApplicationContext(), true));
         client = builder.build();
         client.dispatcher().setMaxRequests(25);

@@ -250,15 +250,15 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void menuItemsVisible(Menu menu) {
-        boolean isLogged = Login.isLogged();
+        boolean hasLegacySession = Login.hasLegacySession();
         boolean isValidOnline = gallery.isValid() && !isLocal;
         onlineFavoriteItem = menu.findItem(R.id.add_online_gallery);
-        onlineFavoriteItem.setVisible(isValidOnline && isLogged);
+        onlineFavoriteItem.setVisible(isValidOnline && hasLegacySession);
         menu.findItem(R.id.favorite_manager).setVisible(isValidOnline);
         menu.findItem(R.id.download_gallery).setVisible(isValidOnline);
         menu.findItem(R.id.related).setVisible(isValidOnline);
         menu.findItem(R.id.comments).setVisible(isValidOnline);
-        menu.findItem(R.id.download_torrent).setVisible(isLogged);
+        menu.findItem(R.id.download_torrent).setVisible(hasLegacySession);
 
         menu.findItem(R.id.share).setVisible(gallery.isValid());
         menu.findItem(R.id.load_internet).setVisible(isLocal && gallery.isValid());

@@ -43,7 +43,7 @@ import okhttp3.Response;
 public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> implements Filterable {
     @NonNull
     private final TagFilterActivity context;
-    private final boolean logged = Login.isLogged();
+    private final boolean logged = Login.hasLegacySession();
     private final TagType type;
     private final TagMode tagMode;
     private String lastQuery = null;

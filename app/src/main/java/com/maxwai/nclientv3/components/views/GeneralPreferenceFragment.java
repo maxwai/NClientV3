@@ -218,7 +218,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         }
         {
             Preference useAccountTag = Objects.requireNonNull(findPreference(getString(R.string.preference_key_use_account_tag)));
-            useAccountTag.setEnabled(Login.isLogged());
+            useAccountTag.setEnabled(Login.hasLegacySession());
         }
 
         {

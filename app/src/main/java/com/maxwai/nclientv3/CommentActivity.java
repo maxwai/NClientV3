@@ -60,7 +60,7 @@ public class CommentActivity extends BaseActivity {
         refresher = findViewById(R.id.refresher);
         refresher.setOnRefreshListener(() -> new CommentsFetcher(CommentActivity.this, id).start());
         EditText commentText = findViewById(R.id.commentText);
-        findViewById(R.id.card).setVisibility(Login.isLogged() ? View.VISIBLE : View.GONE);
+        findViewById(R.id.card).setVisibility(Login.hasLegacySession() ? View.VISIBLE : View.GONE);
         findViewById(R.id.sendButton).setOnClickListener(v -> {
             if (commentText.getText().toString().length() < MINIUM_MESSAGE_LENGHT) {
                 Toast.makeText(this, getString(R.string.minimum_comment_length, MINIUM_MESSAGE_LENGHT), Toast.LENGTH_SHORT).show();

@@ -27,8 +27,10 @@ public class Login {
     public static HttpUrl BASE_HTTP_URL;
     private static User user;
     private static boolean accountTag;
+    private static Context appContext;
 
     public static void initLogin(@NonNull Context context) {
+        appContext = context.getApplicationContext();
         SharedPreferences preferences = context.getSharedPreferences("Settings", 0);
         accountTag = preferences.getBoolean(context.getString(R.string.preference_key_use_account_tag), false);
         BASE_HTTP_URL = HttpUrl.get(Utility.getBaseUrl());
@@ -48,6 +50,7 @@ public class Login {
 
 
     public static void logout() {
+        if (appContext != null) AuthStore.clear(appContext);
         CustomCookieJar cookieJar = (CustomCookieJar) Global.client.cookieJar();
         removeCookie(LOGIN_COOKIE);
         cookieJar.clearSession();
@@ -93,10 +96,18 @@ public class Login {
         return false;
     }
 
+    public static boolean hasLegacySession() {
+        return hasCookie(LOGIN_COOKIE);
+    }
+
     public static boolean isLogged(@Nullable Context context) {
+        Context authContext = context != null ? context.getApplicationContext() : appContext;
         List<Cookie> cookies = Global.client.cookieJar().loadForRequest(BASE_HTTP_URL);
         LogUtility.d("Cookies: " + cookies);
-        if (hasCookie(LOGIN_COOKIE)) {
+        if (authContext != null && AuthStore.hasCredentials(authContext)) {
+            return true;
+        }
+        if (hasLegacySession()) {
             if (context != null && user == null) User.createUser(context, user -> {
                 if (user != null) {
                     new LoadTags(context).start();
