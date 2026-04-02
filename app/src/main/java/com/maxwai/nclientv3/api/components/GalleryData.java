@@ -63,7 +63,7 @@ public class GalleryData implements Parcelable {
     @Nullable
     private final Context context;
     private boolean changedInfo = false;
-    private boolean isDeleted = true;
+    private boolean isDeleted = false;
 
     private GalleryData(@Nullable Context context) {
         this.context = context;

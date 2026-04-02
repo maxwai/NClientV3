@@ -35,7 +35,7 @@ android {
         applicationId = "com.maxwai.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
-        versionCode = 420100
+        versionCode = 420101
         multiDexEnabled = true
         versionName = "4.2.1"
         vectorDrawables.useSupportLibrary = true

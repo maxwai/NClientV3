@@ -69,7 +69,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<GenericAdapter.ViewHol
         galleries[position] = g;
         if (g.getGalleryData().hasUpdatedInfo()) { // TODO: to be removed in next major version
             if (g.getGalleryData().isDeleted()) {
-                LogUtility.w("Deleting Gallery %s with id %d since not available anymore", g.getTitle(), g.getId());
+                LogUtility.w("Deleting Gallery " + g.getTitle() + " with id " + g.getId() + " since not available anymore");
                 Queries.GalleryTable.delete(g.getId());
             } else {
                 Queries.GalleryTable.insert(g);
