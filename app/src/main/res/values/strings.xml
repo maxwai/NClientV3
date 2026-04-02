@@ -110,6 +110,26 @@
     <string name="unknown_language">Unknown language</string>
     <string name="login">Log in</string>
     <string name="login_formatted" formatted="true">Logged as %s</string>
+    <string name="login_api_key_intro_title">Use an API key</string>
+    <string name="login_api_key_intro_message">The site now uses API keys for app access. Open the account settings page in your browser, create an API key there, then come back and paste it here.</string>
+    <string name="login_open_api_key_page">Open API key page</string>
+    <string name="login_have_api_key">I already have an API key</string>
+    <string name="login_api_key_input_title">Paste your API key</string>
+    <string name="login_api_key_input_message">The key is validated against the v2 API before it is saved.</string>
+    <string name="login_api_key_hint">API key</string>
+    <string name="login_validate_and_save">Validate and save</string>
+    <string name="login_api_key_saved">API key saved</string>
+    <string name="login_api_key_detected">A new API key was detected and pasted automatically</string>
+    <string name="login_api_key_invalid">Invalid API key</string>
+    <string name="login_api_key_empty">Paste an API key first</string>
+    <string name="login_api_key_pasted_from_clipboard">Clipboard content was pasted into the API key field</string>
+    <string name="login_clipboard_empty">Clipboard is empty</string>
+    <string name="login_status_login_first">Log in on the embedded page below. After a session is detected, the app will open the API key settings page automatically.</string>
+    <string name="login_status_redirecting_api_key">Login detected. Opening the API key settings page…</string>
+    <string name="login_status_create_api_key">Create and copy your API key on the page below, then return here to validate and save it.</string>
+    <string name="login_status_validating_api_key">A new API key was detected. Validating and saving it now…</string>
+    <string name="paste">Paste</string>
+    <string name="back">Back</string>
     <string name="logout">Logout</string>
     <string name="favorite_online_manga">Favorite online galleries</string>
     <string name="online_tags">Online tags</string>
