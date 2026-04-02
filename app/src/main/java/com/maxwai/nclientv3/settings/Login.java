@@ -7,7 +7,6 @@ import android.webkit.CookieManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.maxwai.nclientv3.MainActivity;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.api.components.Tag;
 import com.maxwai.nclientv3.async.database.Queries;
@@ -111,9 +110,6 @@ public class Login {
             if (context != null && user == null) User.createUser(context, user -> {
                 if (user != null) {
                     new LoadTags(context).start();
-                    if (context instanceof MainActivity) {
-                        ((MainActivity) context).runOnUiThread(() -> ((MainActivity) context).loginItem.setTitle(context.getString(R.string.login_formatted, user.getUsername())));
-                    }
                 }
             });
             return true;

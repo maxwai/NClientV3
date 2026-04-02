@@ -39,6 +39,7 @@ import com.maxwai.nclientv3.components.status.StatusManager;
 import com.maxwai.nclientv3.components.views.RangeSelector;
 import com.maxwai.nclientv3.components.widgets.CustomGridLayoutManager;
 import com.maxwai.nclientv3.settings.AuthRequest;
+import com.maxwai.nclientv3.settings.AuthStore;
 import com.maxwai.nclientv3.settings.Favorites;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
@@ -251,9 +252,10 @@ public class GalleryActivity extends BaseActivity {
 
     private void menuItemsVisible(Menu menu) {
         boolean hasLegacySession = Login.hasLegacySession();
+        boolean hasValidApiKey = AuthStore.hasValidApiKey(this);
         boolean isValidOnline = gallery.isValid() && !isLocal;
         onlineFavoriteItem = menu.findItem(R.id.add_online_gallery);
-        onlineFavoriteItem.setVisible(isValidOnline && hasLegacySession);
+        onlineFavoriteItem.setVisible(isValidOnline && hasValidApiKey);
         menu.findItem(R.id.favorite_manager).setVisible(isValidOnline);
         menu.findItem(R.id.download_gallery).setVisible(isValidOnline);
         menu.findItem(R.id.related).setVisible(isValidOnline);
@@ -268,7 +270,7 @@ public class GalleryActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         updateColumnCount(false);
-        if (isLocal) supportInvalidateOptionsMenu();
+        supportInvalidateOptionsMenu();
     }
 
     @Override

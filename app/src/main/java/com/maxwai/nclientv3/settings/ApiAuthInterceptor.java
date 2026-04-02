@@ -26,12 +26,20 @@ public class ApiAuthInterceptor implements Interceptor {
             return chain.proceed(request);
         }
 
+        if (!AuthStore.hasValidApiKey(context)) return chain.proceed(request);
+
         String authorization = AuthStore.getAuthorizationHeader(context);
         if (authorization == null) return chain.proceed(request);
 
         Request authenticated = request.newBuilder()
             .header("Authorization", authorization)
             .build();
-        return chain.proceed(authenticated);
+        Response response = chain.proceed(authenticated);
+        if (response.code() == 401 || response.code() == 403) {
+            AuthStore.setApiKeyValidation(context, false);
+        } else if (response.isSuccessful()) {
+            AuthStore.setApiKeyValidation(context, true);
+        }
+        return response;
     }
 }

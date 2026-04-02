@@ -19,6 +19,7 @@ import android.view.View;
 import android.webkit.CookieManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.biometric.BiometricManager;
@@ -31,6 +32,7 @@ import androidx.preference.SeekBarPreference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.CopyToClipboardActivity;
+import com.maxwai.nclientv3.LoginActivity;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.SettingsActivity;
 import com.maxwai.nclientv3.StatusManagerActivity;
@@ -39,6 +41,7 @@ import com.maxwai.nclientv3.async.VersionChecker;
 import com.maxwai.nclientv3.components.activities.CrashApplication;
 import com.maxwai.nclientv3.components.launcher.LauncherCalculator;
 import com.maxwai.nclientv3.components.launcher.LauncherReal;
+import com.maxwai.nclientv3.settings.AuthStore;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.utility.LogUtility;
@@ -166,6 +169,15 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
 
         fillRoba();
 
+        {
+            Preference apiKey = Objects.requireNonNull(findPreference(getString(R.string.preference_key_api_key)));
+            updateApiKeySummary(apiKey);
+            apiKey.setOnPreferenceClickListener(preference -> {
+                Intent i = new Intent(act, LoginActivity.class);
+                act.runOnUiThread(() -> act.startActivity(i));
+                return true;
+            });
+        }
         {
             Preference statusScreen = Objects.requireNonNull(findPreference(getString(R.string.preference_key_status_screen)));
             statusScreen.setOnPreferenceClickListener(preference -> {
@@ -405,6 +417,25 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
                 preference.setSummary(newValue.toString());
                 return true;
             });
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (act == null) return;
+        Preference apiKey = findPreference(getString(R.string.preference_key_api_key));
+        if (apiKey != null) updateApiKeySummary(apiKey);
+    }
+
+    private void updateApiKeySummary(@NonNull Preference preference) {
+        if (act == null) return;
+        if (AuthStore.hasValidApiKey(act)) {
+            preference.setSummary(R.string.setting_api_key_summary_valid);
+        } else if (AuthStore.hasApiKey(act)) {
+            preference.setSummary(R.string.setting_api_key_summary_invalid);
+        } else {
+            preference.setSummary(R.string.setting_api_key_summary_missing);
         }
     }
 
