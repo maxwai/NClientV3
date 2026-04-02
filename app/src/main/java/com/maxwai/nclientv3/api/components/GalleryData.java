@@ -16,6 +16,7 @@ import com.maxwai.nclientv3.api.enums.ImageType;
 import com.maxwai.nclientv3.api.enums.SpecialTagIds;
 import com.maxwai.nclientv3.api.enums.TitleType;
 import com.maxwai.nclientv3.async.database.Queries;
+import com.maxwai.nclientv3.files.PageFile;
 import com.maxwai.nclientv3.files.GalleryFolder;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.utility.LogUtility;
@@ -243,8 +244,21 @@ public class GalleryData implements Parcelable {
     public void setPageInfo(GalleryFolder folder) {
         this.pageCount = folder.getPageCount();
         if (pageCount > 0) {
-            this.cover.setImagePath(folder.getPage(1).toUri());
-            this.thumbnail.setImagePath(folder.getPage(1).toUri());
+            PageFile firstPage = folder.getPage(folder.getMin());
+            if (firstPage == null) {
+                for (PageFile page : folder) {
+                    if (page != null) {
+                        firstPage = page;
+                        break;
+                    }
+                }
+            }
+            if (firstPage != null) {
+                this.cover.setImagePath(firstPage.toUri());
+                this.thumbnail.setImagePath(firstPage.toUri());
+            } else {
+                LogUtility.w("Local gallery has page count but no readable first page", folder);
+            }
         }
     }
 
