@@ -79,11 +79,8 @@ public class StatusViewerAdapter extends RecyclerView.Adapter<GenericAdapter.Vie
 
     @Nullable
     private Gallery positionToGallery(int position) {
-        try {
-            if (galleries != null && galleries.moveToPosition(position)) {
-                return Queries.GalleryTable.cursorToGallery(context, galleries);
-            }
-        } catch (IOException ignore) {
+        if (galleries != null && galleries.moveToPosition(position)) {
+            return Queries.GalleryTable.cursorToGallery(context, galleries);
         }
         return null;
     }

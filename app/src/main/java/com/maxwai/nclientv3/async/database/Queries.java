@@ -137,7 +137,7 @@ public class Queries {
          *
          * @param id id of the gallery to retrieve
          */
-        public static Gallery galleryFromId(Context context, int id) throws IOException {
+        public static Gallery galleryFromId(Context context, int id) {
             try (Cursor cursor = db.query(true, TABLE_NAME, null, IDGALLERY + "=?", new String[]{"" + id}, null, null, null, null)) {
                 Gallery g = null;
                 if (cursor.moveToFirst()) {
@@ -172,7 +172,7 @@ public class Queries {
         /**
          * Retrieve all galleries inside the DB
          */
-        public static List<Gallery> getAllGalleries(Context context) throws IOException {
+        public static List<Gallery> getAllGalleries(Context context) {
             String query = "SELECT * FROM " + TABLE_NAME;
             try (Cursor cursor = db.rawQuery(query, null)) {
                 List<Gallery> galleries = new ArrayList<>(cursor.getCount());
@@ -211,7 +211,7 @@ public class Queries {
          * @param cursor Cursor to scroll
          * @return ArrayList of galleries
          */
-        static List<Gallery> cursorToList(Context context, Cursor cursor) throws IOException {
+        static List<Gallery> cursorToList(Context context, Cursor cursor) {
             List<Gallery> galleries = new ArrayList<>(cursor.getCount());
             if (cursor.moveToFirst()) {
                 do {
@@ -231,7 +231,7 @@ public class Queries {
         /**
          * Convert a row of a cursor to a {@link Gallery}
          */
-        public static Gallery cursorToGallery(Context context, Cursor cursor) throws IOException {
+        public static Gallery cursorToGallery(Context context, Cursor cursor) {
             return new Gallery(context, cursor, GalleryBridgeTable.getTagsForGallery(cursor.getInt(getColumnFromName(cursor, IDGALLERY))));
         }
 
@@ -610,7 +610,7 @@ public class Queries {
             db.delete(TABLE_NAME, ID_GALLERY + "=?", new String[]{"" + id});
         }
 
-        public static List<GalleryDownloaderManager> getAllDownloads(Context context) throws IOException {
+        public static List<GalleryDownloaderManager> getAllDownloads(Context context) {
             String q = "SELECT * FROM %s INNER JOIN %s ON %s=%s";
             String query = String.format(Locale.US, q, GalleryTable.TABLE_NAME, DownloadTable.TABLE_NAME, GalleryTable.IDGALLERY, DownloadTable.ID_GALLERY);
             try (Cursor c = db.rawQuery(query, null)) {
@@ -863,7 +863,7 @@ public class Queries {
         /**
          * Retrieve all favorite galleries
          */
-        static List<Gallery> getAllFavoriteGalleries(Context context) throws IOException {
+        static List<Gallery> getAllFavoriteGalleries(Context context) {
             try (Cursor c = getAllFavoriteGalleriesCursor()) {
                 return GalleryTable.cursorToList(context, c);
             }

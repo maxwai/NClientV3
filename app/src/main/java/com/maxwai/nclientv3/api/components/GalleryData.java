@@ -25,7 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -64,6 +63,7 @@ public class GalleryData implements Parcelable {
     @Nullable
     private final Context context;
     private boolean changedInfo = false;
+    private boolean isDeleted = true;
 
     private GalleryData(@Nullable Context context) {
         this.context = context;
@@ -74,7 +74,7 @@ public class GalleryData implements Parcelable {
         parseJSON(jr);
     }
 
-    public GalleryData(@NonNull Context context, Cursor cursor, @NonNull TagList tagList) throws IOException {
+    public GalleryData(@NonNull Context context, Cursor cursor, @NonNull TagList tagList) {
         this(context);
         id = cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.IDGALLERY));
         mediaId = cursor.getInt(Queries.getColumnFromName(cursor, Queries.GalleryTable.MEDIAID));
@@ -85,7 +85,7 @@ public class GalleryData implements Parcelable {
         titles[TitleType.ENGLISH.ordinal()] = cursor.getString(Queries.getColumnFromName(cursor, Queries.GalleryTable.TITLE_ENG));
 
         uploadDate = new Date(cursor.getLong(Queries.getColumnFromName(cursor, Queries.GalleryTable.UPLOAD)));
-        readPagePath(cursor.getString(Queries.getColumnFromName(cursor, Queries.GalleryTable.PAGES)), id);
+        readPagePath(cursor.getString(Queries.getColumnFromName(cursor, Queries.GalleryTable.PAGES)));
         pageCount = pages.size();
         this.tags = tagList;
     }
@@ -125,6 +125,11 @@ public class GalleryData implements Parcelable {
 
     public boolean hasUpdatedInfo() {
         return changedInfo;
+    }
+
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     private void parseJSON(JsonReader jr) throws IOException {
@@ -317,114 +322,79 @@ public class GalleryData implements Parcelable {
         dest.writeByte((byte) (valid ? 1 : 0));
     }
 
+    private String truncateUrl(Uri uri) {
+        String output = uri.toString();
+        return output.substring(output.lastIndexOf('/'));
+    }
+
     public String createPagePath() {
         StringWriter writer = new StringWriter();
         writer.write(Integer.toString(pages.size()));
         writer.write(";");
-        writer.write(cover.getThumbnailPath().toString());
+        writer.write(truncateUrl(cover.getThumbnailPath()));
         writer.write(";");
-        writer.write(thumbnail.getThumbnailPath().toString());
+        writer.write(truncateUrl(thumbnail.getThumbnailPath()));
         writer.write(";");
         if (pages.isEmpty()) return writer.toString();
         for (Page page : pages) {
-            writer.write(page.getImagePath().toString());
+            writer.write(truncateUrl(page.getImagePath()));
             writer.write(";");
         }
         return writer.toString();
     }
 
-    private void readPagePathNew(String path, int galleryId) {
+    private void readPagePathNew(String path) {
         LogUtility.d(path);
         String[] parts = path.split(";");
-        if (!parts[1].startsWith("http")) { // TODO: To be removed in next major version
-            Thread updateThread = new Thread(() -> {
-                // Old entry, needs to be updated
-                String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + galleryId;
-                try (Response resp = Global.getClient(Objects.requireNonNull(context)).newCall(new Request.Builder().url(detailUrl).build()).execute()) {
-                    String body = resp.body().string();
-                    if (resp.code() == HttpURLConnection.HTTP_OK) {
-                        JSONObject v2 = new JSONObject(body);
-                        Gallery gallery = new Gallery(context, v2.toString(), null, false);
-                        cover = new Page(ImageType.COVER, gallery.getCover());
-                        thumbnail = new Page(ImageType.THUMBNAIL, gallery.getThumbnail());
-                        for (int i = 0; i < gallery.getPageCount(); i++) {
-                            pages.add(new Page(ImageType.PAGE, gallery.getHighPage(i), null, i));
-                        }
-                    }
-                } catch (IOException | JSONException e) {
-                    LogUtility.e(e);
-                }
-            });
-            updateThread.start();
-            try {
-                updateThread.join();
-                changedInfo = true;
-            } catch (InterruptedException e) {
-                LogUtility.w(e);
+        if (parts[1].startsWith("http")) {
+            changedInfo = true;
+            cover = new Page(ImageType.COVER, Uri.parse(parts[1]));
+            thumbnail = new Page(ImageType.THUMBNAIL, Uri.parse(parts[2]));
+            int absolutePage = 0;
+            for (int i = 3; i < parts.length; i++) {
+                pages.add(new Page(ImageType.PAGE, Uri.parse(parts[i]), null, absolutePage++));
             }
             return;
         }
-        cover = new Page(ImageType.COVER, Uri.parse(parts[1]));
-        thumbnail = new Page(ImageType.THUMBNAIL, Uri.parse(parts[2]));
+        cover = new Page(ImageType.COVER, Uri.parse("https://t1." + Utility.getHost() + "/galleries/" + mediaId + parts[1]));
+        thumbnail = new Page(ImageType.THUMBNAIL, Uri.parse("https://t1." + Utility.getHost() + "/galleries/" + mediaId + parts[2]));
         int absolutePage = 0;
         for (int i = 3; i < parts.length; i++) {
-            pages.add(new Page(ImageType.PAGE, Uri.parse(parts[i]), null, absolutePage++));
+            pages.add(new Page(ImageType.PAGE, Uri.parse("https://i1." + Utility.getHost() + "/galleries/" + mediaId + parts[i]), null, absolutePage++));
         }
     }
 
-    private void readPagePath(String path, int galleryId) throws IOException {
-        if (path.contains(";")) {
-            readPagePathNew(path, galleryId);
+    private void readPagePath(String path) {
+        if (path.contains(";") && path.contains("/")) {
+            readPagePathNew(path);
             return;
         }
-        LogUtility.d(path);
-        StringReader reader = new StringReader(path + "e");//flag for the end
-        int absolutePage = 0;
-        int actualChar;
-        int pageOfType = 0;
-        boolean specialImages = true;//compability variable
-        String extension = null;
-        while ((actualChar = reader.read()) != 'e') {
-            switch (actualChar) {
-                case 'p':
-                    extension = "png";
-                case 'j':
-                    if (extension == null)
-                        extension = "jpg";
-                case 'g':
-                    if (extension == null)
-                        extension = "gif";
-                case 'w':
-                    if (extension == null)
-                        extension = "webp";
-                    if (specialImages) {
-                        cover = new Page(ImageType.COVER, Uri.parse(extension));
-                        thumbnail = new Page(ImageType.THUMBNAIL, Uri.parse(extension));
-                        specialImages = false;
-                    } else {
-                        for (int j = 0; j < pageOfType; j++) {//add pageOfType time a page of actualChar
-                            pages.add(new Page(ImageType.PAGE, Uri.parse(extension), null, absolutePage++));
-                        }
+        Thread updateThread = new Thread(() -> {
+            // Old entry, needs to be updated
+            String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + id;
+            try (Response resp = Global.getClient(Objects.requireNonNull(context)).newCall(new Request.Builder().url(detailUrl).build()).execute()) {
+                String body = resp.body().string();
+                if (resp.code() == HttpURLConnection.HTTP_OK) {
+                    JSONObject v2 = new JSONObject(body);
+                    Gallery gallery = new Gallery(context, v2.toString(), null, false);
+                    cover = new Page(ImageType.COVER, gallery.getCover());
+                    thumbnail = new Page(ImageType.THUMBNAIL, gallery.getThumbnail());
+                    for (int i = 0; i < gallery.getPageCount(); i++) {
+                        pages.add(new Page(ImageType.PAGE, gallery.getHighPage(i), null, i));
                     }
-                    pageOfType = 0;//reset digits
-                    extension = null;
-                    break;
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    pageOfType *= 10;
-                    pageOfType += actualChar - '0';
-                    break;
-                default:
-                    break;
+                } else {
+                    isDeleted = true;
+                }
+            } catch (IOException | JSONException e) {
+                LogUtility.e(e);
             }
+        });
+        updateThread.start();
+        try {
+            changedInfo = true;
+            updateThread.join();
+        } catch (InterruptedException e) {
+            LogUtility.w(e);
         }
     }
 

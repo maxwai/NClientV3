@@ -58,17 +58,13 @@ public class DownloadGalleryV2 extends Worker {
     }
 
     public static void loadDownloads(Context context) {
-        try {
-            List<GalleryDownloaderManager> g = Queries.DownloadTable.getAllDownloads(context);
-            for (GalleryDownloaderManager gg : g) {
-                gg.downloader().setStatus(GalleryDownloaderV2.Status.PAUSED);
-                DownloadQueue.add(gg);
-            }
-            new PageChecker().start();
-            startWork(context);
-        } catch (IOException e) {
-            LogUtility.e(e, e);
+        List<GalleryDownloaderManager> g = Queries.DownloadTable.getAllDownloads(context);
+        for (GalleryDownloaderManager gg : g) {
+            gg.downloader().setStatus(GalleryDownloaderV2.Status.PAUSED);
+            DownloadQueue.add(gg);
         }
+        new PageChecker().start();
+        startWork(context);
     }
 
     public static void downloadRange(Context context, Gallery gallery, int start, int end) {

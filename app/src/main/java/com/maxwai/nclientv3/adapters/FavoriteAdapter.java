@@ -65,17 +65,17 @@ public class FavoriteAdapter extends RecyclerView.Adapter<GenericAdapter.ViewHol
     private Gallery galleryFromPosition(int position) {
         if (galleries[position] != null) return galleries[position];
         cursor.moveToPosition(position);
-        try {
-            Gallery g = Queries.GalleryTable.cursorToGallery(activity, cursor);
-            galleries[position] = g;
-            if (g.getGalleryData().hasUpdatedInfo()) { // TODO: to be removed in next major version
+        Gallery g = Queries.GalleryTable.cursorToGallery(activity, cursor);
+        galleries[position] = g;
+        if (g.getGalleryData().hasUpdatedInfo()) { // TODO: to be removed in next major version
+            if (g.getGalleryData().isDeleted()) {
+                LogUtility.w("Deleting Gallery %s with id %d since not available anymore", g.getTitle(), g.getId());
+                Queries.GalleryTable.delete(g.getId());
+            } else {
                 Queries.GalleryTable.insert(g);
             }
-            return g;
-        } catch (IOException e) {
-            LogUtility.w("Couldn't get gallery From Position", e);
-            return null;
         }
+        return g;
     }
 
     @Override

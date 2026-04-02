@@ -149,17 +149,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void insertFavorite(Context context, SQLiteDatabase db) {
         Database.setDatabase(db);
         db.execSQL(Queries.FavoriteTable.CREATE_TABLE);
-        try {
-            int[] favorites = getAllFavoriteIndex();
-            List<Gallery> allGalleries = Queries.GalleryTable.getAllGalleries(context);
-            db.execSQL(Queries.GalleryTable.DROP_TABLE);
-            db.execSQL(Queries.GalleryTable.CREATE_TABLE);
-            for (Gallery g : allGalleries) Queries.GalleryTable.insert(g);
-            for (int i : favorites) Queries.FavoriteTable.insert(i);
-        } catch (IOException e) {
-            // TODO: remove the possibility of crash
-            LogUtility.e("Error inserting Favorites", e);
-        }
+        int[] favorites = getAllFavoriteIndex();
+        List<Gallery> allGalleries = Queries.GalleryTable.getAllGalleries(context);
+        db.execSQL(Queries.GalleryTable.DROP_TABLE);
+        db.execSQL(Queries.GalleryTable.CREATE_TABLE);
+        for (Gallery g : allGalleries) Queries.GalleryTable.insert(g);
+        for (int i : favorites) Queries.FavoriteTable.insert(i);
     }
 
     /**
