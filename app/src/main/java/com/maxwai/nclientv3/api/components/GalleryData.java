@@ -243,8 +243,9 @@ public class GalleryData implements Parcelable {
     public void setPageInfo(GalleryFolder folder) {
         this.pageCount = folder.getPageCount();
         if (pageCount > 0) {
-            this.cover.setImagePath(folder.getPage(1).toUri());
-            this.thumbnail.setImagePath(folder.getPage(1).toUri());
+            Uri firstPage = folder.getFirstPage().toUri();
+            this.cover.setImagePath(firstPage);
+            this.thumbnail.setImagePath(firstPage);
         }
     }
 

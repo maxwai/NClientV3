@@ -140,6 +140,16 @@ public class GalleryFolder implements Parcelable, Iterable<PageFile> {
         return pageArray.get(page);
     }
 
+    public PageFile getFirstPage() {
+        int minPage = Integer.MAX_VALUE;
+        for(int i = 0; i < pageArray.size(); i++) {
+            if (minPage > pageArray.keyAt(i)) {
+                minPage = pageArray.keyAt(i);
+            }
+        }
+        return pageArray.get(minPage);
+    }
+
     public int getId() {
         return id;
     }
