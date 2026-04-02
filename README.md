@@ -55,6 +55,7 @@ If your desired language is missing, write an issue, the language will be added.
 - Ivan Lost (dovakin1886) for Ukrainian translation
 - crorcetn for Japanese translation
 - [Inori333](https://github.com/inori-3333) for the initial implementation of the new api
+- [Kronos2308](https://github.com/kronos2308) for Spanish translation
 
 ## Contributors of original Project
 
