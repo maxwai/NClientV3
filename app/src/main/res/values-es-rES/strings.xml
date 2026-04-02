@@ -183,8 +183,8 @@
     <string name="insert_pin">Insertar PIN</string>
     <string name="confirm_pin">Confirmar PIN</string>
     <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
-    <string name="setting_device_credentials_low_sdk">Only available for Android 11 or higher</string>
-    <string name="use_device_credentials">Use Device Credentials</string>
+    <string name="setting_device_credentials_low_sdk">Solo disponible para Android 11 o superior</string>
+    <string name="use_device_credentials">Usar Credenciales del Dispositivo</string>
     <string name="wrong_pin">PIN erróneo</string>
     <string name="rotate_image">Rotar la imagen</string>
     <string name="toggle_online_favorite">Cambiar favorito en línea</string>
@@ -245,8 +245,8 @@
     <string name="title">Título</string>
     <string name="download_date">Fecha de descarga</string>
     <string name="page_count">Número de página</string>
-    <string name="artist">Artist</string>
-    <string name="group">Group</string>
+    <string name="artist">Artista</string>
+    <string name="group">Grupo</string>
     <string name="descending_order">Orden Descendiente</string>
     <string name="minimum_comment_length" formatted="true">El comentario debe ser de al menos %d carácteres.</string>
     <string name="change_scroll_type">Cambiar tipo de scroll</string>
@@ -279,16 +279,16 @@
     <string name="summary_fetch_metadata">Descarga los datos de galerías descargadas antes de la versión 2.3.0 las cuales no tenian etiquetas.</string>
     <string name="title_fetch_metadata">Reconocer los datos de las galerías antiguas</string>
     <string name="title_change_page_buttons">Cambiar de página haciendo click en la imagen</string>
-    <string name="export_finished">Export finished</string>
-    <string name="import_finished">Import finished</string>
-    <string name="download_torrent">Download torrent</string>
+    <string name="export_finished">Exportación Finalizada</string>
+    <string name="import_finished">Importación Completa</string>
+    <string name="download_torrent">Descargar Torrent</string>
     <string name="system_default">System default</string>
-    <string name="clear_cookies">Clear cookies</string>
+    <string name="clear_cookies">Limpiar cokkies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
     <string name="exact_title_match_title">Exact tag match only</string>
-    <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
-    <string name="hide">Hide</string>
-    <string name="title_user_agent">Change User-Agent</string>
+    <string name="exact_title_match_summary">Ocultar Galerías qué no tienen todas las etiquetas de la búsqueda</string>
+    <string name="hide">Ocultar</string>
+    <string name="title_user_agent">Cambiar User-Agent del webview</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string name="copy_logs">Copy logs to file</string>
     <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>
@@ -300,7 +300,7 @@
     <string-array name="theme">
         <item>Claro</item>
         <item>Oscuro</item>
-        <item>True Black</item>
+        <item>Negro Oled</item>
     </string-array>
     <string-array name="title_type_array">
         <item>Inglés</item>
@@ -310,7 +310,7 @@
     <string name="online_blacklist_add_error">Error adding to online blacklist</string>
     <string name="clipboard_settings_error">Error copying settings into clipboard</string>
     <string name="send_image_error">Error creating Image to send</string>
-    <string name="unlock">Unlock</string>
+    <string name="unlock">Desbloquear</string>
     <string name="auth_error">Authentication error</string>
     <string name="auth_title">Biometric login for NClient</string>
     <string name="auth_subtitle">Log in using your biometric credential</string>
