@@ -81,7 +81,7 @@ public class LocalActivity extends BaseActivity {
     public void setAdapter(LocalAdapter adapter) {
         this.adapter = adapter;
         this.adapter.addListener(listener);
-        recycler.setAdapter(adapter);
+        runOnUiThread(() -> recycler.setAdapter(adapter));
     }
 
     public void setIdGalleryPosition(int idGalleryPosition) {
