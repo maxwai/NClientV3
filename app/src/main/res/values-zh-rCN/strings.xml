@@ -178,12 +178,12 @@
     <string name="toggle_favorite">切换收藏</string>
     <string name="resume">恢复</string>
     <string name="title_copied_to_clipboard">标题已复制至剪贴板</string>
-    <string name="setting_zoom_one_column">在画廊内一列显示时启用缩放</string>
+    <string name="setting_zoom_one_column">在画廊内的单列模式下启用缩放</string>
     <string name="zoom_one_column">启用缩放</string>
     <string name="insert_pin">输入 PIN 码</string>
     <string name="confirm_pin">确认 PIN 码</string>
     <string name="setting_device_credentials">启用设备凭据以进入应用</string>
-    <string name="setting_device_credentials_low_sdk">Only available for Android 11 or higher</string>
+    <string name="setting_device_credentials_low_sdk">仅对 Android 11 及以上系统可用</string>
     <string name="use_device_credentials">使用设备凭据</string>
     <string name="wrong_pin">PIN 码错误</string>
     <string name="rotate_image">旋转图片</string>
@@ -228,7 +228,7 @@
     <string name="months">月</string>
     <string name="days">日</string>
     <string name="weeks">周</string>
-    <string name="choose_unit">选择时间单位:</string>
+    <string name="choose_unit">选择时间单位：</string>
     <string name="change_status">更改状态</string>
     <string name="create_new_status">创建新状态：</string>
     <string name="invalid_color_selected">黑色和白色不能使用</string>
@@ -268,11 +268,11 @@
     <string name="custom_path">自定义路径</string>
     <string name="insert_path">插入路径：</string>
     <string name="requesting_storage_access">请求存储权限</string>
-    <string name="request_storage_manager_summary">由于 Android 11 中的一些存储权限限制应用将向您请求额外的权限以使用自定义路径。\n如果您想要授予这些权限请在下一对话框中启用此设置。</string>
+    <string name="request_storage_manager_summary">由于 Android 11 中的一些存储权限限制，应用将向您请求额外的权限以使用自定义路径。\n如果您想要授予这些权限，请在下一对话框中启用此设置。</string>
     <string name="summary_beta">更新到 beta 版将使您无法回到稳定版，除非卸载</string>
     <string name="navigation_settings_per_screen">每个界面的导航设置</string>
     <string name="downloaded_update_at" formatted="true">下载更新 %s</string>
-    <string name="summary_offscreen_limit">设置阅读图库时要在屏幕外预载的图像数量</string>
+    <string name="summary_offscreen_limit">设置阅读时预载的图像数量</string>
     <string name="title_offscreen_limit">要预载的图像</string>
     <string name="sort_popoular_month">月榜</string>
     <string name="random">随机</string>
