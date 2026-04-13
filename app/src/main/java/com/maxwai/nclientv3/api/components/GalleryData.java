@@ -382,8 +382,13 @@ public class GalleryData implements Parcelable {
                     for (int i = 0; i < gallery.getPageCount(); i++) {
                         pages.add(new Page(ImageType.PAGE, gallery.getHighPage(i), null, i));
                     }
-                } else {
+                    valid = true;
+                } else if (resp.code() == HttpURLConnection.HTTP_NOT_FOUND) {
                     isDeleted = true;
+                } else {
+                    LogUtility.w("Got rate limit while updating favorites");
+                    changedInfo = false;
+                    valid = false;
                 }
             } catch (IOException | JSONException e) {
                 LogUtility.e(e);

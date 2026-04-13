@@ -24,9 +24,6 @@ import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -94,8 +91,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<GenericAdapter.ViewHol
             else holder.layout.performClick();
         });
         holder.layout.setOnClickListener(v -> {
-            //Global.setLoadedGallery(ent);
-            startGallery(ent);
+            if (ent.getGalleryData().isValid())
+                startGallery(ent);
         });
         holder.layout.setOnLongClickListener(v -> {
             holder.title.animate().alpha(holder.title.getAlpha() == 0f ? 1f : 0f).setDuration(100).start();
