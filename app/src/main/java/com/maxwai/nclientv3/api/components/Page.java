@@ -90,7 +90,8 @@ public class Page implements Parcelable {
         } else {
             size = in.readParcelable(Size.class.getClassLoader());
         }
-        path = Uri.parse(in.readString());
+        String pathString = in.readString();
+        path = (pathString == null || pathString.isEmpty()) ? null : Uri.parse(pathString);
         String thumbString = in.readString();
         thumbPath = Objects.requireNonNull(thumbString).isEmpty() ? null : Uri.parse(thumbString);
         imageType = ImageType.values()[in.readByte()];
@@ -105,7 +106,7 @@ public class Page implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(page);
         dest.writeParcelable(size, flags);
-        dest.writeString(path.toString());
+        dest.writeString(path == null ? "" : path.toString());
         dest.writeString(thumbPath == null ? "" : thumbPath.toString());
         dest.writeByte((byte) (imageType == null ? ImageType.PAGE.ordinal() : imageType.ordinal()));
     }
