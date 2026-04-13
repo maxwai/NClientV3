@@ -56,6 +56,7 @@ If your desired language is missing, write an issue, the language will be added.
 - crorcetn for Japanese translation
 - [Inori333](https://github.com/inori-3333) for the initial implementation of the new api
 - [Kronos2308](https://github.com/kronos2308) for Spanish translation
+- [Locked_Fog](https://github.com/locked-fog) for Chinese Simplified translation
 
 ## Contributors of original Project
 
