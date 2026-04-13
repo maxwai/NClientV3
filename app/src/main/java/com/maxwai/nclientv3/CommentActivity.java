@@ -19,7 +19,7 @@ import com.maxwai.nclientv3.adapters.CommentAdapter;
 import com.maxwai.nclientv3.api.comments.Comment;
 import com.maxwai.nclientv3.api.comments.CommentsFetcher;
 import com.maxwai.nclientv3.components.activities.BaseActivity;
-import com.maxwai.nclientv3.settings.AuthRequest;
+import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.utility.Utility;
 
@@ -31,6 +31,7 @@ import java.util.Objects;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
@@ -66,35 +67,33 @@ public class CommentActivity extends BaseActivity {
                 Toast.makeText(this, getString(R.string.minimum_comment_length, MINIUM_MESSAGE_LENGHT), Toast.LENGTH_SHORT).show();
                 return;
             }
-            String refererUrl = String.format(Locale.US, Utility.getBaseUrl() + "g/%d/", id);
-            String submitUrl = String.format(Locale.US, Utility.getBaseUrl() + "api/gallery/%d/comments/submit", id);
+            String submitUrl = String.format(Locale.US, Utility.getApiBaseUrl() + "galleries/%d/comments", id);
             String requestString = createRequestString(commentText.getText().toString());
             commentText.setText("");
             RequestBody body = RequestBody.create(requestString, MediaType.get("application/json"));
-            new AuthRequest(refererUrl, submitUrl, new Callback() {
+            Global.getClient(this)
+                .newCall(new Request.Builder().url(submitUrl).post(body).build())
+                .enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
                 }
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                     try (JsonReader reader = new JsonReader(response.body().charStream())) {
-                        Comment comment = null;
-                        reader.beginObject();
-                        while (reader.peek() != JsonToken.END_OBJECT) {
-                            if ("comment".equals(reader.nextName())) {
-                                comment = new Comment(reader);
-                            } else {
-                                reader.skipValue();
-                            }
-                        }
-                        if (comment != null && adapter != null)
+                        Comment comment = new Comment(reader);
+                        if (adapter != null)
                             adapter.addComment(comment);
                     }
                 }
-            }).setMethod("POST", body).start();
+            });
         });
+        // TODO: deactivated feature until fixed
+        findViewById(R.id.sendButton).setClickable(false);
+        findViewById(R.id.sendButton).setEnabled(false);
+        commentText.setEnabled(false);
+        commentText.setHint("Deactivated feature");
+        // TODO: end
         changeLayout(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
         recycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         refresher.setRefreshing(true);
@@ -110,6 +109,7 @@ public class CommentActivity extends BaseActivity {
              JsonWriter json = new JsonWriter(writer)) {
             json.beginObject();
             json.name("body").value(text);
+            // TODO: this now needs pow and captcha
             json.endObject();
             return writer.toString();
         } catch (IOException ignore) {

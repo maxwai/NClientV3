@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">ギャラリー</string>
     <string name="title_activity_zoom">ズームアクティビティ</string>
     <string name="title_activity_tag_filter">タグフィルター</string>
-    <string name="title_activity_login">ログインする</string>
     <string name="parodies">パロディー</string>
     <string name="characters">キャラクター</string>
     <string name="tags">タグ</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">中国語のみ</string>
     <string name="all_languages">全ての言語</string>
     <string name="unknown_language">Unknown language</string>
-    <string name="login">ログイン</string>
-    <string name="login_formatted" formatted="true">%sとして記録</string>
-    <string name="logout">ログアウト</string>
     <string name="favorite_online_manga">お気に入りのオンラインギャラリー</string>
     <string name="online_tags">オンラインタグ</string>
     <string name="add_to_online_favorite">オンラインのお気に入りに追加</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">画像をクリックしてページを変更</string>
     <string name="export_finished">エクスポートが完了しました</string>
     <string name="import_finished">インポートが完了しました</string>
-    <string name="download_torrent">torrentファイルをダウンロード</string>
     <string name="system_default">システムのデフォルト</string>
     <string name="clear_cookies">Cookie を消去</string>
     <string name="fetching_cloudflare_token">Cloudflareトークンを取得しています …</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">非表示</string>
-    <string name="title_user_agent">Change User-Agent</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string name="copy_logs">Copy logs to file</string>
     <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>

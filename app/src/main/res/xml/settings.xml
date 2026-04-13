@@ -27,6 +27,10 @@
             android:title="@string/title_site_mirror"
             app:iconSpaceReserved="false"
             app:isPreferenceVisible="false" />
+        <Preference
+            android:key="@string/preference_key_api_key"
+            android:title="@string/setting_api_key_title"
+            app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="@string/preference_key_fake_icon"
@@ -67,11 +71,6 @@
             android:title="@string/maximum_notification_count"
             app:iconSpaceReserved="false"
             app:showSeekBarValue="true" />
-        <EditTextPreference
-            android:key="@string/preference_key_user_agent"
-            android:title="@string/title_user_agent"
-            app:iconSpaceReserved="false"
-            android:defaultValue="@string/default_user_agent"/>
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">画廊</string>
     <string name="title_activity_zoom">启用放大</string>
     <string name="title_activity_tag_filter">标签筛选</string>
-    <string name="title_activity_login">登录</string>
     <string name="parodies">原作</string>
     <string name="characters">角色</string>
     <string name="tags">标签</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">仅中文</string>
     <string name="all_languages">所有语言</string>
     <string name="unknown_language">未知语言</string>
-    <string name="login">登录</string>
-    <string name="login_formatted" formatted="true">以 %s 身份登录</string>
-    <string name="logout">登出</string>
     <string name="favorite_online_manga">在线收藏漫画</string>
     <string name="online_tags">在线标签</string>
     <string name="add_to_online_favorite">添加至在线收藏</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">点击图片更改页面</string>
     <string name="export_finished">导出完成</string>
     <string name="import_finished">导入完成</string>
-    <string name="download_torrent">下载种子</string>
     <string name="system_default">系统默认</string>
     <string name="clear_cookies">清除 cookies</string>
     <string name="fetching_cloudflare_token">获取 Cloudflare 令牌 …</string>
     <string name="exact_title_match_title">仅精确标签匹配</string>
     <string name="exact_title_match_summary">隐藏网站中会出现但不包含所有搜索标签的图库</string>
     <string name="hide">隐藏</string>
-    <string name="title_user_agent">更改用户代理</string>
     <string name="shuffle_contentDescription">随机图库按钮</string>
     <string name="copy_logs">复制日志到文件</string>
     <string name="copy_logs_summary">此操作将把该应用的所有可用日志保存至文件中。可用日志可能涵盖多日记录。此外，日志中可能包含个人信息，发布文件前请务必核查。可将此文件作为附件提交至错误报告。</string>

@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -54,10 +53,10 @@ import com.maxwai.nclientv3.async.downloader.DownloadGalleryV2;
 import com.maxwai.nclientv3.components.activities.BaseActivity;
 import com.maxwai.nclientv3.components.views.PageSwitcher;
 import com.maxwai.nclientv3.components.widgets.CustomGridLayoutManager;
+import com.maxwai.nclientv3.settings.AuthStore;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.settings.TagV2;
-import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
 
@@ -97,7 +96,7 @@ public class MainActivity extends BaseActivity
         }
     };
     //views
-    public MenuItem loginItem, onlineFavoriteManager;
+    public MenuItem onlineFavoriteManager;
     private InspectorV3 inspector = null;
     private NavigationView navigationView;
     private ModeType modeType = ModeType.UNKNOWN;
@@ -137,7 +136,6 @@ public class MainActivity extends BaseActivity
         initializeNavigationView();
         initializeRecyclerView();
         initializePageSwitcherActions();
-        loadStringLogin();
         refresher.setOnRefreshListener(() -> {
             inspector = inspector.cloneInspector(MainActivity.this, resetDataset);
             if (Global.isInfiniteScrollMain()) inspector.setPage(1);
@@ -253,7 +251,7 @@ public class MainActivity extends BaseActivity
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> finish());
         navigationView.setNavigationItemSelectedListener(this);
-        onlineFavoriteManager.setVisible(com.maxwai.nclientv3.settings.Login.isLogged());
+        onlineFavoriteManager.setVisible(AuthStore.hasValidApiKey(this));
     }
 
     public void setIdOpenedGallery(int idOpenedGallery) {
@@ -268,17 +266,7 @@ public class MainActivity extends BaseActivity
         refresher = findViewById(R.id.refresher);
         pageSwitcher = findViewById(R.id.page_switcher);
         drawerLayout = findViewById(R.id.drawer_layout);
-        loginItem = navigationView.getMenu().findItem(R.id.action_login);
         onlineFavoriteManager = navigationView.getMenu().findItem(R.id.online_favorite_manager);
-    }
-
-    private void loadStringLogin() {
-        if (loginItem == null) return;
-        if (com.maxwai.nclientv3.settings.Login.getUser() != null)
-            loginItem.setTitle(getString(R.string.login_formatted, com.maxwai.nclientv3.settings.Login.getUser().getUsername()));
-        else
-            loginItem.setTitle(com.maxwai.nclientv3.settings.Login.isLogged() ? R.string.logout : R.string.login);
-
     }
 
     private void hideError() {
@@ -431,7 +419,7 @@ public class MainActivity extends BaseActivity
         if (pageParam != null) page = Integer.parseInt(pageParam);
 
         if (favorite) {
-            if (com.maxwai.nclientv3.settings.Login.isLogged()) useFavoriteMode(page);
+            if (AuthStore.hasValidApiKey(this)) useFavoriteMode(page);
             else {
                 Intent intent = new Intent(this, FavoriteActivity.class);
                 startActivity(intent);
@@ -470,29 +458,16 @@ public class MainActivity extends BaseActivity
         }
 
     }
-
-
-    private void showLogoutForm() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setIcon(R.drawable.ic_exit_to_app).setTitle(R.string.logout).setMessage(R.string.are_you_sure);
-        builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-            Login.logout();
-            onlineFavoriteManager.setVisible(false);
-            loginItem.setTitle(R.string.login);
-        }).setNegativeButton(R.string.no, null).show();
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onResume() {
         super.onResume();
-        com.maxwai.nclientv3.settings.Login.initLogin(this);
+        Login.initLogin(this);
         if (idOpenedGallery != -1) {
             adapter.updateColor(idOpenedGallery);
             idOpenedGallery = -1;
         }
-        loadStringLogin();
-        onlineFavoriteManager.setVisible(com.maxwai.nclientv3.settings.Login.isLogged());
+        onlineFavoriteManager.setVisible(AuthStore.hasValidApiKey(this));
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         LocaleListCompat setLocaleList = AppCompatDelegate.getApplicationLocales();
         settings.edit().putString(getString(R.string.preference_key_language),
@@ -743,13 +718,6 @@ public class MainActivity extends BaseActivity
             intent = new Intent(this, MainActivity.class);
             intent.putExtra(getPackageName() + ".FAVORITE", true);
             startActivity(intent);
-        } else if (item.getItemId() == R.id.action_login) {
-            if (Login.isLogged())
-                showLogoutForm();
-            else {
-                intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-            }
         } else if (item.getItemId() == R.id.random) {
             intent = new Intent(this, RandomActivity.class);
             startActivity(intent);

@@ -15,20 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.TagFilterActivity;
 import com.maxwai.nclientv3.api.components.Tag;
 import com.maxwai.nclientv3.api.enums.TagStatus;
 import com.maxwai.nclientv3.api.enums.TagType;
 import com.maxwai.nclientv3.async.database.Queries;
-import com.maxwai.nclientv3.settings.AuthRequest;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.settings.TagV2;
 import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -37,6 +36,7 @@ import java.util.Locale;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
@@ -61,14 +61,6 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
         this.type = type;
         this.tagMode = TagMode.TYPE;
         getFilter().filter(query);
-    }
-
-    private static void writeTag(JsonWriter jw, Tag tag) throws IOException {
-        jw.beginObject();
-        jw.name("id").value(tag.getId());
-        jw.name("name").value(tag.getName());
-        jw.name("type").value(tag.getTypeSingleName());
-        jw.endObject();
     }
 
     @Override
@@ -163,32 +155,34 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
     }
 
     private void onlineTagUpdate(final Tag tag, final boolean add, final ImageView imgView) throws IOException {
-        if (!Login.isLogged() || Login.getUser() == null) return;
+        if (!Login.isLogged()) return;
         StringWriter sw = new StringWriter();
         JsonWriter jw = new JsonWriter(sw);
         jw.beginObject().name("added").beginArray();
-        if (add) writeTag(jw, tag);
+        if (add) jw.value(tag.getId());;
         jw.endArray().name("removed").beginArray();
-        if (!add) writeTag(jw, tag);
+        if (!add) jw.value(tag.getId());;
         jw.endArray().endObject();
 
-        final String url = String.format(Locale.US, Utility.getBaseUrl() + "users/%d/%s/blacklist", Login.getUser().getId(), Login.getUser().getCodename());
+        final String url = Utility.getApiBaseUrl() + "blacklist";
         final RequestBody ss = RequestBody.create(sw.toString(), MediaType.get("application/json"));
-        new AuthRequest(url, url, new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (response.body().string().contains("ok")) {
-                    if (add) Login.addOnlineTag(tag);
-                    else Login.removeOnlineTag(tag);
-                    if (tagMode == TagMode.ONLINE)
-                        updateLogo(imgView, add ? TagStatus.AVOIDED : TagStatus.DEFAULT);
+        Global.getClient(context)
+            .newCall(new Request.Builder().url(url).post(ss).build())
+            .enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 }
-            }
-        }).setMethod("POST", ss).start();
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    if (response.body().string().contains("true")) {
+                        if (add) Login.addOnlineTag(tag);
+                        else Login.removeOnlineTag(tag);
+                        if (tagMode == TagMode.ONLINE)
+                            updateLogo(imgView, add ? TagStatus.AVOIDED : TagStatus.DEFAULT);
+                    }
+                }
+            });
     }
 
     private void updateLogo(ImageView img, TagStatus s) {

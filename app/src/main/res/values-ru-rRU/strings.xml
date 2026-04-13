@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">Галерея</string>
     <string name="title_activity_zoom">Работа зума</string>
     <string name="title_activity_tag_filter">Фильтр тэгов</string>
-    <string name="title_activity_login">Войти</string>
     <string name="parodies">Пародии</string>
     <string name="characters">Персонажи</string>
     <string name="tags">Тэги</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">Только китайский</string>
     <string name="all_languages">Все языки</string>
     <string name="unknown_language">Unknown language</string>
-    <string name="login">Войти</string>
-    <string name="login_formatted" formatted="true">Вошёл как %s</string>
-    <string name="logout">Выйти</string>
     <string name="favorite_online_manga">Избранные онлайн галереи</string>
     <string name="online_tags">Онлайн тэги</string>
     <string name="add_to_online_favorite">Добавить в онлайн избранные</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">Перелистывание страницы нажатием на изображение</string>
     <string name="export_finished">Экспорт завершён</string>
     <string name="import_finished">Импорт завершён</string>
-    <string name="download_torrent">Загрузить торрент</string>
     <string name="system_default">System default</string>
     <string name="clear_cookies">Clear cookies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">Hide</string>
-    <string name="title_user_agent">Change User-Agent</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string name="copy_logs">Copy logs to file</string>
     <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>

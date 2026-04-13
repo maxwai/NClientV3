@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.api.comments.Comment;
-import com.maxwai.nclientv3.settings.AuthRequest;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.utility.ImageDownloadUtility;
@@ -27,19 +26,18 @@ import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Request;
 import okhttp3.Response;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private final List<Comment> comments;
     private final DateFormat format;
     private final int userId;
-    private final int galleryId;
     private final AppCompatActivity context;
 
-    public CommentAdapter(AppCompatActivity context, List<Comment> comments, int galleryId) {
+    public CommentAdapter(AppCompatActivity context, List<Comment> comments) {
         this.context = context;
         format = android.text.format.DateFormat.getDateFormat(context);
-        this.galleryId = galleryId;
         this.comments = comments == null ? new ArrayList<>() : comments;
         if (Login.isLogged() && Login.getUser() != null) {
             userId = Login.getUser().getId();
@@ -62,22 +60,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.body.setText(c.getComment());
         holder.date.setText(format.format(c.getPostDate()));
         holder.close.setOnClickListener(v -> {
-            String refererUrl = String.format(Locale.US, Utility.getBaseUrl() + "g/%d/", galleryId);
-            String submitUrl = String.format(Locale.US, Utility.getBaseUrl() + "api/comments/%d/delete", c.getId());
-            new AuthRequest(refererUrl, submitUrl, new Callback() {
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+            String submitUrl = String.format(Locale.US, Utility.getApiBaseUrl() + "comments/%d", c.getId());
+            Global.getClient(context)
+                .newCall(new Request.Builder().url(submitUrl).delete().build())
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
 
-                }
-
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    if (response.body().string().contains("true")) {
-                        comments.remove(position);
-                        context.runOnUiThread(() -> notifyItemRemoved(position));
                     }
-                }
-            }).setMethod("POST", AuthRequest.EMPTY_BODY).start();
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        if (response.body().string().contains("true")) {
+                            comments.remove(position);
+                            context.runOnUiThread(() -> notifyItemRemoved(position));
+                        }
+                    }
+                });
         });
         if (c.getAvatarUrl() == null || Global.getDownloadPolicy() != Global.DataUsageType.FULL)
             ImageDownloadUtility.loadImage(R.drawable.ic_person, holder.userImage);

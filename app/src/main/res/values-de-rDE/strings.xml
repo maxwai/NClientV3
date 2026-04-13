@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">Galerie</string>
     <string name="title_activity_zoom">Zoom</string>
     <string name="title_activity_tag_filter">Tag-Filter</string>
-    <string name="title_activity_login">Einloggen</string>
     <string name="parodies">Parodien</string>
     <string name="characters">Charaktere</string>
     <string name="tags">Tags</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">Nur Chinesisch</string>
     <string name="all_languages">Alle Sprachen</string>
     <string name="unknown_language">Unbekannte Sprache</string>
-    <string name="login">Einloggen</string>
-    <string name="login_formatted" formatted="true">Eingeloggt als %s</string>
-    <string name="logout">Ausloggen</string>
     <string name="favorite_online_manga">Online Manga Favoriten</string>
     <string name="online_tags">Online Tag</string>
     <string name="add_to_online_favorite">Zu online Favoriten hinzufügen</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">Ändere Seite Klicke auf das Bild</string>
     <string name="export_finished">Export fertig</string>
     <string name="import_finished">Import fertig</string>
-    <string name="download_torrent">Torrent herunterladen</string>
     <string name="system_default">Systemstandard</string>
     <string name="clear_cookies">Lösche Cookies</string>
     <string name="fetching_cloudflare_token">Cloudflare Token kriegen…</string>
     <string name="exact_title_match_title">Nur exakte Tag Übereinstimmung</string>
     <string name="exact_title_match_summary">Verstecken von Galerien, die auf der Website erscheinen würden, aber nicht alle gesuchten Tags enthalten</string>
     <string name="hide">Verstecken</string>
-    <string name="title_user_agent">User-Agent ändern</string>
     <string name="shuffle_contentDescription">Zufällige Galerie Knopf</string>
     <string name="copy_logs">Logs in Datei speichern</string>
     <string name="copy_logs_summary">Dadurch werden alle verfügbaren Logs dieser App in einer Datei gespeichert. Die verfügbaren Logs können sich über mehrere Tage erstrecken. Außerdem ist es möglich, dass die Logs personenbezogene Daten enthalten. Überprüfe dies daher unbedingt, bevor du die Datei veröffentlichst. Verwenden diese Funktion, um Protokolle an einen Fehlerbericht anzuhängen.</string>

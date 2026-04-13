@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.components.CookieInterceptor;
-import com.maxwai.nclientv3.settings.Global;
 
 public class CFTokenView {
 
@@ -82,7 +81,6 @@ public class CFTokenView {
             webSettings.setSupportZoom(true);
             webSettings.setBuiltInZoomControls(true);
             webSettings.setDisplayZoomControls(false);
-            webSettings.setUserAgentString(Global.getUserAgent());
             webSettings.setAllowContentAccess(true);
         }
 

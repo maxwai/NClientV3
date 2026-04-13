@@ -43,10 +43,6 @@
                     android:id="@+id/action_settings"
                     android:icon="@drawable/ic_settings"
                     android:title="@string/settings" />
-                <item
-                    android:id="@+id/action_login"
-                    android:icon="@drawable/ic_person"
-                    android:title="@string/login" />
             </group>
         </menu>
     </item>

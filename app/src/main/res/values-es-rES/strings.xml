@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">Galería</string>
     <string name="title_activity_zoom">Actividad de Zoom</string>
     <string name="title_activity_tag_filter">Filtro de etiquetas</string>
-    <string name="title_activity_login">Conectarse</string>
     <string name="parodies">Parodias</string>
     <string name="characters">Personajes</string>
     <string name="tags">Etiquetas</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">Solo chino</string>
     <string name="all_languages">Todos los idiomas</string>
     <string name="unknown_language">Unknown language</string>
-    <string name="login">Conectarse</string>
-    <string name="login_formatted" formatted="true">Conectado como %s</string>
-    <string name="logout">Desconectarse</string>
     <string name="favorite_online_manga">Mangas Favoritos En Línea</string>
     <string name="online_tags">Etiquetas En Línea</string>
     <string name="add_to_online_favorite">Agregar a Favoritos En Línea</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">Cambiar de página haciendo click en la imagen</string>
     <string name="export_finished">Exportación Finalizada</string>
     <string name="import_finished">Importación Completa</string>
-    <string name="download_torrent">Descargar Torrent</string>
     <string name="system_default">System default</string>
     <string name="clear_cookies">Limpiar cokkies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Ocultar Galerías qué no tienen todas las etiquetas de la búsqueda</string>
     <string name="hide">Ocultar</string>
-    <string name="title_user_agent">Cambiar User-Agent del webview</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string name="copy_logs">Copy logs to file</string>
     <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>

@@ -45,11 +45,6 @@
         android:title="@string/change_status"
         app:showAsAction="never" />
     <item
-        android:id="@+id/download_torrent"
-        android:orderInCategory="400"
-        android:title="@string/download_torrent"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:orderInCategory="600"
