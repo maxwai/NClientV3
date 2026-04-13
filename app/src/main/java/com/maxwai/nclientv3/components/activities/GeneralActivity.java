@@ -19,8 +19,8 @@ import com.maxwai.nclientv3.settings.Global;
 import java.lang.ref.WeakReference;
 
 public abstract class GeneralActivity extends AppCompatActivity {
-    private boolean isFastScrollerApplied = false;
     private static WeakReference<GeneralActivity> lastActivity;
+    private boolean isFastScrollerApplied = false;
     private CFTokenView tokenView = null;
 
     public static @Nullable
@@ -37,8 +37,8 @@ public abstract class GeneralActivity extends AppCompatActivity {
     private void inflateWebView() {
         if (tokenView == null) {
             Toast.makeText(this, R.string.fetching_cloudflare_token, Toast.LENGTH_SHORT).show();
-            ViewGroup rootView= (ViewGroup) findViewById(android.R.id.content).getRootView();
-            ViewGroup v= (ViewGroup) LayoutInflater.from(this).inflate(R.layout.cftoken_layout,rootView,false);
+            ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content).getRootView();
+            ViewGroup v = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.cftoken_layout, rootView, false);
             tokenView = new CFTokenView(v);
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             tokenView.setVisibility(View.GONE);
@@ -48,20 +48,19 @@ public abstract class GeneralActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if (Global.hideMultitask())
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         super.onPause();
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Global.hideMultitask())
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         Global.initActivity(this);
     }
 
     @Override
     protected void onResume() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
         super.onResume();
         lastActivity = new WeakReference<>(this);
         if (!isFastScrollerApplied) {
