@@ -74,7 +74,7 @@ public class ApiKeyActivity extends GeneralActivity {
     }
 
     private void openApiKeyPage() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Utility.getApiBaseUrl() + "user/settings#apikeys")));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Utility.getBaseUrl() + "user/settings#apikeys")));
     }
 
     private void updateStatusMessage(@NonNull String message) {
