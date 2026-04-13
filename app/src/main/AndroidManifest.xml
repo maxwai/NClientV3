@@ -180,12 +180,8 @@
             android:icon="@drawable/ic_content_copy"
             android:label="@string/copyURL" />
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.maxwai.nclientv3.MainActivity" />
+            android:name=".ApiKeyActivity"
+            android:label="@string/title_activity_api_key">
         </activity>
 
         <provider

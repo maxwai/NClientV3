@@ -257,7 +257,7 @@ public class TagFilterActivity extends GeneralActivity {
 
         @Override
         public int getItemCount() {
-            return Login.hasLegacySession() ? 7 : 6;
+            return Login.isLogged() ? 7 : 6;
         }
     }
 }

@@ -29,10 +29,6 @@ public final class AuthCredentials {
 
     @NonNull
     public String toAuthorizationHeader() {
-        switch (type) {
-            case API_KEY:
-            default:
-                return "Key " + secret;
-        }
+        return "Key " + secret;
     }
 }

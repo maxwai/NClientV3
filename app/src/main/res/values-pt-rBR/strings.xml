@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">Galeria</string>
     <string name="title_activity_zoom">Atividade de Zoom</string>
     <string name="title_activity_tag_filter">Filtro de tags</string>
-    <string name="title_activity_login">Login</string>
     <string name="parodies">Paródias</string>
     <string name="characters">Personagens</string>
     <string name="tags">Tags</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">Somente chinês</string>
     <string name="all_languages">Todos os idiomas</string>
     <string name="unknown_language">Idioma desconhecido</string>
-    <string name="login">Login</string>
-    <string name="login_formatted" formatted="true">Logado como %s</string>
-    <string name="logout">Sair</string>
     <string name="favorite_online_manga">Galerias favoritas online</string>
     <string name="online_tags">Tags online</string>
     <string name="add_to_online_favorite">Adicionar aos favoritos online</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">Mude de página clicando na imagem</string>
     <string name="export_finished">Exportação concluída</string>
     <string name="import_finished">Importação concluída</string>
-    <string name="download_torrent">Baixar torrent</string>
     <string name="system_default">Padrão do sistema</string>
     <string name="clear_cookies">Limpar cookies</string>
     <string name="fetching_cloudflare_token">Obtendo token do Cloudflare…</string>
     <string name="exact_title_match_title">Somente correspondência exata de tags</string>
     <string name="exact_title_match_summary">Ocultar galerias que apareceriam no site, mas que não contêm todas as tags pesquisadas</string>
     <string name="hide">Esconder</string>
-    <string name="title_user_agent">Mudar agente de usuário</string>
     <string name="shuffle_contentDescription">Botão de Galeria Aleatória</string>
     <string name="copy_logs">Copiar registros para arquivo</string>
     <string name="copy_logs_summary">Isso irá reunir todos os registros disponíveis deste aplicativo em um arquivo. Os registros disponíveis podem abranger vários dias. Além disso, é possível que os registros contenham informações pessoais; certifique-se de verificar essas informações antes de publicar o arquivo. Use esta opção para anexar registros a um relatório de erros.</string>

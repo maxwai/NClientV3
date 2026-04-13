@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">Galerie</string>
     <string name="title_activity_zoom">Zoom</string>
     <string name="title_activity_tag_filter">Filtre De Tags</string>
-    <string name="title_activity_login">Connexion</string>
     <string name="parodies">Parodies</string>
     <string name="characters">Personnages</string>
     <string name="tags">Tags</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">Chinois uniquement</string>
     <string name="all_languages">Toutes les langues</string>
     <string name="unknown_language">Langage inconnu</string>
-    <string name="login">Se connecter</string>
-    <string name="login_formatted" formatted="true">Connecté en tant que %s</string>
-    <string name="logout">Se déconnecter</string>
     <string name="favorite_online_manga">Galeries favorites en ligne</string>
     <string name="online_tags">Tags en ligne</string>
     <string name="add_to_online_favorite">Ajouter aux favoris en ligne</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">Changer la page en cliquant sur l\'image</string>
     <string name="export_finished">Export terminé</string>
     <string name="import_finished">Import terminé</string>
-    <string name="download_torrent">Télécharger le torrent</string>
     <string name="system_default">System default</string>
     <string name="clear_cookies">Effacer les cookies</string>
     <string name="fetching_cloudflare_token">Obtenir le token Cloudflare…</string>
     <string name="exact_title_match_title">Seulement les tags exacts</string>
     <string name="exact_title_match_summary">Masquer les galeries qui apparaîtraient sur le site mais qui ne contiennent pas touts les tags recherchés</string>
     <string name="hide">Cacher</string>
-    <string name="title_user_agent">Modifier le User-Agent</string>
     <string name="shuffle_contentDescription">Bouton Galerie aléatoire</string>
     <string name="copy_logs">Copier les logs dans un fichier</string>
     <string name="copy_logs_summary">Cela permettra de regrouper tous les logs disponibles de cette application dans un fichier. Les logs disponibles peuvent couvrir plusieurs jours. Il est également possible que les logs contiennent des informations personnelles. Vérifier avant de publier le fichier. Utilisez cette fonction pour joindre des logs à un rapport de bug.</string>

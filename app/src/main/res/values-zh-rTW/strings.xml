@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">圖庫</string>
     <string name="title_activity_zoom">啟用縮放</string>
     <string name="title_activity_tag_filter">標籤篩選</string>
-    <string name="title_activity_login">登入</string>
     <string name="parodies">原作</string>
     <string name="characters">角色</string>
     <string name="tags">標籤</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">僅中文</string>
     <string name="all_languages">所有語言</string>
     <string name="unknown_language">未知語言</string>
-    <string name="login">登入</string>
-    <string name="login_formatted" formatted="true">以 %s 身份登入</string>
-    <string name="logout">登出</string>
     <string name="favorite_online_manga">線上收藏漫畫</string>
     <string name="online_tags">線上標籤</string>
     <string name="add_to_online_favorite">添加至線上收藏</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">點選圖片切換頁面</string>
     <string name="export_finished">匯出完成</string>
     <string name="import_finished">匯入完成</string>
-    <string name="download_torrent">下載種子檔</string>
     <string name="system_default">系統預設</string>
     <string name="clear_cookies">清除 Cookies</string>
     <string name="fetching_cloudflare_token">獲得 Cloudflare 通行證 …</string>
     <string name="exact_title_match_title">只顯示完全匹配的標籤</string>
     <string name="exact_title_match_summary">隱藏網站中會出現但不包含所有搜尋標籤的圖庫</string>
     <string name="hide">隱藏</string>
-    <string name="title_user_agent">更改使用者代理</string>
     <string name="shuffle_contentDescription">隨機圖庫按鈕</string>
     <string name="copy_logs">將記錄複製到檔案</string>
     <string name="copy_logs_summary">此操作將把此應用程式的所有可用日誌匯入檔案。可用日誌可能涵蓋數天內容。此外，日誌可能包含個人資訊，發布檔案前務必確認內容。此功能可用於將日誌附加至錯誤報告。</string>

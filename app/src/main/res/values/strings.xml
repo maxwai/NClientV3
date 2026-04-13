@@ -5,7 +5,6 @@
     <string name="preference_key_enable_beta" translatable="false">enable_beta</string>
     <string name="preference_key_save_path" translatable="false">save_path</string>
     <string name="preference_key_fake_icon" translatable="false">fake_icon</string>
-    <string name="preference_key_user_agent" translatable="false">setting_user_agent</string>
     <string name="preference_key_title_type" translatable="false">title_type_str</string>
     <string name="preference_key_default_zoom" translatable="false">default_zoom</string>
     <string name="preference_key_theme_select" translatable="false">theme_select</string>
@@ -73,7 +72,6 @@
     <string name="page_placeholder" translatable="false">999/999</string>
     <string name="dash" translatable="false">-</string>
     <string name="slash" translatable="false">/</string>
-    <string name="default_user_agent" translatable="false">Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N)</string>
     <string name="setting_on_ignore_tags">Other tags won\'t be queried when a tag is selected from the gallery menu (except language)</string>
     <string name="setting_off_ignore_tags">Other tags will be queried when a tag is selected from the gallery menu</string>
     <string name="setting_on_use_account_tag">Use the account tags into the search query (Local tags will have priority)</string>
@@ -86,7 +84,7 @@
     <string name="title_activity_gallery">Gallery</string>
     <string name="title_activity_zoom">Zoom Activity</string>
     <string name="title_activity_tag_filter">Tag Filter</string>
-    <string name="title_activity_login">Log in</string>
+    <string name="title_activity_api_key">API key</string>
     <string name="parodies">Parodies</string>
     <string name="characters">Characters</string>
     <string name="tags">Tags</string>
@@ -109,8 +107,6 @@
     <string name="only_chinese">Only chinese</string>
     <string name="all_languages">All languages</string>
     <string name="unknown_language">Unknown language</string>
-    <string name="login">Log in</string>
-    <string name="login_formatted" formatted="true">Logged as %s</string>
     <string name="setting_api_key_title">API key</string>
     <string name="setting_api_key_summary_missing">Create an API key on the website account settings page, then paste it into the app.</string>
     <string name="setting_api_key_summary_valid">Saved and validated. Open this entry if you want to replace or remove it.</string>
@@ -118,28 +114,17 @@
     <string name="login_api_key_intro_title">Use an API key</string>
     <string name="login_api_key_intro_message">The nhentai site now uses API keys for app access. To log in, open the account settings page in your browser, create an API key there, then come back and paste the key value here.</string>
     <string name="login_open_api_key_page">Open API key page</string>
-    <string name="login_have_api_key">I already have an API key</string>
     <string name="login_api_key_input_title">Paste your API key</string>
     <string name="login_api_key_input_message">The key is validated against the v2 API before it is saved.</string>
     <string name="login_api_key_hint">API key</string>
     <string name="login_validate_and_save">Validate and save</string>
     <string name="login_api_key_saved">API key saved</string>
-    <string name="login_api_key_detected">A new API key was detected and pasted automatically</string>
     <string name="login_api_key_invalid">Invalid API key</string>
     <string name="login_api_key_empty">Paste an API key first</string>
-    <string name="login_api_key_pasted_from_clipboard">Clipboard content was pasted into the API key field</string>
     <string name="login_api_key_removed">Saved API key removed</string>
-    <string name="login_clipboard_empty">Clipboard is empty</string>
-    <string name="login_status_login_first">Log in on the embedded page below. After a session is detected, the app will open the API key settings page automatically.</string>
-    <string name="login_status_redirecting_api_key">Login detected. Opening the API key settings page…</string>
-    <string name="login_status_create_api_key">Create and copy your API key on the page below, then return here to validate and save it.</string>
-    <string name="login_status_validating_api_key">A new API key was detected. Validating and saving it now…</string>
     <string name="login_status_api_key_saved">A validated API key is currently saved on this device.</string>
     <string name="login_status_api_key_invalid">A saved API key exists, but it needs to be replaced or removed.</string>
     <string name="remove_api_key">Remove API key</string>
-    <string name="paste">Paste</string>
-    <string name="back">Back</string>
-    <string name="logout">Logout</string>
     <string name="favorite_online_manga">Favorite online galleries</string>
     <string name="online_tags">Online tags</string>
     <string name="add_to_online_favorite">Add to online favorites</string>
@@ -383,14 +368,12 @@
     <string name="title_change_page_buttons">Change page clicking on the image</string>
     <string name="export_finished">Export finished</string>
     <string name="import_finished">Import finished</string>
-    <string name="download_torrent">Download torrent</string>
     <string name="system_default">System default</string>
     <string name="clear_cookies">Clear cookies</string>
     <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">Hide</string>
-    <string name="title_user_agent">Change User-Agent</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string name="copy_logs">Copy logs to file</string>
     <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>

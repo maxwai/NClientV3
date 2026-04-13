@@ -20,10 +20,6 @@ public final class AuthStore {
         return context.getSharedPreferences(AUTH_PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    public static void saveApiKey(@NonNull Context context, @NonNull String apiKey) {
-        saveApiKey(context, apiKey, false);
-    }
-
     public static void saveApiKey(@NonNull Context context, @NonNull String apiKey, boolean valid) {
         String normalized = apiKey.trim();
         getPreferences(context).edit()

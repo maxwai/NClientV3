@@ -21,7 +21,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class CommentsFetcher extends Thread {
-    private static final String COMMENT_API_URL = Utility.getBaseUrl() + "api/gallery/%d/comments";
+    private static final String COMMENT_API_URL = Utility.getApiBaseUrl() + "galleries/%d/comments";
     private final int id;
     private final CommentActivity commentActivity;
     private final List<Comment> comments = new ArrayList<>();
@@ -38,7 +38,7 @@ public class CommentsFetcher extends Thread {
     }
 
     private void postResult() {
-        CommentAdapter commentAdapter = new CommentAdapter(commentActivity, comments, id);
+        CommentAdapter commentAdapter = new CommentAdapter(commentActivity, comments);
         commentActivity.setAdapter(commentAdapter);
         commentActivity.runOnUiThread(() -> {
             commentActivity.getRecycler().setAdapter(commentAdapter);

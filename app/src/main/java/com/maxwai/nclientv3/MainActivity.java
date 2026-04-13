@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -58,7 +57,6 @@ import com.maxwai.nclientv3.settings.AuthStore;
 import com.maxwai.nclientv3.settings.Global;
 import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.settings.TagV2;
-import com.maxwai.nclientv3.utility.ImageDownloadUtility;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
 
@@ -98,7 +96,7 @@ public class MainActivity extends BaseActivity
         }
     };
     //views
-    public MenuItem loginItem, onlineFavoriteManager;
+    public MenuItem onlineFavoriteManager;
     private InspectorV3 inspector = null;
     private NavigationView navigationView;
     private ModeType modeType = ModeType.UNKNOWN;
@@ -253,7 +251,6 @@ public class MainActivity extends BaseActivity
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> finish());
         navigationView.setNavigationItemSelectedListener(this);
-        loginItem.setVisible(!AuthStore.hasValidApiKey(this));
         onlineFavoriteManager.setVisible(AuthStore.hasValidApiKey(this));
     }
 
@@ -269,7 +266,6 @@ public class MainActivity extends BaseActivity
         refresher = findViewById(R.id.refresher);
         pageSwitcher = findViewById(R.id.page_switcher);
         drawerLayout = findViewById(R.id.drawer_layout);
-        loginItem = navigationView.getMenu().findItem(R.id.action_login);
         onlineFavoriteManager = navigationView.getMenu().findItem(R.id.online_favorite_manager);
     }
 
@@ -471,7 +467,6 @@ public class MainActivity extends BaseActivity
             adapter.updateColor(idOpenedGallery);
             idOpenedGallery = -1;
         }
-        loginItem.setVisible(!AuthStore.hasValidApiKey(this));
         onlineFavoriteManager.setVisible(AuthStore.hasValidApiKey(this));
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         LocaleListCompat setLocaleList = AppCompatDelegate.getApplicationLocales();
@@ -722,9 +717,6 @@ public class MainActivity extends BaseActivity
         } else if (item.getItemId() == R.id.online_favorite_manager) {
             intent = new Intent(this, MainActivity.class);
             intent.putExtra(getPackageName() + ".FAVORITE", true);
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.action_login) {
-            intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.random) {
             intent = new Intent(this, RandomActivity.class);

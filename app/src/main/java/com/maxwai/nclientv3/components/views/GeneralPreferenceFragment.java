@@ -32,7 +32,7 @@ import androidx.preference.SeekBarPreference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.maxwai.nclientv3.CopyToClipboardActivity;
-import com.maxwai.nclientv3.LoginActivity;
+import com.maxwai.nclientv3.ApiKeyActivity;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.SettingsActivity;
 import com.maxwai.nclientv3.StatusManagerActivity;
@@ -173,7 +173,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             Preference apiKey = Objects.requireNonNull(findPreference(getString(R.string.preference_key_api_key)));
             updateApiKeySummary(apiKey);
             apiKey.setOnPreferenceClickListener(preference -> {
-                Intent i = new Intent(act, LoginActivity.class);
+                Intent i = new Intent(act, ApiKeyActivity.class);
                 act.runOnUiThread(() -> act.startActivity(i));
                 return true;
             });
@@ -230,7 +230,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         }
         {
             Preference useAccountTag = Objects.requireNonNull(findPreference(getString(R.string.preference_key_use_account_tag)));
-            useAccountTag.setEnabled(Login.hasLegacySession());
+            useAccountTag.setEnabled(Login.isLogged());
         }
 
         {
@@ -353,7 +353,6 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         {
             Preference cookie = Objects.requireNonNull(findPreference(getString(R.string.preference_key_cookie)));
             cookie.setOnPreferenceClickListener(preference -> {
-                Login.clearCookies(act);
                 CookieManager.getInstance().removeAllCookies(null);
                 return true;
             });

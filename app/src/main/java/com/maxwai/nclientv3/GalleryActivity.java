@@ -23,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -38,15 +37,12 @@ import com.maxwai.nclientv3.components.status.Status;
 import com.maxwai.nclientv3.components.status.StatusManager;
 import com.maxwai.nclientv3.components.views.RangeSelector;
 import com.maxwai.nclientv3.components.widgets.CustomGridLayoutManager;
-import com.maxwai.nclientv3.settings.AuthRequest;
 import com.maxwai.nclientv3.settings.AuthStore;
 import com.maxwai.nclientv3.settings.Favorites;
 import com.maxwai.nclientv3.settings.Global;
-import com.maxwai.nclientv3.settings.Login;
 import com.maxwai.nclientv3.utility.LogUtility;
 import com.maxwai.nclientv3.utility.Utility;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -54,6 +50,8 @@ import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -251,7 +249,6 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void menuItemsVisible(Menu menu) {
-        boolean hasLegacySession = Login.hasLegacySession();
         boolean hasValidApiKey = AuthStore.hasValidApiKey(this);
         boolean isValidOnline = gallery.isValid() && !isLocal;
         onlineFavoriteItem = menu.findItem(R.id.add_online_gallery);
@@ -260,7 +257,6 @@ public class GalleryActivity extends BaseActivity {
         menu.findItem(R.id.download_gallery).setVisible(isValidOnline);
         menu.findItem(R.id.related).setVisible(isValidOnline);
         menu.findItem(R.id.comments).setVisible(isValidOnline);
-        menu.findItem(R.id.download_torrent).setVisible(hasLegacySession);
 
         menu.findItem(R.id.share).setVisible(gallery.isValid());
         menu.findItem(R.id.load_internet).setVisible(isLocal && gallery.isValid());
@@ -283,7 +279,6 @@ public class GalleryActivity extends BaseActivity {
                 requestStorage();
         } else if (id == R.id.add_online_gallery) addToFavorite();
         else if (id == R.id.change_view) updateColumnCount(true);
-        else if (id == R.id.download_torrent) downloadTorrent();
         else if (id == R.id.load_internet) toInternet();
         else if (id == R.id.manage_status) updateStatus();
         else if (id == R.id.share) Global.shareGallery(this, gallery);
@@ -309,44 +304,6 @@ public class GalleryActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void downloadTorrent() {
-        if (!Global.hasStoragePermission(this)) {
-            return;
-        }
-
-        String url = String.format(Locale.US, Utility.getBaseUrl() + "g/%d/download", gallery.getId());
-        String referer = String.format(Locale.US, Utility.getBaseUrl() + "g/%d/", gallery.getId());
-
-        new AuthRequest(referer, url, new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                GalleryActivity.this.runOnUiThread(() ->
-                    Toast.makeText(GalleryActivity.this, R.string.failed, Toast.LENGTH_SHORT).show()
-                );
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                File file = new File(Global.TORRENTFOLDER, gallery.getId() + ".torrent");
-                Utility.writeStreamToFile(response.body().byteStream(), file);
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri torrentUri;
-                torrentUri = FileProvider.getUriForFile(GalleryActivity.this, GalleryActivity.this.getPackageName() + ".provider", file);
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setDataAndType(torrentUri, "application/x-bittorrent");
-                try {
-                    GalleryActivity.this.startActivity(intent);
-                } catch (RuntimeException ignore) {
-                    runOnUiThread(() ->
-                        Toast.makeText(GalleryActivity.this, R.string.failed, Toast.LENGTH_SHORT).show()
-                    );
-
-                }
-                file.deleteOnExit();
-            }
-        }).setMethod("GET", null).start();
     }
 
     private void updateStatus() {
@@ -423,23 +380,23 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void addToFavorite() {
-
         boolean wasFavorite = Objects.equals(onlineFavoriteItem.getTitle(), getString(R.string.remove_from_online_favorites));
-        String url = String.format(Locale.US, Utility.getBaseUrl() + "api/gallery/%d/%sfavorite", gallery.getId(), wasFavorite ? "un" : "");
-        String galleryUrl = String.format(Locale.US, Utility.getBaseUrl() + "g/%d/", gallery.getId());
+        String url = String.format(Locale.US, Utility.getApiBaseUrl() + "galleries/%d/favorite", gallery.getId());
         LogUtility.d("Calling: " + url);
-        new AuthRequest(galleryUrl, url, new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-            }
+        Global.getClient(this)
+            .newCall(new Request.Builder().url(url).method(wasFavorite ? "DELETE" : "POST", RequestBody.EMPTY).build())
+            .enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                }
 
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                String responseString = response.body().string();
-                boolean nowIsFavorite = responseString.contains("true");
-                updateIcon(nowIsFavorite);
-            }
-        }).setMethod("POST", AuthRequest.EMPTY_BODY).start();
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    String responseString = response.body().string();
+                    boolean nowIsFavorite = responseString.contains("true");
+                    updateIcon(nowIsFavorite);
+                }
+            });
     }
 
     private void updateColumnCount(boolean increase) {

@@ -12,7 +12,6 @@
     <string name="title_activity_gallery">Galeri</string>
     <string name="title_activity_zoom">Yakınlaştırma aktivitesi</string>
     <string name="title_activity_tag_filter">Etiket filtresi</string>
-    <string name="title_activity_login">Giriş yap</string>
     <string name="parodies">Parodiler</string>
     <string name="characters">Karakterler</string>
     <string name="tags">Etiketler</string>
@@ -35,9 +34,6 @@
     <string name="only_chinese">Sadece Çince</string>
     <string name="all_languages">Tüm Diller</string>
     <string name="unknown_language">Unknown language</string>
-    <string name="login">Giriş yap</string>
-    <string name="login_formatted" formatted="true">%s olarak giriş yapıldı</string>
-    <string name="logout">Çıkış yap</string>
     <string name="favorite_online_manga">Favori online galeri</string>
     <string name="online_tags">Online etiketler</string>
     <string name="add_to_online_favorite">Online favorilere ekle</string>
@@ -281,14 +277,12 @@
     <string name="title_change_page_buttons">Resme tıklayarak sayfa değiştir</string>
     <string name="export_finished">Dışa Aktarma Tamamlandı</string>
     <string name="import_finished">İçe Alma Tammalandı</string>
-    <string name="download_torrent">Torrent İndir</string>
     <string name="system_default">Sistem Varsayılanı</string>
     <string name="clear_cookies">Çerezleri Temizle</string>
     <string name="fetching_cloudflare_token">Cloudflare tokeni alınıyor…</string>
     <string name="exact_title_match_title">Exact tag match only</string>
     <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
     <string name="hide">Hide</string>
-    <string name="title_user_agent">Change User-Agent</string>
     <string name="shuffle_contentDescription">Random Gallery Button</string>
     <string name="copy_logs">Copy logs to file</string>
     <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>

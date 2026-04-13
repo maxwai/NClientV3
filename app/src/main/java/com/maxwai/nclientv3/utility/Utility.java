@@ -33,12 +33,14 @@ import java.util.Random;
 public class Utility {
     public static final Random RANDOM = new Random(System.nanoTime());
     public static final String ORIGINAL_URL = "nhentai.net";
-    public static final String PROTOCOL = "https://";
 
     public static String getBaseUrl() {
         return "https://" + Utility.getHost() + "/";
     }
 
+    public static String getApiBaseUrl() {
+        return getBaseUrl() + "api/v2/";
+    }
 
     public static String getHost() {
         return Global.getMirror();

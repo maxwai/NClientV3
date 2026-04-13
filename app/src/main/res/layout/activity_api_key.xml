@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".ApiKeyActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/login_title_text"
+        android:id="@+id/api_key_title_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
-        android:id="@+id/login_status_text"
+        android:id="@+id/api_key_status_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -40,10 +40,10 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_title_text" />
+        app:layout_constraintTop_toBottomOf="@id/api_key_title_text" />
 
     <LinearLayout
-        android:id="@+id/login_action_row"
+        android:id="@+id/api_key_action_row"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -52,7 +52,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_status_text">
+        app:layout_constraintTop_toBottomOf="@id/api_key_status_text">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/open_api_key_page"
@@ -73,7 +73,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/login_input_group"
+        android:id="@+id/api_key_input_group"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -81,10 +81,9 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_action_row">
+        app:layout_constraintTop_toBottomOf="@id/api_key_action_row">
 
         <TextView
             android:layout_width="match_parent"
@@ -111,21 +110,6 @@
             android:maxLines="4"
             android:minLines="2"
             android:textIsSelectable="true" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/paste_api_key"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/paste" />
-        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/validate_api_key"
