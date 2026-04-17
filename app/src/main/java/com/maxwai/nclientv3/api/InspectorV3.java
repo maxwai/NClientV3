@@ -286,7 +286,7 @@ public class InspectorV3 extends Thread implements Parcelable {
         } else if (requestType == ApiRequestType.RANDOM_FAVORITE) {
             builder.append("favorites/random");
         } else if (requestType == ApiRequestType.BYSINGLE) {
-            builder.append("galleries/").append(id).append("?include=related");
+            builder.append("galleries/").append(id).append("?include=related,favorite");
         } else if (requestType == ApiRequestType.FAVORITE) {
             builder.append("favorites?page=").append(page);
             if (query != null && !query.isEmpty())
@@ -393,7 +393,7 @@ public class InspectorV3 extends Thread implements Parcelable {
         // Random endpoint returns only {"id": N} — fetch full gallery detail
         if (!v2.has("title") && v2.has("id")) {
             int galleryId = v2.getInt("id");
-            String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + galleryId + "?include=related";
+            String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + galleryId + "?include=related,favorite";
             try (Response resp = Global.getClient(context.get()).newCall(new Request.Builder().url(detailUrl).build()).execute()) {
                 String body = resp.body().string();
                 if (resp.code() != HttpURLConnection.HTTP_OK) return;
