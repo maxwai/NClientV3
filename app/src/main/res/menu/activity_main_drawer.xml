@@ -35,6 +35,10 @@
             android:id="@+id/history"
             android:icon="@drawable/ic_access_time"
             android:title="@string/view_history" />
+        <item
+            android:id="@+id/login"
+            android:icon="@drawable/ic_person"
+            android:title="@string/title_activity_api_key" />
     </group>
     <item android:title="@string/settings">
         <menu>

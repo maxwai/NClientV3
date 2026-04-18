@@ -728,6 +728,9 @@ public class MainActivity extends BaseActivity
         } else if (item.getItemId() == R.id.status_manager) {
             intent = new Intent(this, StatusViewerActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.login) {
+            intent = new Intent(this, ApiKeyActivity.class);
+            startActivity(intent);
         }
         //drawerLayout.closeDrawer(GravityCompat.START);
         return true;
