@@ -133,11 +133,11 @@ dependencies {
 
 // Other
     // image loading and caching
-    implementation("com.github.bumptech.glide:glide:5.0.5") {
+    implementation("com.github.bumptech.glide:glide:5.0.7") {
         exclude(group = "com.android.support")
     }
-    implementation("com.github.bumptech.glide:okhttp3-integration:5.0.5@aar")
-    annotationProcessor("com.github.bumptech.glide:compiler:5.0.5")
+    implementation("com.github.bumptech.glide:okhttp3-integration:5.0.7@aar")
+    annotationProcessor("com.github.bumptech.glide:compiler:5.0.7")
     // For Http Connection
     implementation("com.squareup.okhttp3:okhttp-urlconnection:5.3.2")
     // Used to store the cookies between runs
