@@ -46,8 +46,7 @@ public class VersionChecker {
             latest = null;
             return;
         }
-        String actualVersionName = Global.getVersionName(context);
-        LogUtility.d("ACTUAL VERSION: " + actualVersionName);
+        LogUtility.d("ACTUAL VERSION: " + BuildConfig.VERSION_NAME);
         Global.getClient(context).newCall(new Request.Builder().url(RELEASE_API_URL).build()).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -66,14 +65,14 @@ public class VersionChecker {
                 }
                 if (release == null) {
                     release = new GitHubRelease();
-                    release.versionCode = actualVersionName;
+                    release.versionCode = BuildConfig.VERSION_NAME;
                 }
                 downloadUrl = release.downloadUrl;
                 GitHubRelease finalRelease = release;
                 context.runOnUiThread(() -> {
                     boolean newer;
                     try {
-                        newer = finalRelease.isNewerThenVersion(actualVersionName);
+                        newer = finalRelease.isNewerThenVersion(BuildConfig.VERSION_NAME);
                     } catch (IllegalStateException ignored) {
                         newer = false;
                     }
@@ -82,7 +81,7 @@ public class VersionChecker {
                             Toast.makeText(context, R.string.no_updates_found, Toast.LENGTH_SHORT).show();
                     } else {
                         LogUtility.d("Executing false");
-                        createDialog(actualVersionName, finalRelease);
+                        createDialog(finalRelease);
                     }
                 });
             }
@@ -158,7 +157,7 @@ public class VersionChecker {
         return url;
     }
 
-    private void createDialog(String versionName, GitHubRelease release) {
+    private void createDialog(GitHubRelease release) {
         String finalBody = release.body;
         String latestVersion = release.versionCode;
         boolean beta = release.beta;
@@ -174,7 +173,7 @@ public class VersionChecker {
         LogUtility.d("" + context);
         builder.setTitle(beta ? R.string.new_beta_version_found : R.string.new_version_found);
         builder.setIcon(R.drawable.ic_file);
-        builder.setMessage(context.getString(R.string.update_version_format, versionName, latestVersion, finalBody));
+        builder.setMessage(context.getString(R.string.update_version_format, BuildConfig.VERSION_NAME, latestVersion, finalBody));
         builder.setPositiveButton(R.string.install, (dialog, which) -> {
             if (Global.hasStoragePermission(context)) downloadVersion(latestVersion);
             else {

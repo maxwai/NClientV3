@@ -1,16 +1,13 @@
 package com.maxwai.nclientv3.settings;
 
 import android.content.Context;
-import android.webkit.CookieManager;
 
 import androidx.annotation.NonNull;
 
-import com.maxwai.nclientv3.R;
-import com.maxwai.nclientv3.components.CookieInterceptor;
+import com.maxwai.nclientv3.BuildConfig;
 import com.maxwai.nclientv3.utility.LogUtility;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -37,7 +34,7 @@ public class ApiAuthInterceptor implements Interceptor {
         }
 
         Request.Builder r = request.newBuilder();
-        r.addHeader("User-Agent", "NClient/" + Global.getVersionName(context) + " (https://github.com/maxwai/NClientV3)");
+        r.addHeader("User-Agent", "NClient/" + BuildConfig.VERSION_NAME + " (https://github.com/maxwai/NClientV3)");
 
         if (!AuthStore.hasValidApiKey(context)) return chain.proceed(r.build());
 

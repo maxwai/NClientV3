@@ -35,9 +35,9 @@ android {
         applicationId = "com.maxwai.nclientv3"
         // Format: MmPPbb
         // M: Major, m: minor, P: Patch, b: build
-        versionCode = 420500
+        versionCode = 420600
         multiDexEnabled = true
-        versionName = "4.2.5"
+        versionName = "4.2.6"
         vectorDrawables.useSupportLibrary = true
         proguardFiles("proguard-rules.pro")
     }
@@ -68,6 +68,11 @@ android {
             versionNameSuffix = "-debug"
             resValue("string", "app_name", "NClientV3 Debug")
         }
+        create("RelWithDebInfo") {
+            initWith(buildTypes["release"])
+            versionNameSuffix = "-relwithdebinfo"
+            isDebuggable = true
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -91,6 +96,7 @@ android {
     namespace = "com.maxwai.nclientv3"
     buildFeatures {
         buildConfig = true
+        resValues = true
     }
     androidResources {
         @Suppress("UnstableApiUsage")
@@ -100,7 +106,7 @@ android {
 }
 
 androidComponents {
-    onVariants() { variant ->
+    onVariants { variant ->
         var renameTask = tasks.register<CreateRenamedApk>("createRenamedApk${variant.flavorName?.capitalized()}${variant.buildType?.capitalized()}") {
             this.apkFolder.set(variant.artifacts.get(SingleArtifact.APK))
             this.builtArtifactsLoader.set(variant.artifacts.getBuiltArtifactsLoader())
@@ -112,6 +118,9 @@ androidComponents {
                 finalizedBy(renameTask)
             }
         }
+    }
+    beforeVariants {
+        it.enableAndroidTest = false
     }
 }
 
@@ -133,17 +142,17 @@ dependencies {
 
 // Other
     // image loading and caching
-    implementation("com.github.bumptech.glide:glide:5.0.5") {
+    implementation("com.github.bumptech.glide:glide:5.0.7") {
         exclude(group = "com.android.support")
     }
-    implementation("com.github.bumptech.glide:okhttp3-integration:5.0.5@aar")
-    annotationProcessor("com.github.bumptech.glide:compiler:5.0.5")
+    implementation("com.github.bumptech.glide:okhttp3-integration:5.0.7@aar")
+    annotationProcessor("com.github.bumptech.glide:compiler:5.0.7")
     // For Http Connection
     implementation("com.squareup.okhttp3:okhttp-urlconnection:5.3.2")
     // Used to store the cookies between runs
     implementation("com.github.franmontiel:PersistentCookieJar:v1.0.1")
     // To parse HTML
-    implementation("org.jsoup:jsoup:1.22.1")
+    implementation("org.jsoup:jsoup:1.22.2")
     // color picker
     implementation("com.github.yukuku:ambilwarna:2.0.1")
     // fast scroll

@@ -31,6 +31,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SeekBarPreference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.maxwai.nclientv3.BuildConfig;
 import com.maxwai.nclientv3.CopyToClipboardActivity;
 import com.maxwai.nclientv3.ApiKeyActivity;
 import com.maxwai.nclientv3.R;
@@ -317,7 +318,7 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
 
         {
             Preference keyVersion = Objects.requireNonNull(findPreference(getString(R.string.preference_key_version)));
-            keyVersion.setTitle(getString(R.string.app_version_format, Global.getVersionName(act)));
+            keyVersion.setTitle(getString(R.string.app_version_format, BuildConfig.VERSION_NAME));
         }
         {
             ListPreference savePath = Objects.requireNonNull(findPreference(getString(R.string.preference_key_save_path)));

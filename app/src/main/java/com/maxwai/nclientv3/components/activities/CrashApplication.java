@@ -17,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.maxwai.nclientv3.BuildConfig;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.async.database.DatabaseHelper;
 import com.maxwai.nclientv3.async.downloader.DownloadGalleryV2;
@@ -47,9 +48,8 @@ public class CrashApplication extends Application {
         //noinspection resource
         Database.setDatabase(new DatabaseHelper(getApplicationContext()).getWritableDatabase());
         String version = Global.getLastVersion(this);
-        String actualVersion = Global.getVersionName(this);
         SharedPreferences preferences = getSharedPreferences("Settings", 0);
-        if (!actualVersion.equals(version))
+        if (!BuildConfig.VERSION_NAME.equals(version))
             afterUpdateChecks(preferences, version);
 
         Global.initFromShared(this);

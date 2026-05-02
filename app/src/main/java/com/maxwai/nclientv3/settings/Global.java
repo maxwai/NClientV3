@@ -7,7 +7,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
@@ -25,6 +24,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.maxwai.nclientv3.BuildConfig;
 import com.maxwai.nclientv3.CopyToClipboardActivity;
 import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.api.components.GenericGallery;
@@ -116,7 +116,7 @@ public class Global {
     }
 
     public static void setLastVersion(Context context) {
-        lastVersion = getVersionName(context);
+        lastVersion = BuildConfig.VERSION_NAME;
         context.getSharedPreferences("Settings", 0).edit().putString("last_version", lastVersion).apply();
     }
 
@@ -620,17 +620,6 @@ public class Global {
         }
         //noinspection ResultOfMethodCallIgnored
         file.delete();
-    }
-
-    @NonNull
-    public static String getVersionName(Context context) {
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return Objects.requireNonNull(pInfo.versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            LogUtility.w("Couldn't get Package Info", e);
-        }
-        return "0.0.0";
     }
 
     public static boolean isExternalStorageManager() {
