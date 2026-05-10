@@ -1,9 +1,11 @@
 package com.maxwai.nclientv3.async.database.export;
 
 import android.net.Uri;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.maxwai.nclientv3.R;
 import com.maxwai.nclientv3.SettingsActivity;
 import com.maxwai.nclientv3.utility.LogUtility;
 
@@ -33,6 +35,7 @@ public class Manager extends Thread {
             context.runOnUiThread(end);
         } catch (IOException e) {
             LogUtility.e(e, e);
+            context.runOnUiThread(() -> Toast.makeText(context, R.string.failed, Toast.LENGTH_SHORT).show());
         }
     }
 }

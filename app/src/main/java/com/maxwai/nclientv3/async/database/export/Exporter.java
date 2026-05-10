@@ -46,44 +46,43 @@ public class Exporter {
         SQLiteDatabase db = Database.getDatabase();
         if (db == null)
             throw new IOException("Can't export Database, don't have database connection yet");
-        try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(stream))) {
-            writer.beginObject();
-            for (String s : SCHEMAS) {
-                try (Cursor cur = db.query(s, null, null, null, null, null, null)) {
-                    writer.name(s).beginArray();
-                    if (cur.moveToFirst()) {
-                        do {
-                            writer.beginObject();
-                            for (int i = 0; i < cur.getColumnCount(); i++) {
-                                writer.name(cur.getColumnName(i));
-                                if (cur.isNull(i)) {
-                                    writer.nullValue();
-                                } else {
-                                    switch (cur.getType(i)) {
-                                        case Cursor.FIELD_TYPE_INTEGER:
-                                            writer.value(cur.getLong(i));
-                                            break;
-                                        case Cursor.FIELD_TYPE_FLOAT:
-                                            writer.value(cur.getDouble(i));
-                                            break;
-                                        case Cursor.FIELD_TYPE_STRING:
-                                            writer.value(cur.getString(i));
-                                            break;
-                                        case Cursor.FIELD_TYPE_BLOB:
-                                        case Cursor.FIELD_TYPE_NULL:
-                                            break;
-                                    }
+        JsonWriter writer = new JsonWriter(new OutputStreamWriter(stream));
+        writer.beginObject();
+        for (String s : SCHEMAS) {
+            try (Cursor cur = db.query(s, null, null, null, null, null, null)) {
+                writer.name(s).beginArray();
+                if (cur.moveToFirst()) {
+                    do {
+                        writer.beginObject();
+                        for (int i = 0; i < cur.getColumnCount(); i++) {
+                            writer.name(cur.getColumnName(i));
+                            if (cur.isNull(i)) {
+                                writer.nullValue();
+                            } else {
+                                switch (cur.getType(i)) {
+                                    case Cursor.FIELD_TYPE_INTEGER:
+                                        writer.value(cur.getLong(i));
+                                        break;
+                                    case Cursor.FIELD_TYPE_FLOAT:
+                                        writer.value(cur.getDouble(i));
+                                        break;
+                                    case Cursor.FIELD_TYPE_STRING:
+                                        writer.value(cur.getString(i));
+                                        break;
+                                    case Cursor.FIELD_TYPE_BLOB:
+                                    case Cursor.FIELD_TYPE_NULL:
+                                        break;
                                 }
                             }
-                            writer.endObject();
-                        } while (cur.moveToNext());
-                    }
-                    writer.endArray();
+                        }
+                        writer.endObject();
+                    } while (cur.moveToNext());
                 }
+                writer.endArray();
             }
-            writer.endObject();
-            writer.flush();
         }
+        writer.endObject();
+        writer.flush();
     }
 
     public static String defaultExportName(SettingsActivity context) {
