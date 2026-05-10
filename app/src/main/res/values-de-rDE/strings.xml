@@ -144,6 +144,10 @@
     <string name="manage_bookmarks">Lesezeichen verwalten</string>
     <string name="bookmark_page_format">Seite %d</string>
     <string name="bookmark_description">Lesezeichen Beschreibung</string>
+    <string name="subscriptions">Abonnements</string>
+    <string name="subscription_description">Abonnement</string>
+    <string name="subscription_progress_empty">0 / 0</string>
+    <string name="subscription_progress_format" formatted="true">%1$d / %2$d</string>
     <string name="enable_right_to_left">Rechts nach links aktivieren</string>
     <string name="setting_on_use_rtl">Bilder werden von rechts nach links angezeigt</string>
     <string name="setting_off_use_rtl">Bilder werden von links nach rechts angezeigt</string>

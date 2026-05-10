@@ -703,6 +703,9 @@ public class MainActivity extends BaseActivity
         } else if (item.getItemId() == R.id.bookmarks) {
             intent = new Intent(this, BookmarkActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.subscriptions) {
+            intent = new Intent(this, SubscriptionActivity.class);
+            startActivity(intent);
         } else if (item.getItemId() == R.id.history) {
             intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);

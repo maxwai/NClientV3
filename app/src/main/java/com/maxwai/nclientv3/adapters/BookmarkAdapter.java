@@ -48,6 +48,12 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         holder.pageLabel.setText(bookmarkActivity.getString(R.string.bookmark_page_format, bookmark.page));
 
         holder.deleteButton.setOnClickListener(v -> removeBookmarkAtPosition(position));
+        holder.subscriptionButton.setVisibility(bookmark.isSubscribable() ? View.VISIBLE : View.GONE);
+        holder.subscriptionButton.setImageResource(bookmark.isSubscribed() ? R.drawable.ic_star : R.drawable.ic_star_border);
+        holder.subscriptionButton.setOnClickListener(v -> {
+            bookmark.setSubscribed(!bookmark.isSubscribed());
+            notifyItemChanged(position);
+        });
 
         holder.rootLayout.setOnClickListener(v -> loadBookmark(bookmark));
     }
@@ -84,6 +90,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final AppCompatImageButton deleteButton;
+        final AppCompatImageButton subscriptionButton;
         final TextView queryText;
         final TextView pageLabel;
         final ConstraintLayout rootLayout;
@@ -91,6 +98,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             deleteButton = itemView.findViewById(R.id.remove_button);
+            subscriptionButton = itemView.findViewById(R.id.subscription_button);
             pageLabel = itemView.findViewById(R.id.page);
             queryText = itemView.findViewById(R.id.title);
             rootLayout = itemView.findViewById(R.id.master_layout);

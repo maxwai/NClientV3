@@ -144,6 +144,10 @@
     <string name="manage_bookmarks">ブックマークを管理</string>
     <string name="bookmark_page_format">ページ %d</string>
     <string name="bookmark_description">ブックマークの説明</string>
+    <string name="subscriptions">購読</string>
+    <string name="subscription_description">購読</string>
+    <string name="subscription_progress_empty">0 / 0</string>
+    <string name="subscription_progress_format" formatted="true">%1$d / %2$d</string>
     <string name="enable_right_to_left">右から左の設定を有効</string>
     <string name="setting_on_use_rtl">画像は右から左に表示されます。</string>
     <string name="setting_off_use_rtl">画像は左から右に表示されます。</string>

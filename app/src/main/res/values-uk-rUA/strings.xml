@@ -144,6 +144,10 @@
     <string name="manage_bookmarks">Керування закладками</string>
     <string name="bookmark_page_format">Сторінка %d</string>
     <string name="bookmark_description">Опис закладок</string>
+    <string name="subscriptions">Підписки</string>
+    <string name="subscription_description">Підписка</string>
+    <string name="subscription_progress_empty">0 / 0</string>
+    <string name="subscription_progress_format" formatted="true">%1$d / %2$d</string>
     <string name="enable_right_to_left">Увімкнути зправа на ліво</string>
     <string name="setting_on_use_rtl">Зображення будуть показуватися зправа на ліво</string>
     <string name="setting_off_use_rtl">Зображення будуть показуватися зліва направо</string>

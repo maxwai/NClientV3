@@ -32,6 +32,10 @@
             android:icon="@drawable/ic_bookmark"
             android:title="@string/manage_bookmarks" />
         <item
+            android:id="@+id/subscriptions"
+            android:icon="@drawable/ic_star"
+            android:title="@string/subscriptions" />
+        <item
             android:id="@+id/history"
             android:icon="@drawable/ic_access_time"
             android:title="@string/view_history" />

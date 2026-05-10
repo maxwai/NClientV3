@@ -19,16 +19,18 @@ import java.util.Collections;
 public class Bookmark {
     public final String url;
     public final int page, tag;
+    private boolean subscribed;
     private final ApiRequestType requestType;
     private final Tag tagVal;
     private final Uri uri;
 
-    public Bookmark(String url, int page, ApiRequestType requestType, int tag) {
+    public Bookmark(String url, int page, ApiRequestType requestType, int tag, boolean subscribed) {
         Tag tagVal1;
         this.url = url;
         this.page = page;
         this.requestType = requestType;
         this.tag = tag;
+        this.subscribed = subscribed;
         tagVal1 = Queries.TagTable.getTagById(this.tag);
         if (tagVal1 == null)
             tagVal1 = new Tag("english", 0, SpecialTagIds.LANGUAGE_ENGLISH, TagType.LANGUAGE, TagStatus.DEFAULT);
@@ -57,6 +59,19 @@ public class Bookmark {
 
     public void deleteBookmark() {
         Queries.BookmarkTable.deleteBookmark(url);
+    }
+
+    public boolean isSubscribable() {
+        return requestType == ApiRequestType.BYSEARCH || requestType == ApiRequestType.BYTAG;
+    }
+
+    public boolean isSubscribed() {
+        return subscribed;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        this.subscribed = subscribed;
+        Queries.BookmarkTable.setSubscribed(url, subscribed);
     }
 
     @NonNull

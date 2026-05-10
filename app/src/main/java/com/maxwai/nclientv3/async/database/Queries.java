@@ -695,11 +695,13 @@ public class Queries {
         static final String PAGE = "page";
         static final String TYPE = "type";
         static final String TAG_ID = "tagId";
+        static final String SUBSCRIBED = "subscribed";
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `Bookmark`(" +
             "`url` TEXT NOT NULL UNIQUE," +
             "`page` INT NOT NULL," +
             "`type` INT NOT NULL," +
-            "`tagId` INT NOT NULL" +
+            "`tagId` INT NOT NULL," +
+            "`subscribed` INT NOT NULL DEFAULT 0" +
             ");";
 
         public static void deleteBookmark(String url) {
@@ -708,34 +710,57 @@ public class Queries {
 
         public static void addBookmark(InspectorV3 inspector) {
             Tag tag = inspector.getTag();
-            ContentValues values = new ContentValues(4);
+            ContentValues values = new ContentValues(5);
             values.put(URL, inspector.getUrl());
             values.put(PAGE, inspector.getPage());
             values.put(TYPE, inspector.getRequestType().ordinal());
             values.put(TAG_ID, tag == null ? 0 : tag.getId());
+            values.put(SUBSCRIBED, 0);
             LogUtility.d("ADDED: " + inspector.getUrl());
             db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
 
         public static List<Bookmark> getBookmarks() {
-            String query = "SELECT * FROM " + TABLE_NAME;
-            try (Cursor cursor = db.rawQuery(query, null)) {
-                List<Bookmark> bookmarks = new ArrayList<>(cursor.getCount());
-                Bookmark b;
-                LogUtility.d("This url has " + cursor.getCount());
-                if (cursor.moveToFirst()) {
-                    do {
-                        b = new Bookmark(
-                            cursor.getString(cursor.getColumnIndex(URL)),
-                            cursor.getInt(cursor.getColumnIndex(PAGE)),
-                            ApiRequestType.values[cursor.getInt(cursor.getColumnIndex(TYPE))],
-                            cursor.getInt(cursor.getColumnIndex(TAG_ID))
-                        );
-                        bookmarks.add(b);
-                    } while (cursor.moveToNext());
-                }
-                return bookmarks;
+            return getBookmarks(null, null);
+        }
+
+        public static List<Bookmark> getSubscribedBookmarks() {
+            return getBookmarks(SUBSCRIBED + "=? AND " + TYPE + " IN (?,?)", new String[]{
+                "1",
+                String.valueOf(ApiRequestType.BYTAG.ordinal()),
+                String.valueOf(ApiRequestType.BYSEARCH.ordinal())
+            });
+        }
+
+        private static List<Bookmark> getBookmarks(String selection, String[] selectionArgs) {
+            try (Cursor cursor = db.query(TABLE_NAME, null, selection, selectionArgs, null, null, null)) {
+                return getBookmarksFromCursor(cursor);
             }
+        }
+
+        private static List<Bookmark> getBookmarksFromCursor(Cursor cursor) {
+            List<Bookmark> bookmarks = new ArrayList<>(cursor.getCount());
+            Bookmark b;
+            LogUtility.d("This url has " + cursor.getCount());
+            if (cursor.moveToFirst()) {
+                do {
+                    b = new Bookmark(
+                        cursor.getString(cursor.getColumnIndex(URL)),
+                        cursor.getInt(cursor.getColumnIndex(PAGE)),
+                        ApiRequestType.values[cursor.getInt(cursor.getColumnIndex(TYPE))],
+                        cursor.getInt(cursor.getColumnIndex(TAG_ID)),
+                        cursor.getInt(cursor.getColumnIndex(SUBSCRIBED)) == 1
+                    );
+                    bookmarks.add(b);
+                } while (cursor.moveToNext());
+            }
+            return bookmarks;
+        }
+
+        public static void setSubscribed(String url, boolean subscribed) {
+            ContentValues values = new ContentValues(1);
+            values.put(SUBSCRIBED, subscribed ? 1 : 0);
+            db.update(TABLE_NAME, values, URL + "=?", new String[]{url});
         }
     }
 

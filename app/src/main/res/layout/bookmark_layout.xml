@@ -20,15 +20,28 @@
             android:id="@+id/remove_button"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/bookmark_description"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/page"
-            app:layout_constraintStart_toStartOf="@+id/page"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/page"
             app:srcCompat="@drawable/ic_close" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/subscription_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/subscription_description"
+            app:layout_constraintBottom_toBottomOf="@+id/remove_button"
+            app:layout_constraintEnd_toStartOf="@+id/remove_button"
+            app:layout_constraintTop_toTopOf="@+id/remove_button"
+            app:srcCompat="@drawable/ic_star_border" />
 
         <TextView
             android:id="@+id/title"
@@ -43,7 +56,7 @@
             android:gravity="center|start"
             android:minLines="2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/page"
+            app:layout_constraintEnd_toStartOf="@+id/subscription_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

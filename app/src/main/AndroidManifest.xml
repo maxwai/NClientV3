@@ -70,6 +70,7 @@
         <activity android:name=".StatusViewerActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".BookmarkActivity" />
+        <activity android:name=".SubscriptionActivity" />
         <activity android:name=".CommentActivity" />
         <activity android:name=".SearchActivity" />
         <activity
