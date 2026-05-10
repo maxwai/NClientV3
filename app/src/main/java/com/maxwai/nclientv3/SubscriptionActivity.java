@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,9 +37,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SubscriptionActivity extends BaseActivity {
     private static final int MAX_PARALLEL_REQUESTS = 2;
-    private static final int MAX_RETRIES = 3;
-    private static final int MAX_INITIAL_FAILURES = 5;
-    private static final long RETRY_DELAY_MS = 200;
+    private static final int BATCH_REQUEST_LIMIT = 8;
+    private static final int MAX_FAILURES_PER_BOOKMARK = 2;
+    private static final int MAX_CONSECUTIVE_FAILURES = 8;
+    private static final long REQUEST_DELAY_MS = 500;
+    private static final long BATCH_DELAY_MS = 60_000;
 
     private ListAdapter adapter;
     private TextView progressText;
@@ -84,62 +87,137 @@ public class SubscriptionActivity extends BaseActivity {
 
         refresher.setRefreshing(true);
         updateProgress(0, 0, bookmarks.size());
-        executor = Executors.newFixedThreadPool(MAX_PARALLEL_REQUESTS);
+        executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> loadSubscriptionBatches(bookmarks, actualLoad));
+    }
+
+    private void loadSubscriptionBatches(List<Bookmark> bookmarks, int actualLoad) {
+        List<SubscriptionTask> tasks = new ArrayList<>(bookmarks.size());
+        for (Bookmark bookmark : bookmarks) tasks.add(new SubscriptionTask(bookmark));
+
         ConcurrentHashMap<Integer, GenericGallery> galleries = new ConcurrentHashMap<>();
-        AtomicInteger completed = new AtomicInteger(0);
         AtomicInteger successful = new AtomicInteger(0);
         AtomicInteger failed = new AtomicInteger(0);
-        AtomicInteger initialFailures = new AtomicInteger(0);
-        AtomicBoolean hasSuccess = new AtomicBoolean(false);
+        AtomicInteger consecutiveFailures = new AtomicInteger(0);
         AtomicBoolean aborted = new AtomicBoolean(false);
 
-        for (Bookmark bookmark : bookmarks) {
-            executor.execute(() -> {
-                List<GenericGallery> result = loadBookmark(bookmark, aborted);
-                if (actualLoad != loadId || isFinishing()) return;
-                if (aborted.get()) return;
-                if (result == null) {
-                    int failedCount = failed.incrementAndGet();
-                    if (!hasSuccess.get() && initialFailures.incrementAndGet() >= MAX_INITIAL_FAILURES) {
-                        aborted.set(true);
-                        updateProgress(successful.get(), failedCount, bookmarks.size());
-                        showUnableToConnect(actualLoad);
-                        return;
-                    }
-                } else {
-                    hasSuccess.set(true);
-                    successful.incrementAndGet();
-                    for (GenericGallery gallery : result) {
-                        if (gallery != null && gallery.isValid())
-                            galleries.put(gallery.getId(), gallery);
-                    }
-                    updateGalleries(galleries);
-                }
+        while (actualLoad == loadId && !isFinishing() && !aborted.get()) {
+            hideError();
+            int requestsUsed = runSubscriptionWave(tasks, galleries, successful, failed, consecutiveFailures, aborted, bookmarks.size(), actualLoad);
+            if (aborted.get() || actualLoad != loadId || isFinishing()) break;
+            if (requestsUsed == 0) break;
+            if (isSubscriptionLoadComplete(tasks)) break;
+            showRateLimitPause(actualLoad);
+            Utility.threadSleep(BATCH_DELAY_MS);
+        }
 
-                int done = completed.incrementAndGet();
-                updateProgress(successful.get(), failed.get(), bookmarks.size());
-                if (done == bookmarks.size()) {
-                    finishRefresh(failed.get(), bookmarks.size(), actualLoad);
-                }
-            });
+        if (!aborted.get()) finishRefresh(failed.get(), bookmarks.size(), actualLoad);
+    }
+
+    private int runSubscriptionWave(List<SubscriptionTask> tasks, ConcurrentHashMap<Integer, GenericGallery> galleries,
+                                    AtomicInteger successful, AtomicInteger failed, AtomicInteger consecutiveFailures,
+                                    AtomicBoolean aborted, int total, int actualLoad) {
+        int requestsUsed = 0;
+        while (requestsUsed < BATCH_REQUEST_LIMIT && actualLoad == loadId && !isFinishing() && !aborted.get()) {
+            List<SubscriptionTask> batch = createNextBatch(tasks, BATCH_REQUEST_LIMIT - requestsUsed);
+            if (batch.isEmpty()) break;
+            runSubscriptionBatch(batch, galleries, successful, failed, consecutiveFailures, aborted, total, actualLoad);
+            requestsUsed += batch.size();
+        }
+        return requestsUsed;
+    }
+
+    private List<SubscriptionTask> createNextBatch(List<SubscriptionTask> tasks, int limit) {
+        List<SubscriptionTask> batch = new ArrayList<>(Math.min(limit, MAX_PARALLEL_REQUESTS));
+        addTasksToBatch(batch, tasks, 0, limit);
+        addTasksToBatch(batch, tasks, 1, limit);
+        return batch;
+    }
+
+    private void addTasksToBatch(List<SubscriptionTask> batch, List<SubscriptionTask> tasks, int failures, int limit) {
+        for (SubscriptionTask task : tasks) {
+            if (batch.size() >= limit || batch.size() >= MAX_PARALLEL_REQUESTS) return;
+            if (!task.finished && task.failures == failures) batch.add(task);
         }
     }
 
-    private List<GenericGallery> loadBookmark(Bookmark bookmark, AtomicBoolean aborted) {
-        for (int attempt = 0; attempt < MAX_RETRIES && !aborted.get(); attempt++) {
-            try {
-                InspectorV3 inspector = bookmark.createInspector(this, null);
-                if (inspector == null) return null;
-                inspector.setPage(1);
-                if (!inspector.createDocument()) throw new IOException("Subscription request failed");
-                inspector.parseDocument();
-                return inspector.getGalleries();
-            } catch (Exception e) {
-                LogUtility.e("Subscription request failed", e);
-                Utility.threadSleep(RETRY_DELAY_MS);
+    private void runSubscriptionBatch(List<SubscriptionTask> batch, ConcurrentHashMap<Integer, GenericGallery> galleries,
+                                      AtomicInteger successful, AtomicInteger failed, AtomicInteger consecutiveFailures,
+                                      AtomicBoolean aborted, int total, int actualLoad) {
+        CountDownLatch latch = new CountDownLatch(batch.size());
+        ExecutorService batchExecutor = Executors.newFixedThreadPool(MAX_PARALLEL_REQUESTS);
+        try {
+            for (SubscriptionTask task : batch) {
+                if (aborted.get() || actualLoad != loadId || isFinishing()) {
+                    latch.countDown();
+                    continue;
+                }
+                batchExecutor.execute(() -> {
+                    try {
+                        List<GenericGallery> result = loadBookmark(task.bookmark);
+                        if (actualLoad != loadId || isFinishing() || aborted.get()) return;
+                        handleSubscriptionResult(task, result, galleries, successful, failed, consecutiveFailures, aborted, total, actualLoad);
+                    } finally {
+                        latch.countDown();
+                    }
+                });
+                Utility.threadSleep(REQUEST_DELAY_MS);
             }
+            latch.await();
+        } catch (InterruptedException e) {
+            LogUtility.d("Subscription batch interrupted", e);
+        } finally {
+            batchExecutor.shutdownNow();
         }
-        return null;
+    }
+
+    private List<GenericGallery> loadBookmark(Bookmark bookmark) {
+        try {
+            InspectorV3 inspector = bookmark.createInspector(this, null);
+            if (inspector == null) return null;
+            inspector.setPage(1);
+            if (!inspector.createDocument()) throw new IOException("Subscription request failed");
+            inspector.parseDocument();
+            return inspector.getGalleries();
+        } catch (Exception e) {
+            LogUtility.e("Subscription request failed", e);
+            return null;
+        }
+    }
+
+    private void handleSubscriptionResult(SubscriptionTask task, List<GenericGallery> result, ConcurrentHashMap<Integer, GenericGallery> galleries,
+                                          AtomicInteger successful, AtomicInteger failed, AtomicInteger consecutiveFailures,
+                                          AtomicBoolean aborted, int total, int actualLoad) {
+        if (result == null) {
+            int currentConsecutiveFailures = consecutiveFailures.incrementAndGet();
+            task.failures++;
+            if (task.failures >= MAX_FAILURES_PER_BOOKMARK) {
+                task.finished = true;
+                failed.incrementAndGet();
+                updateProgress(successful.get(), failed.get(), total);
+            }
+            if (currentConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+                aborted.set(true);
+                showUnableToConnect(actualLoad);
+            }
+            return;
+        }
+
+        consecutiveFailures.set(0);
+        task.finished = true;
+        successful.incrementAndGet();
+        for (GenericGallery gallery : result) {
+            if (gallery != null && gallery.isValid()) galleries.put(gallery.getId(), gallery);
+        }
+        updateGalleries(galleries);
+        updateProgress(successful.get(), failed.get(), total);
+    }
+
+    private boolean isSubscriptionLoadComplete(List<SubscriptionTask> tasks) {
+        for (SubscriptionTask task : tasks) {
+            if (!task.finished) return false;
+        }
+        return true;
     }
 
     private void updateGalleries(ConcurrentHashMap<Integer, GenericGallery> galleryMap) {
@@ -191,6 +269,18 @@ public class SubscriptionActivity extends BaseActivity {
         });
     }
 
+    private void showRateLimitPause(int actualLoad) {
+        runOnUiThread(() -> {
+            if (actualLoad != loadId || isFinishing()) return;
+            snackbar = Snackbar.make(masterLayout, R.string.subscription_rate_limit_pause, Snackbar.LENGTH_INDEFINITE);
+            TextView snackbarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+            snackbarText.setSingleLine(false);
+            snackbarText.setMaxLines(3);
+            snackbarText.setEllipsize(null);
+            snackbar.show();
+        });
+    }
+
     private void hideError() {
         runOnUiThread(() -> {
             if (snackbar != null && snackbar.isShown()) {
@@ -234,5 +324,15 @@ public class SubscriptionActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private static class SubscriptionTask {
+        final Bookmark bookmark;
+        int failures = 0;
+        boolean finished = false;
+
+        SubscriptionTask(Bookmark bookmark) {
+            this.bookmark = bookmark;
+        }
     }
 }

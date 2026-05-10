@@ -148,6 +148,7 @@
     <string name="subscription_description">Підписка</string>
     <string name="subscription_progress_empty">0 / 0 / 0</string>
     <string name="subscription_progress_format" formatted="true">%1$d / %2$d / %3$d</string>
+    <string name="subscription_rate_limit_pause">Призупинено, щоб уникнути обмеження частоти. Завантаження продовжиться через 1 хвилину.\nВідкриття галереї не перерве завантаження підписок.</string>
     <string name="enable_right_to_left">Увімкнути зправа на ліво</string>
     <string name="setting_on_use_rtl">Зображення будуть показуватися зправа на ліво</string>
     <string name="setting_off_use_rtl">Зображення будуть показуватися зліва направо</string>

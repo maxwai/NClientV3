@@ -148,6 +148,7 @@
     <string name="subscription_description">訂閱</string>
     <string name="subscription_progress_empty">0 / 0 / 0</string>
     <string name="subscription_progress_format" formatted="true">%1$d / %2$d / %3$d</string>
+    <string name="subscription_rate_limit_pause">已暫停以避免觸發速率限制，將在 1 分鐘後繼續載入。\n打開漫畫不會中斷訂閱載入。</string>
     <string name="enable_right_to_left">從右至左閱讀</string>
     <string name="setting_on_use_rtl">圖像將從右至左顯示</string>
     <string name="setting_off_use_rtl">圖像將從左至右顯示</string>

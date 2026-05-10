@@ -148,6 +148,7 @@
     <string name="subscription_description">Abonelik</string>
     <string name="subscription_progress_empty">0 / 0 / 0</string>
     <string name="subscription_progress_format" formatted="true">%1$d / %2$d / %3$d</string>
+    <string name="subscription_rate_limit_pause">Hız sınırından kaçınmak için duraklatıldı. Yükleme 1 dakika içinde devam edecek.\nGaleri açmak abonelik yüklemesini kesintiye uğratmaz.</string>
     <string name="enable_right_to_left">Sağdan sola okumayı etkinleştir</string>
     <string name="setting_on_use_rtl">Fotoğraflar sağdan sola gösterilecek</string>
     <string name="setting_off_use_rtl">Fotoğraflar soldan sağa gösterilecek</string>

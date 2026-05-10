@@ -148,6 +148,7 @@
     <string name="subscription_description">Abonnement</string>
     <string name="subscription_progress_empty">0 / 0 / 0</string>
     <string name="subscription_progress_format" formatted="true">%1$d / %2$d / %3$d</string>
+    <string name="subscription_rate_limit_pause">Pausiert, um das Ratenlimit zu vermeiden. Das Laden wird in 1 Minute fortgesetzt.\nDas Öffnen einer Galerie unterbricht das Laden der Abonnements nicht.</string>
     <string name="enable_right_to_left">Rechts nach links aktivieren</string>
     <string name="setting_on_use_rtl">Bilder werden von rechts nach links angezeigt</string>
     <string name="setting_off_use_rtl">Bilder werden von links nach rechts angezeigt</string>

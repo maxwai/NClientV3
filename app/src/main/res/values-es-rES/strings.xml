@@ -148,6 +148,7 @@
     <string name="subscription_description">Suscripción</string>
     <string name="subscription_progress_empty">0 / 0 / 0</string>
     <string name="subscription_progress_format" formatted="true">%1$d / %2$d / %3$d</string>
+    <string name="subscription_rate_limit_pause">Pausado para evitar el límite de velocidad. La carga continuará en 1 minuto.\nAbrir una galería no interrumpirá la carga de suscripciones.</string>
     <string name="enable_right_to_left">Habilitar lectura de derecha a izquierda</string>
     <string name="setting_on_use_rtl">Las imágenes se mostrarán de derecha a izquierda</string>
     <string name="setting_off_use_rtl">Las imágenes se mostrarán de izquierda a derecha</string>
