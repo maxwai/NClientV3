@@ -146,8 +146,8 @@
     <string name="bookmark_description">Описание закладки</string>
     <string name="subscriptions">Подписки</string>
     <string name="subscription_description">Подписка</string>
-    <string name="subscription_progress_empty">0 / 0</string>
-    <string name="subscription_progress_format" formatted="true">%1$d / %2$d</string>
+    <string name="subscription_progress_empty">0 / 0 / 0</string>
+    <string name="subscription_progress_format" formatted="true">%1$d / %2$d / %3$d</string>
     <string name="enable_right_to_left">Включить справа налево</string>
     <string name="setting_on_use_rtl">Изображения будут показываться справа налево</string>
     <string name="setting_off_use_rtl">Изображения будут показываться слева направо</string>

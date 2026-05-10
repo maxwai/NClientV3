@@ -146,8 +146,8 @@
     <string name="bookmark_description">書籤描述</string>
     <string name="subscriptions">訂閱</string>
     <string name="subscription_description">訂閱</string>
-    <string name="subscription_progress_empty">0 / 0</string>
-    <string name="subscription_progress_format" formatted="true">%1$d / %2$d</string>
+    <string name="subscription_progress_empty">0 / 0 / 0</string>
+    <string name="subscription_progress_format" formatted="true">%1$d / %2$d / %3$d</string>
     <string name="enable_right_to_left">從右至左閱讀</string>
     <string name="setting_on_use_rtl">圖像將從右至左顯示</string>
     <string name="setting_off_use_rtl">圖像將從左至右顯示</string>

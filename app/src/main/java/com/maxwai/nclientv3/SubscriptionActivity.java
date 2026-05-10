@@ -1,6 +1,10 @@
 package com.maxwai.nclientv3;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -73,16 +77,17 @@ public class SubscriptionActivity extends BaseActivity {
         List<Bookmark> bookmarks = Queries.BookmarkTable.getSubscribedBookmarks();
         if (bookmarks.isEmpty()) {
             adapter.restartDataset(new ArrayList<>());
-            updateProgress(0, 0);
+            updateProgress(0, 0, 0);
             refresher.setRefreshing(false);
             return;
         }
 
         refresher.setRefreshing(true);
-        updateProgress(0, bookmarks.size());
+        updateProgress(0, 0, bookmarks.size());
         executor = Executors.newFixedThreadPool(MAX_PARALLEL_REQUESTS);
         ConcurrentHashMap<Integer, GenericGallery> galleries = new ConcurrentHashMap<>();
         AtomicInteger completed = new AtomicInteger(0);
+        AtomicInteger successful = new AtomicInteger(0);
         AtomicInteger failed = new AtomicInteger(0);
         AtomicInteger initialFailures = new AtomicInteger(0);
         AtomicBoolean hasSuccess = new AtomicBoolean(false);
@@ -90,13 +95,20 @@ public class SubscriptionActivity extends BaseActivity {
 
         for (Bookmark bookmark : bookmarks) {
             executor.execute(() -> {
-                List<GenericGallery> result = loadBookmark(bookmark, hasSuccess, initialFailures, aborted, actualLoad);
+                List<GenericGallery> result = loadBookmark(bookmark, aborted);
                 if (actualLoad != loadId || isFinishing()) return;
                 if (aborted.get()) return;
                 if (result == null) {
-                    failed.incrementAndGet();
+                    int failedCount = failed.incrementAndGet();
+                    if (!hasSuccess.get() && initialFailures.incrementAndGet() >= MAX_INITIAL_FAILURES) {
+                        aborted.set(true);
+                        updateProgress(successful.get(), failedCount, bookmarks.size());
+                        showUnableToConnect(actualLoad);
+                        return;
+                    }
                 } else {
                     hasSuccess.set(true);
+                    successful.incrementAndGet();
                     for (GenericGallery gallery : result) {
                         if (gallery != null && gallery.isValid())
                             galleries.put(gallery.getId(), gallery);
@@ -105,7 +117,7 @@ public class SubscriptionActivity extends BaseActivity {
                 }
 
                 int done = completed.incrementAndGet();
-                updateProgress(done, bookmarks.size());
+                updateProgress(successful.get(), failed.get(), bookmarks.size());
                 if (done == bookmarks.size()) {
                     finishRefresh(failed.get(), bookmarks.size(), actualLoad);
                 }
@@ -113,7 +125,7 @@ public class SubscriptionActivity extends BaseActivity {
         }
     }
 
-    private List<GenericGallery> loadBookmark(Bookmark bookmark, AtomicBoolean hasSuccess, AtomicInteger initialFailures, AtomicBoolean aborted, int actualLoad) {
+    private List<GenericGallery> loadBookmark(Bookmark bookmark, AtomicBoolean aborted) {
         for (int attempt = 0; attempt < MAX_RETRIES && !aborted.get(); attempt++) {
             try {
                 InspectorV3 inspector = bookmark.createInspector(this, null);
@@ -124,11 +136,6 @@ public class SubscriptionActivity extends BaseActivity {
                 return inspector.getGalleries();
             } catch (Exception e) {
                 LogUtility.e("Subscription request failed", e);
-                if (!hasSuccess.get() && initialFailures.incrementAndGet() >= MAX_INITIAL_FAILURES) {
-                    aborted.set(true);
-                    showUnableToConnect(actualLoad);
-                    return null;
-                }
                 Utility.threadSleep(RETRY_DELAY_MS);
             }
         }
@@ -141,10 +148,26 @@ public class SubscriptionActivity extends BaseActivity {
         runOnUiThread(() -> adapter.restartDataset(sorted));
     }
 
-    private void updateProgress(int done, int total) {
+    private void updateProgress(int successful, int failed, int total) {
         runOnUiThread(() -> {
-            progressText.setText(getString(R.string.subscription_progress_format, done, total));
+            String text = getString(R.string.subscription_progress_format, successful, failed, total);
+            SpannableString spannable = new SpannableString(text);
+            String successfulText = String.valueOf(successful);
+            String failedText = String.valueOf(failed);
+            String totalText = String.valueOf(total);
+            int successfulStart = text.indexOf(successfulText);
+            int failedStart = text.indexOf(failedText, successfulStart + successfulText.length());
+            int totalStart = text.lastIndexOf(totalText);
+            setProgressSpan(spannable, successfulStart, successfulText.length(), Color.GREEN);
+            setProgressSpan(spannable, failedStart, failedText.length(), Color.RED);
+            setProgressSpan(spannable, totalStart, totalText.length(), Color.WHITE);
+            progressText.setText(spannable);
         });
+    }
+
+    private void setProgressSpan(SpannableString spannable, int start, int length, int color) {
+        if (start < 0) return;
+        spannable.setSpan(new ForegroundColorSpan(color), start, start + length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     private void finishRefresh(int failed, int total, int actualLoad) {
@@ -152,7 +175,7 @@ public class SubscriptionActivity extends BaseActivity {
             if (actualLoad != loadId || isFinishing()) return;
             if (executor != null) executor.shutdown();
             refresher.setRefreshing(false);
-            updateProgress(total - failed, total);
+            updateProgress(total - failed, failed, total);
             if (failed == total) {
                 showError(R.string.unable_to_connect_to_the_site, v -> loadSubscriptions());
             }

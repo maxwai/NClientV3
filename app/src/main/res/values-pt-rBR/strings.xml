@@ -146,8 +146,8 @@
     <string name="bookmark_description">Descrição do marcador</string>
     <string name="subscriptions">Assinaturas</string>
     <string name="subscription_description">Assinatura</string>
-    <string name="subscription_progress_empty">0 / 0</string>
-    <string name="subscription_progress_format" formatted="true">%1$d / %2$d</string>
+    <string name="subscription_progress_empty">0 / 0 / 0</string>
+    <string name="subscription_progress_format" formatted="true">%1$d / %2$d / %3$d</string>
     <string name="enable_right_to_left">Habilitar leitura da direita para esquerda</string>
     <string name="setting_on_use_rtl">As imagens serão exibidas da direita para a esquerda</string>
     <string name="setting_off_use_rtl">As imagens serão exibidas da esquerda para a direita</string>
