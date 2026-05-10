@@ -9,10 +9,8 @@ plugins {
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
-val keystoreProperties = Properties()
-val hasReleaseKeystore = keystorePropertiesFile.isFile
-if (hasReleaseKeystore) {
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+val keystoreProperties = Properties().apply {
+    load(FileInputStream(keystorePropertiesFile))
 }
 
 val majorVersion = 4
@@ -23,13 +21,11 @@ val version = "${majorVersion}.${minorVersion}.${patchVersion}"
 
 android {
     signingConfigs {
-        if (hasReleaseKeystore) {
-            create("release") {
-                keyAlias = keystoreProperties["keyAlias"] as String
-                keyPassword = keystoreProperties["keyPassword"] as String
-                storeFile = file(keystoreProperties["storeFile"] as String)
-                storePassword = keystoreProperties["storePassword"] as String
-            }
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
         }
     }
     compileSdk = 36
@@ -64,9 +60,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
             versionNameSuffix = "-release"
             resValue("string", "app_name", "NClientV3")
-            if (hasReleaseKeystore) {
-                signingConfig = signingConfigs.getByName("release")
-            }
+            signingConfig = signingConfigs.getByName("release")
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
