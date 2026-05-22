@@ -35,6 +35,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.maxwai.nclientv3.adapters.ListAdapter;
+import com.maxwai.nclientv3.api.ApiRateLimiter;
 import com.maxwai.nclientv3.api.InspectorV3;
 import com.maxwai.nclientv3.api.components.Gallery;
 import com.maxwai.nclientv3.api.components.GenericGallery;
@@ -787,7 +788,7 @@ public class MainActivity extends BaseActivity
         @Override
         public void onFailure(Exception e) {
             super.onFailure(e);
-            showError(R.string.unable_to_connect_to_the_site, v -> {
+            showError(e instanceof ApiRateLimiter.RateLimitException ? R.string.rate_limited : R.string.unable_to_connect_to_the_site, v -> {
                 inspector = inspector.cloneInspector(MainActivity.this, inspector.getResponse());
                 inspector.start();
             });

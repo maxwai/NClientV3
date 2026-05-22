@@ -1,6 +1,7 @@
 package com.maxwai.nclientv3.api;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -237,7 +238,8 @@ public class InspectorV3 extends Thread implements Parcelable {
     public String getSearchTitle() {
         //triggered only when in searchMode
         if (!query.isEmpty()) return query;
-        return url.replace(Utility.getBaseUrl() + "api/v2/search?query=", "").replace('+', ' ');
+        String searchQuery = Uri.parse(url).getQueryParameter("query");
+        return searchQuery == null ? "" : searchQuery;
     }
 
     public void initialize(Context context, InspectorResponse response) {
@@ -292,28 +294,9 @@ public class InspectorV3 extends Thread implements Parcelable {
             if (query != null && !query.isEmpty())
                 builder.append("&q=").append(query);
         } else if (requestType == ApiRequestType.BYSEARCH || requestType == ApiRequestType.BYTAG) {
-            builder.append("search?query=").append(query);
-            for (Tag tt : tags) {
-                if (builder.toString().contains(tt.toQueryTag(TagStatus.ACCEPTED))) continue;
-                builder.append('+');
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    builder.append(URLEncoder.encode(tt.toQueryTag(), Charset.defaultCharset()));
-                } else {
-                    try {
-                        //noinspection CharsetObjectCanBeUsed
-                        builder.append(URLEncoder.encode(tt.toQueryTag(), Charset.defaultCharset().name()));
-                    } catch (UnsupportedEncodingException e) {
-                        LogUtility.wtf("This should not happen since we used the default charset", e);
-                        return;
-                    }
-                }
-            }
-            if (ranges != null)
-                builder.append('+').append(ranges.toQuery());
-            builder.append("&page=").append(page);
-            if (sortType != null && sortType.getUrlAddition() != null) {
-                builder.append("&sort=").append(sortType.getUrlAddition());
-            }
+            url = ApiEndpoints.SEARCH.buildUrl(this.query, tags, ranges, page, sortType);
+            LogUtility.d("WWW: " + getBookmarkURL());
+            return;
         }
         url = builder.toString().replace(' ', '+');
         LogUtility.d("WWW: " + getBookmarkURL());
@@ -324,12 +307,29 @@ public class InspectorV3 extends Thread implements Parcelable {
         else return url.substring(0, url.lastIndexOf('=') + 1);
     }
 
-    public boolean createDocument() throws IOException {
+    public boolean createDocument() throws IOException, ApiRateLimiter.RateLimitException {
         if (jsonResponse != null) return true;
-        try (Response response = Global.getClient(context.get()).newCall(new Request.Builder().url(url).build()).execute()) {
-            jsonResponse = response.body().string();
+        try (Response response = executeApiRequest(url)) {
+            jsonResponse = Objects.requireNonNull(response.body()).string();
             return response.code() == HttpURLConnection.HTTP_OK;
         }
+    }
+
+    @NonNull
+    private Response executeApiRequest(@NonNull String url) throws IOException, ApiRateLimiter.RateLimitException {
+        Context context = Objects.requireNonNull(this.context.get());
+        Request request = new Request.Builder().url(url).build();
+        if (isSearchRequest()) return ApiEndpoints.SEARCH.execute(context, Global.getClient(context), query, tags, ranges, page, sortType);
+        return executeDirectApiRequest(context, request);
+    }
+
+    @NonNull
+    private Response executeDirectApiRequest(@NonNull Context context, @NonNull Request request) throws IOException {
+        return Global.getClient(context).newCall(request).execute();
+    }
+
+    private boolean isSearchRequest() {
+        return requestType == ApiRequestType.BYSEARCH || requestType == ApiRequestType.BYTAG;
     }
 
     public void parseDocument() throws IOException, InvalidResponseException {
@@ -394,8 +394,9 @@ public class InspectorV3 extends Thread implements Parcelable {
         if (!v2.has("title") && v2.has("id")) {
             int galleryId = v2.getInt("id");
             String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + galleryId + "?include=related,favorite";
-            try (Response resp = Global.getClient(context.get()).newCall(new Request.Builder().url(detailUrl).build()).execute()) {
-                String body = resp.body().string();
+            Context context = Objects.requireNonNull(this.context.get());
+            try (Response resp = executeDirectApiRequest(context, new Request.Builder().url(detailUrl).build())) {
+                String body = Objects.requireNonNull(resp.body()).string();
                 if (resp.code() != HttpURLConnection.HTTP_OK) return;
                 v2 = new JSONObject(body);
             }
