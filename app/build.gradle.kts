@@ -159,7 +159,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.2.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0")
     implementation("androidx.biometric:biometric:1.1.0")
-    implementation("com.google.android.material:material:1.13.0")
+    implementation("com.google.android.material:material:1.14.0")
 
 // Other
     // image loading and caching
@@ -169,7 +169,7 @@ dependencies {
     implementation("com.github.bumptech.glide:okhttp3-integration:5.0.7@aar")
     annotationProcessor("com.github.bumptech.glide:compiler:5.0.7")
     // For Http Connection
-    implementation("com.squareup.okhttp3:okhttp-urlconnection:5.3.2")
+    implementation("com.squareup.okhttp3:okhttp-urlconnection:5.4.0")
     // Used to store the cookies between runs
     implementation("com.github.franmontiel:PersistentCookieJar:v1.0.1")
     // To parse HTML
