@@ -25,15 +25,11 @@ import okhttp3.Response;
 
 public class ApiRateLimiter {
     private static final int HTTP_TOO_MANY_REQUESTS = 429;
-    public static final Consumer<Response> CLOSE_RESPONSE_CALLBACK = Response::close;
-    public static final Consumer<IOException> LOG_FAILURE_CALLBACK = e -> LogUtility.e(e.getLocalizedMessage(), e);
-    public static final Runnable EMPTY_CANCELLED_CALLBACK = () -> {
-    };
 
     @NonNull
     private final Object lock = new Object();
     @NonNull
-    private final ArrayDeque<RequestTimestamp> recentRequests = new ArrayDeque<>();
+    private final ArrayDeque<Long> recentRequests = new ArrayDeque<>();
     @NonNull
     private final String method;
     @NonNull
@@ -65,7 +61,7 @@ public class ApiRateLimiter {
                             @NonNull Map<String, String> parameters, @Nullable RequestBody body)
         throws IOException, RateLimitException {
         Request request = buildRequest(parameters, body);
-        RequestTimestamp timestamp = reserveRequest(context);
+        long timestamp = reserveRequest(context);
         try {
             Response response = client.newCall(request).execute();
             if (response.code() == HTTP_TOO_MANY_REQUESTS) {
@@ -90,7 +86,7 @@ public class ApiRateLimiter {
                              @NonNull Consumer<RateLimitException> onRateLimited,
                              @NonNull Consumer<IOException> onFailure, @NonNull Runnable onCancelled) {
         Request request = buildRequest(parameters, body);
-        RequestTimestamp timestamp;
+        long timestamp;
         try {
             timestamp = reserveRequest(context);
         } catch (RateLimitException e) {
@@ -142,7 +138,7 @@ public class ApiRateLimiter {
         return builder.build().toString();
     }
 
-    private RequestTimestamp reserveRequest(@NonNull Context context) throws RateLimitException {
+    private long reserveRequest(@NonNull Context context) throws RateLimitException {
         synchronized (lock) {
             Date now = new Date();
             if (retryAfterUntil != null) {
@@ -161,13 +157,13 @@ public class ApiRateLimiter {
                 logRateLimitStateLocked(context, "local window block", retryAfterMs);
                 throw new RateLimitException(retryAfterMs);
             }
-            RequestTimestamp timestamp = new RequestTimestamp(System.currentTimeMillis());
+            long timestamp = System.currentTimeMillis();
             recentRequests.addLast(timestamp);
             return timestamp;
         }
     }
 
-    private void removeRequest(@NonNull RequestTimestamp timestamp) {
+    private void removeRequest(long timestamp) {
         synchronized (lock) {
             recentRequests.remove(timestamp);
         }
@@ -175,16 +171,17 @@ public class ApiRateLimiter {
 
     private void cleanWindowLocked() {
         long threshold = System.currentTimeMillis() - windowMs;
-        while (!recentRequests.isEmpty() && recentRequests.peekFirst().time <= threshold) {
+        //noinspection DataFlowIssue
+        while (!recentRequests.isEmpty() && recentRequests.peekFirst() <= threshold) {
             recentRequests.removeFirst();
         }
     }
 
     private long getRetryAfterMsLocked() {
         cleanWindowLocked();
-        RequestTimestamp firstRequest = recentRequests.peekFirst();
+        Long firstRequest = recentRequests.peekFirst();
         if (firstRequest == null) return windowMs;
-        return Math.max(0, firstRequest.time + windowMs - System.currentTimeMillis());
+        return Math.max(0, firstRequest + windowMs - System.currentTimeMillis());
     }
 
     private void setRetryAfterUntil(long retryAfterMs) {
@@ -227,14 +224,6 @@ public class ApiRateLimiter {
 
         public long getRetryAfterMs() {
             return retryAfterMs;
-        }
-    }
-
-    private static class RequestTimestamp {
-        private final long time;
-
-        RequestTimestamp(long time) {
-            this.time = time;
         }
     }
 }

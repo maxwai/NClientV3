@@ -325,6 +325,7 @@ public class InspectorV3 extends Thread implements Parcelable {
 
     @NonNull
     private Response executeDirectApiRequest(@NonNull Context context, @NonNull Request request) throws IOException {
+        // TODO: eliminate need for this method
         return Global.getClient(context).newCall(request).execute();
     }
 
