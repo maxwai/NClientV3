@@ -12,6 +12,7 @@ import com.maxwai.nclientv3.utility.Utility;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -53,14 +54,22 @@ public class ApiRateLimiter {
     public Response execute(@NonNull Context context, @NonNull OkHttpClient client,
                             @NonNull Map<String, String> parameters)
         throws IOException, RateLimitException {
-        return execute(context, client, parameters, null);
+        return execute(context, client, new LinkedHashMap<>(), parameters, null);
     }
 
     @NonNull
     public Response execute(@NonNull Context context, @NonNull OkHttpClient client,
                             @NonNull Map<String, String> parameters, @Nullable RequestBody body)
         throws IOException, RateLimitException {
-        Request request = buildRequest(parameters, body);
+        return execute(context, client, new LinkedHashMap<>(), parameters, body);
+    }
+
+    @NonNull
+    public Response execute(@NonNull Context context, @NonNull OkHttpClient client,
+                            @NonNull Map<String, String> pathParameters,
+                            @NonNull Map<String, String> parameters, @Nullable RequestBody body)
+        throws IOException, RateLimitException {
+        Request request = buildRequest(pathParameters, parameters, body);
         long timestamp = reserveRequest(context);
         try {
             Response response = client.newCall(request).execute();
@@ -85,7 +94,17 @@ public class ApiRateLimiter {
                              @NonNull Consumer<Response> onSuccess,
                              @NonNull Consumer<RateLimitException> onRateLimited,
                              @NonNull Consumer<IOException> onFailure, @NonNull Runnable onCancelled) {
-        Request request = buildRequest(parameters, body);
+        return executeAsync(context, client, new LinkedHashMap<>(), parameters, body, onSuccess, onRateLimited, onFailure, onCancelled);
+    }
+
+    @NonNull
+    public Call executeAsync(@NonNull Context context, @NonNull OkHttpClient client,
+                             @NonNull Map<String, String> pathParameters,
+                             @NonNull Map<String, String> parameters, @Nullable RequestBody body,
+                             @NonNull Consumer<Response> onSuccess,
+                             @NonNull Consumer<RateLimitException> onRateLimited,
+                             @NonNull Consumer<IOException> onFailure, @NonNull Runnable onCancelled) {
+        Request request = buildRequest(pathParameters, parameters, body);
         long timestamp;
         try {
             timestamp = reserveRequest(context);
@@ -124,18 +143,39 @@ public class ApiRateLimiter {
 
     @NonNull
     public Request buildRequest(@NonNull Map<String, String> parameters, @Nullable RequestBody body) {
-        return new Request.Builder().url(buildUrl(parameters)).method(method, body).build();
+        return buildRequest(new LinkedHashMap<>(), parameters, body);
+    }
+
+    @NonNull
+    public Request buildRequest(@NonNull Map<String, String> pathParameters,
+                                @NonNull Map<String, String> parameters, @Nullable RequestBody body) {
+        return new Request.Builder().url(buildUrl(pathParameters, parameters)).method(method, body).build();
     }
 
     @NonNull
     public String buildUrl(@NonNull Map<String, String> parameters) {
+        return buildUrl(new LinkedHashMap<>(), parameters);
+    }
+
+    @NonNull
+    public String buildUrl(@NonNull Map<String, String> pathParameters, @NonNull Map<String, String> parameters) {
         HttpUrl.Builder builder = HttpUrl.get(Utility.getBaseUrl()).newBuilder();
-        String normalizedPath = path.startsWith("/") ? path.substring(1) : path;
+        String normalizedPath = fillPathParameters(path, pathParameters);
+        if (normalizedPath.startsWith("/")) normalizedPath = normalizedPath.substring(1);
         builder.addPathSegments(normalizedPath);
         for (Map.Entry<String, String> parameter : parameters.entrySet()) {
             builder.addQueryParameter(parameter.getKey(), parameter.getValue());
         }
         return builder.build().toString();
+    }
+
+    @NonNull
+    private String fillPathParameters(@NonNull String path, @NonNull Map<String, String> pathParameters) {
+        String resolved = path;
+        for (Map.Entry<String, String> parameter : pathParameters.entrySet()) {
+            resolved = resolved.replace("{" + parameter.getKey() + "}", parameter.getValue());
+        }
+        return resolved;
     }
 
     private long reserveRequest(@NonNull Context context) throws RateLimitException {

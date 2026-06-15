@@ -788,7 +788,7 @@ public class MainActivity extends BaseActivity
         @Override
         public void onFailure(Exception e) {
             super.onFailure(e);
-            showError(e instanceof ApiRateLimiter.RateLimitException ? R.string.rate_limited : R.string.unable_to_connect_to_the_site, v -> {
+            showError(getRequestFailureMessage(e), v -> {
                 inspector = inspector.cloneInspector(MainActivity.this, inspector.getResponse());
                 inspector.start();
             });
