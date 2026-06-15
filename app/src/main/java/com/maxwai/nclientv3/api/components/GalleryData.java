@@ -12,6 +12,8 @@ import android.util.JsonToken;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.maxwai.nclientv3.api.ApiEndpoints;
+import com.maxwai.nclientv3.api.ApiRateLimiter;
 import com.maxwai.nclientv3.api.enums.ImageType;
 import com.maxwai.nclientv3.api.enums.SpecialTagIds;
 import com.maxwai.nclientv3.api.enums.TitleType;
@@ -32,7 +34,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
-import okhttp3.Request;
 import okhttp3.Response;
 
 public class GalleryData implements Parcelable {
@@ -371,8 +372,7 @@ public class GalleryData implements Parcelable {
         }
         Thread updateThread = new Thread(() -> {
             // Old entry, needs to be updated
-            String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + id;
-            try (Response resp = Global.getClient(Objects.requireNonNull(context)).newCall(new Request.Builder().url(detailUrl).build()).execute()) {
+            try (Response resp = ApiEndpoints.GALLERY.execute(Objects.requireNonNull(context), Global.getClient(context), id, false)) {
                 String body = resp.body().string();
                 if (resp.code() == HttpURLConnection.HTTP_OK) {
                     JSONObject v2 = new JSONObject(body);
@@ -390,7 +390,7 @@ public class GalleryData implements Parcelable {
                     changedInfo = false;
                     valid = false;
                 }
-            } catch (IOException | JSONException e) {
+            } catch (ApiRateLimiter.RateLimitException | IOException | JSONException e) {
                 LogUtility.e(e);
             }
         });

@@ -288,7 +288,9 @@ public class InspectorV3 extends Thread implements Parcelable {
         } else if (requestType == ApiRequestType.RANDOM_FAVORITE) {
             builder.append("favorites/random");
         } else if (requestType == ApiRequestType.BYSINGLE) {
-            builder.append("galleries/").append(id).append("?include=related,favorite");
+            url = ApiEndpoints.GALLERY.buildUrl(id, true);
+            LogUtility.d("WWW: " + getBookmarkURL());
+            return;
         } else if (requestType == ApiRequestType.FAVORITE) {
             builder.append("favorites?page=").append(page);
             if (query != null && !query.isEmpty())
@@ -320,6 +322,7 @@ public class InspectorV3 extends Thread implements Parcelable {
         Context context = Objects.requireNonNull(this.context.get());
         Request request = new Request.Builder().url(url).build();
         if (isSearchRequest()) return ApiEndpoints.SEARCH.execute(context, Global.getClient(context), query, tags, ranges, page, sortType);
+        if (requestType == ApiRequestType.BYSINGLE) return ApiEndpoints.GALLERY.execute(context, Global.getClient(context), id, true);
         return executeDirectApiRequest(context, request);
     }
 
@@ -333,7 +336,7 @@ public class InspectorV3 extends Thread implements Parcelable {
         return requestType == ApiRequestType.BYSEARCH || requestType == ApiRequestType.BYTAG;
     }
 
-    public void parseDocument() throws IOException, InvalidResponseException {
+    public void parseDocument() throws IOException, InvalidResponseException, ApiRateLimiter.RateLimitException {
         try {
             if (requestType.isSingle()) doSingleV2();
             else doSearchV2();
@@ -386,7 +389,7 @@ public class InspectorV3 extends Thread implements Parcelable {
      * Parse single gallery from API v2 response.
      * For RANDOM, the response is just {"id": N}, so we fetch the full detail.
      */
-    private void doSingleV2() throws IOException, JSONException {
+    private void doSingleV2() throws IOException, JSONException, ApiRateLimiter.RateLimitException {
         galleries = new ArrayList<>(1);
         JSONObject v2 = new JSONObject(jsonResponse);
         if (v2.has("error")) return;
@@ -394,9 +397,8 @@ public class InspectorV3 extends Thread implements Parcelable {
         // Random endpoint returns only {"id": N} — fetch full gallery detail
         if (!v2.has("title") && v2.has("id")) {
             int galleryId = v2.getInt("id");
-            String detailUrl = Utility.getBaseUrl() + "api/v2/galleries/" + galleryId + "?include=related,favorite";
             Context context = Objects.requireNonNull(this.context.get());
-            try (Response resp = executeDirectApiRequest(context, new Request.Builder().url(detailUrl).build())) {
+            try (Response resp = ApiEndpoints.GALLERY.execute(context, Global.getClient(context), galleryId, true)) {
                 String body = Objects.requireNonNull(resp.body()).string();
                 if (resp.code() != HttpURLConnection.HTTP_OK) return;
                 v2 = new JSONObject(body);

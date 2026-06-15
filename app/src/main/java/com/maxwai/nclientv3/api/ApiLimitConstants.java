@@ -17,6 +17,10 @@ public final class ApiLimitConstants {
     public static final int SEARCH_GET_UNAUTHENTICATED_REQUEST_LIMIT = 10;
     public static final int SEARCH_GET_AUTHENTICATED_REQUEST_LIMIT = 20;
 
+    public static final int GALLERIES_GALLERY_ID_GET_LIMIT_WINDOW_MS = 60_000;
+    public static final int GALLERIES_GALLERY_ID_GET_UNAUTHENTICATED_REQUEST_LIMIT = 20;
+    public static final int GALLERIES_GALLERY_ID_GET_AUTHENTICATED_REQUEST_LIMIT = 45;
+
     private ApiLimitConstants() {
     }
 }

@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.maxwai.nclientv3.R;
+import com.maxwai.nclientv3.api.ApiRateLimiter;
 import com.maxwai.nclientv3.components.widgets.CustomGridLayoutManager;
 
 public abstract class BaseActivity extends GeneralActivity {
@@ -29,6 +31,16 @@ public abstract class BaseActivity extends GeneralActivity {
 
     public ViewGroup getMasterLayout() {
         return masterLayout;
+    }
+
+    @NonNull
+    public String getRequestFailureMessage(@NonNull Exception e) {
+        if (e instanceof ApiRateLimiter.RateLimitException) {
+            long retryAfterMs = ((ApiRateLimiter.RateLimitException) e).getRetryAfterMs();
+            long retryAfterSeconds = Math.max(1, (retryAfterMs + 999) / 1000);
+            return getString(R.string.rate_limited_retry_after, retryAfterSeconds);
+        }
+        return getString(R.string.unable_to_connect_to_the_site);
     }
 
     @Override

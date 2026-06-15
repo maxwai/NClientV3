@@ -128,6 +128,13 @@ public class GalleryActivity extends BaseActivity {
             }
             InspectorV3.galleryInspector(this, id, new InspectorV3.DefaultInspectorResponse() {
                 @Override
+                public void onFailure(Exception e) {
+                    super.onFailure(e);
+                    runOnUiThread(() -> Toast.makeText(GalleryActivity.this, getRequestFailureMessage(e), Toast.LENGTH_SHORT).show());
+                    finish();
+                }
+
+                @Override
                 public void onSuccess(List<GenericGallery> galleries) {
                     if (!galleries.isEmpty()) {
                         Intent intent = new Intent(GalleryActivity.this, GalleryActivity.class);
@@ -443,6 +450,18 @@ public class GalleryActivity extends BaseActivity {
     private void toInternet() {
         refresher.setEnabled(true);
         InspectorV3.galleryInspector(this, gallery.getId(), new InspectorV3.DefaultInspectorResponse() {
+            @Override
+            public void onFailure(Exception e) {
+                super.onFailure(e);
+                if (masterLayout != null) {
+                    runOnUiThread(() -> {
+                        Snackbar snackbar = Snackbar.make(masterLayout, getRequestFailureMessage(e), Snackbar.LENGTH_SHORT);
+                        snackbar.setAction(R.string.retry, v -> toInternet());
+                        snackbar.show();
+                    });
+                }
+            }
+
             @Override
             public void onSuccess(List<GenericGallery> galleries) {
                 if (galleries.isEmpty()) return;
