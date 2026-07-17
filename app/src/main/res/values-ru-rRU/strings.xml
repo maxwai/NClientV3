@@ -34,25 +34,25 @@
     <string name="only_japanese">Только японский</string>
     <string name="only_chinese">Только китайский</string>
     <string name="all_languages">Все языки</string>
-    <string name="unknown_language">Unknown language</string>
-    <string name="setting_api_key_title">API key</string>
-    <string name="setting_api_key_summary_missing">Create an API key on the website account settings page, then paste it into the app.</string>
-    <string name="setting_api_key_summary_valid">Saved and validated. Open this entry if you want to replace or remove it.</string>
-    <string name="setting_api_key_summary_invalid">A saved API key exists, but it is no longer valid. Open this entry to replace or remove it.</string>
-    <string name="login_api_key_intro_title">Use an API key</string>
-    <string name="login_api_key_intro_message">The nhentai site now uses API keys for app access. To log in, open the account settings page in your browser, create an API key there, then come back and paste the key value here.</string>
-    <string name="login_open_api_key_page">Open API key page</string>
-    <string name="login_api_key_input_title">Paste your API key</string>
-    <string name="login_api_key_input_message">The key is validated against the v2 API before it is saved.</string>
-    <string name="login_api_key_hint">API key</string>
-    <string name="login_validate_and_save">Validate and save</string>
-    <string name="login_api_key_saved">API key saved</string>
-    <string name="login_api_key_invalid">Invalid API key</string>
-    <string name="login_api_key_empty">Paste an API key first</string>
-    <string name="login_api_key_removed">Saved API key removed</string>
-    <string name="login_status_api_key_saved">A validated API key is currently saved on this device.</string>
-    <string name="login_status_api_key_invalid">A saved API key exists, but it needs to be replaced or removed.</string>
-    <string name="remove_api_key">Remove API key</string>
+    <string name="unknown_language">Неизвестный язык</string>
+    <string name="setting_api_key_title">API ключ</string>
+    <string name="setting_api_key_summary_missing">Создайте API ключ на странице аккаунта на сайте, затем вставьте его в приложение.</string>
+    <string name="setting_api_key_summary_valid">Сохранено и проверено. Откройте эту страницу, если захотите удалить или изменить ключ.</string>
+    <string name="setting_api_key_summary_invalid">API ключ уже существует, но более не валиден. Откройте эту страницу чтобы заменить его или удалить.</string>
+    <string name="login_api_key_intro_title">Использовать API ключ</string>
+    <string name="login_api_key_intro_message">Вебсайт nhentai теперь использует API ключи для доступа к приложению. Чтобы войти, откройте страницу аккаунта в браузере, создайте там API ключ, далее вернитесь и вставьте сюда значение ключа.</string>
+    <string name="login_open_api_key_page">Открыть страницу API ключа</string>
+    <string name="login_api_key_input_title">Вставьте Ваш API ключ</string>
+    <string name="login_api_key_input_message">Перед сохранением ключ проверяется на соответствие API v2.</string>
+    <string name="login_api_key_hint">API ключ</string>
+    <string name="login_validate_and_save">Проверить и сохранить</string>
+    <string name="login_api_key_saved">API ключ сохранён</string>
+    <string name="login_api_key_invalid">Некорректный API ключ</string>
+    <string name="login_api_key_empty">Сначала вставьте API ключ</string>
+    <string name="login_api_key_removed">Сохранённый API ключ удалён</string>
+    <string name="login_status_api_key_saved">Проверенный API ключ хранится на этом устройстве.</string>
+    <string name="login_status_api_key_invalid">Сохранённый API ключ существует, однако должен быть заменён или удалён.</string>
+    <string name="remove_api_key">Удалить API ключ</string>
     <string name="favorite_online_manga">Избранные онлайн галереи</string>
     <string name="online_tags">Онлайн тэги</string>
     <string name="add_to_online_favorite">Добавить в онлайн избранные</string>
@@ -130,7 +130,7 @@
     <string name="keep_history">Сохранять историю поиска</string>
     <string name="add">Добавить</string>
     <string name="insert_tag_name">Ввести тэг:</string>
-    <string name="favorite_count">Номер избранной</string>
+    <string name="favorite_count">Количество избранных</string>
     <string name="comments">Комментарии</string>
     <string name="send">Отправить</string>
     <string name="send_comment">Отправить комментарий…</string>
@@ -144,11 +144,11 @@
     <string name="manage_bookmarks">Управлять закладками</string>
     <string name="bookmark_page_format">Страница %d</string>
     <string name="bookmark_description">Описание закладки</string>
-    <string name="enable_right_to_left">Включить справа налево</string>
+    <string name="enable_right_to_left">Режим справа-налево</string>
     <string name="setting_on_use_rtl">Изображения будут показываться справа налево</string>
     <string name="setting_off_use_rtl">Изображения будут показываться слева направо</string>
     <string name="volume_change_setting">Перелистывать страницы с помощью кнопок регулирвки громкости</string>
-    <string name="popular_tag_count">Количество популярных тэгов отображается в Продвинутом поиске</string>
+    <string name="popular_tag_count">Количество популярных тэгов, отображаемое в Продвинутом поиске</string>
     <string name="show_gallery_titles">Показать заголовок галереи</string>
     <string name="use_column_port">Количество столбцов в портретном режиме</string>
     <string name="use_column_land">Количество столбцов в горизонтальном режиме</string>
@@ -183,7 +183,7 @@
     <string name="send_with_title">Отправить с заголовком?</string>
     <string name="caption_send_with_title">Приложить URL к изображению как подпись?</string>
     <string name="history_size">Размер истории</string>
-    <string name="history_size_summary">Устнавить максимальное количество элементов в истории</string>
+    <string name="history_size_summary">Установить максимальное количество элементов в истории</string>
     <string name="view_history">Посмотреть историю</string>
     <string name="history">История</string>
     <string name="clear_history">Очистить историю</string>
@@ -193,12 +193,12 @@
     <string name="toggle_favorite">Переместить в избранное</string>
     <string name="resume">Возобновить</string>
     <string name="title_copied_to_clipboard">Заголовок скопирован в буфер обмена</string>
-    <string name="setting_zoom_one_column">Включить зум в галерее в режиме одного столбца</string>
+    <string name="setting_zoom_one_column">Включить зум в галерее в режиме одиночного столбца</string>
     <string name="zoom_one_column">Включить зум</string>
     <string name="insert_pin">Введите Пин-код</string>
     <string name="confirm_pin">Подтвердите Пин-код</string>
     <string name="setting_device_credentials">Enable Device Credentials to enter the app</string>
-    <string name="setting_device_credentials_low_sdk">Only available for Android 11 or higher</string>
+    <string name="setting_device_credentials_low_sdk">Доступно только для Android 11 и новее</string>
     <string name="use_device_credentials">Use Device Credentials</string>
     <string name="wrong_pin">Неверный Пин-код</string>
     <string name="rotate_image">Повернуть изображение</string>
@@ -288,7 +288,7 @@
     <string name="navigation_settings_per_screen">Настройки навигации при помощи экрана</string>
     <string name="downloaded_update_at" formatted="true">Обновление загружено в %s</string>
     <string name="summary_offscreen_limit">Установите количество предзагружамых изображений во время чтения галереи</string>
-    <string name="title_offscreen_limit">Изображение предзагрузки</string>
+    <string name="title_offscreen_limit">Кол-во предзагружаемых изображений</string>
     <string name="sort_popoular_month">Популярные за месяц</string>
     <string name="random">Случайная</string>
     <string name="summary_fetch_metadata">Загрузить метаданные для галерей, загруженных до 2.3.0, которые не имеют метаданных, по типу применённых тэгов</string>
@@ -298,14 +298,14 @@
     <string name="import_finished">Импорт завершён</string>
     <string name="system_default">System default</string>
     <string name="clear_cookies">Clear cookies</string>
-    <string name="fetching_cloudflare_token">Fetching Cloudflare token …</string>
-    <string name="exact_title_match_title">Exact tag match only</string>
-    <string name="exact_title_match_summary">Hide galleries which would appear in the site but doesn\'t contains all the tags searched</string>
-    <string name="hide">Hide</string>
-    <string name="shuffle_contentDescription">Random Gallery Button</string>
-    <string name="copy_logs">Copy logs to file</string>
-    <string name="copy_logs_summary">This will put all available logs of this App into a file. The available logs could extend multiple days. Also, it is possible that the logs contain personal information to be sure to check before publishing the file. Use this to attach logs to a Bug report.</string>
-    <string name="copy_logs_fail">Problem generating logfile</string>
+    <string name="fetching_cloudflare_token">Загрузка Cloudflare токена …</string>
+    <string name="exact_title_match_title">Только точно совпадающие тэги</string>
+    <string name="exact_title_match_summary">Скрыть галерей, отображаемые на сайте, но не содержащие все указанные тэги</string>
+    <string name="hide">Скрыть</string>
+    <string name="shuffle_contentDescription">Случайная кнопка галереи</string>
+    <string name="copy_logs">Скопировать логи в файл</string>
+    <string name="copy_logs_summary">При этом действии все доступные журналы данного приложения будут сохранены в файл. Объем доступных журналов может охватывать несколько дней. Кроме того, в журналах может содержаться личная информация, поэтому перед публикацией файла обязательно проверьте его. Используйте эту функцию для прикрепления журналов к отчету об ошибке.</string>
+    <string name="copy_logs_fail">Проблема при генерации лог файла</string>
     <string-array name="scroll_type">
         <item>Горизонтальный</item>
         <item>Вертикальный</item>
@@ -320,11 +320,11 @@
         <item>Японский</item>
         <item>Pretty</item>
     </string-array>
-    <string name="online_blacklist_add_error">Error adding to online blacklist</string>
-    <string name="clipboard_settings_error">Error copying settings into clipboard</string>
-    <string name="send_image_error">Error creating Image to send</string>
-    <string name="unlock">Unlock</string>
-    <string name="auth_error">Authentication error</string>
-    <string name="auth_title">Biometric login for NClient</string>
-    <string name="auth_subtitle">Log in using your biometric credential</string>
+    <string name="online_blacklist_add_error">Ошибка добавления в онлайн чёрный список</string>
+    <string name="clipboard_settings_error">Ошибка копирования настроек в буфер обмена</string>
+    <string name="send_image_error">Ошибка при создании изображения для отправки</string>
+    <string name="unlock">Разблокировать</string>
+    <string name="auth_error">Ошибка аутентификации</string>
+    <string name="auth_title">Вход по биометрии для NClient</string>
+    <string name="auth_subtitle">Войти, используя биометрические данные</string>
 </resources>
