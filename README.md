@@ -16,7 +16,7 @@ Info can be found in the [wiki](https://github.com/maxwai/NClientV3/wiki/Migrate
 
 ## Translate App
 
-You can help translate the Project by going to the Crowdin Project [here](https://crowdin.com/project/nclientv3/invite?h=33e3f83681ebaea1bf037ed157d2ea272410538).
+You can help translate the Project by going to the Crowdin Project [here](https://crowdin.com/project/nclientv3/invite?h=a094bdfd22d231bbcd92ddb94b5cc4392828343).
 
 If your desired language is missing, write an issue, the language will be added.
 
