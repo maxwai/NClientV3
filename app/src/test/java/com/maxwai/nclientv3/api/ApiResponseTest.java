@@ -28,4 +28,10 @@ public class ApiResponseTest {
     @Test(expected=IOException.class) public void emptyResponseIsRejected() throws Exception {
         try (Response r = response(200, "application/json", " ")) { ApiResponse.read(r); }
     }
+    @Test(expected=IOException.class) public void htmlWithoutContentTypeDoesNotReachJsonParser() throws Exception {
+        try (Response r = response(200, "text/plain", "  <!DOCTYPE html><html>verification</html>")) { ApiResponse.read(r); }
+    }
+    @Test(expected=IOException.class) public void oversizedResponseIsRejected() throws Exception {
+        try (Response r = response(200, "application/json", "x".repeat(8 * 1024 * 1024 + 1))) { ApiResponse.read(r); }
+    }
 }

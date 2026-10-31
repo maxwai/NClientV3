@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">接続</string>
+    <string name="connection_summary">サイトへの接続を確認し、必要に応じてサイト認証を完了します。</string>
+    <string name="connection_check">接続を確認</string>
+    <string name="connection_verify">サイト認証</string>
+    <string name="connection_checking">公開ギャラリーAPIと画像サーバー設定を確認しています…</string>
+    <string name="connection_verified">ギャラリーAPIと画像サーバー設定から正常な応答がありました。</string>
+    <string name="connection_continue">閲覧に戻る</string>
+    <string name="connection_help">公開コンテンツの閲覧にアカウントは不要です。サイト認証が表示されたらここで完了し、接続を再確認してください。</string>
+    <string name="connection_site_only">この画面では公式のHTTPSサイトのみ開けます。</string>
+    <string name="connection_web_error">認証ページを読み込めませんでした。接続を再確認してください。</string>
+</resources>

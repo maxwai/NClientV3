@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">Connexion</string>
+    <string name="connection_summary">Vérifiez l’accès au site et effectuez sa vérification si nécessaire.</string>
+    <string name="connection_check">Vérifier la connexion</string>
+    <string name="connection_verify">Vérification du site</string>
+    <string name="connection_checking">Vérification de l’API publique et de la configuration des serveurs d’images…</string>
+    <string name="connection_verified">L’API des galeries et la configuration des serveurs ont répondu correctement.</string>
+    <string name="connection_continue">Reprendre la navigation</string>
+    <string name="connection_help">La navigation publique ne nécessite aucun compte. Si une vérification apparaît, effectuez-la ici puis vérifiez à nouveau la connexion.</string>
+    <string name="connection_site_only">Seul le site officiel en HTTPS peut être ouvert dans cette fenêtre.</string>
+    <string name="connection_web_error">Impossible de charger la page de vérification. Vérifiez à nouveau la connexion.</string>
+</resources>

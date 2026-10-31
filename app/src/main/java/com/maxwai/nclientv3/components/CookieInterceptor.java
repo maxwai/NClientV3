@@ -68,7 +68,6 @@ public class CookieInterceptor {
                 String[] kv = splitCookie.split("=", 2);
                 if (kv.length == 2) {
                     if (!kv[1].equals(cookiesMap.put(kv[0], kv[1]))) {
-                        LogUtility.d("Processing cookie: " + kv[0] + "=" + kv[1]);
                         CookieInterceptor.this.manager.applyCookie(kv[0], kv[1]);
                     }
                 }

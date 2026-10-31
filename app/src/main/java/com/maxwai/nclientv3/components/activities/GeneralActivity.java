@@ -23,6 +23,18 @@ public abstract class GeneralActivity extends AppCompatActivity {
     private String appliedAccent;
     private boolean isFastScrollerApplied = false;
     private CFTokenView tokenView = null;
+    private Runnable connectionRetry;
+    private final androidx.activity.result.ActivityResultLauncher<android.content.Intent> connectionLauncher =
+        registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(), result -> {
+            Runnable retry = connectionRetry;
+            connectionRetry = null;
+            if (result.getResultCode() == RESULT_OK && retry != null) retry.run();
+        });
+
+    public void openSiteConnection(Runnable retry) {
+        connectionRetry = retry;
+        connectionLauncher.launch(new android.content.Intent(this, com.maxwai.nclientv3.SiteConnectionActivity.class));
+    }
 
     public static @Nullable
     CFTokenView getLastCFView() {

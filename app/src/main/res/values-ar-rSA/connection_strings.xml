@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">الاتصال</string>
+    <string name="connection_summary">تحقق من الوصول إلى الموقع وأكمل التحقق عند الحاجة.</string>
+    <string name="connection_check">فحص الاتصال</string>
+    <string name="connection_verify">التحقق من الموقع</string>
+    <string name="connection_checking">جارٍ فحص واجهة المعارض العامة وإعدادات خوادم الصور…</string>
+    <string name="connection_verified">استجابت واجهة المعارض وإعدادات خوادم الصور بنجاح.</string>
+    <string name="connection_continue">العودة إلى التصفح</string>
+    <string name="connection_help">لا يتطلب التصفح العام حسابًا. إذا ظهر تحقق من الموقع، فأكمله هنا ثم افحص الاتصال مجددًا.</string>
+    <string name="connection_site_only">يمكن فتح الموقع الرسمي عبر HTTPS فقط في نافذة التحقق هذه.</string>
+    <string name="connection_web_error">تعذر تحميل صفحة التحقق. افحص الاتصال مجددًا للاطلاع على التفاصيل.</string>
+</resources>

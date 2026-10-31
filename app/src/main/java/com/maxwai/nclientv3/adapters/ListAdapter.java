@@ -171,8 +171,10 @@ public class ListAdapter extends RecyclerView.Adapter<GenericAdapter.ViewHolder>
                     LocalAdapter.startGallery(context, file);
                 } else if (context.getMasterLayout() != null) {
                     context.runOnUiThread(() -> {
-                            Snackbar snackbar = Snackbar.make(context.getMasterLayout(), R.string.unable_to_connect_to_the_site, Snackbar.LENGTH_SHORT);
-                            snackbar.setAction(R.string.retry, v -> downloadGallery(ent));
+                            if (context.isFinishing() || Global.isDestroyed(context)) return;
+                            Snackbar snackbar = Snackbar.make(context.getMasterLayout(), com.maxwai.nclientv3.utility.ConnectionFailure.describe(e), Snackbar.LENGTH_INDEFINITE);
+                            snackbar.setTextMaxLines(4);
+                            snackbar.setAction(R.string.site_connection, v -> context.openSiteConnection(() -> downloadGallery(ent)));
                             snackbar.show();
                         }
                     );

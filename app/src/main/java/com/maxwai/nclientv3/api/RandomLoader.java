@@ -9,21 +9,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomLoader {
-    private static final int MAXLOADED = 5;
+    private static final int MAXLOADED = 1;
     private final List<Gallery> galleries;
     private final RandomActivity activity;
     private boolean galleryHasBeenRequested;
+    private boolean loading;
 
     private final InspectorV3.InspectorResponse response = new InspectorV3.DefaultInspectorResponse() {
         @Override
         public void onFailure(Exception e) {
-            loadRandomGallery();
+            activity.runOnUiThread(() -> {
+                loading = false;
+                if (activity.isFinishing() || activity.isDestroyed()) return;
+                com.google.android.material.snackbar.Snackbar.make(activity.findViewById(android.R.id.content),
+                    com.maxwai.nclientv3.utility.ConnectionFailure.describe(e), com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE)
+                    .setTextMaxLines(4).setAction(com.maxwai.nclientv3.R.string.site_connection,
+                        v -> activity.openSiteConnection(RandomLoader.this::requestGallery)).show();
+            });
         }
 
         @Override
         public void onSuccess(List<GenericGallery> galleryList) {
+            activity.runOnUiThread(() -> accept(galleryList));
+        }
+
+        private void accept(List<GenericGallery> galleryList) {
+            loading = false;
+            if (activity.isFinishing() || activity.isDestroyed()) return;
             if (galleryList.isEmpty() || !galleryList.get(0).isValid()) {
-                loadRandomGallery();
+                onFailure(new InspectorV3.InvalidResponseException());
                 return;
             }
             Gallery gallery = (Gallery) galleryList.get(0);
@@ -43,7 +57,8 @@ public class RandomLoader {
     }
 
     private void loadRandomGallery() {
-        if (galleries.size() >= MAXLOADED) return;
+        if (loading || activity.isFinishing() || activity.isDestroyed() || galleries.size() >= MAXLOADED) return;
+        loading = true;
         InspectorV3.randomInspector(activity, response, false).start();
     }
 

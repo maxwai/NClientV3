@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">Bağlantı</string>
+    <string name="connection_summary">Site erişimini kontrol edin ve gerekirse site doğrulamasını tamamlayın.</string>
+    <string name="connection_check">Bağlantıyı kontrol et</string>
+    <string name="connection_verify">Site doğrulaması</string>
+    <string name="connection_checking">Genel galeri API’si ve görsel sunucusu yapılandırması kontrol ediliyor…</string>
+    <string name="connection_verified">Galeri API’si ve görsel sunucusu yapılandırması başarıyla yanıt verdi.</string>
+    <string name="connection_continue">Gezinmeye dön</string>
+    <string name="connection_help">Herkese açık gezinme hesap gerektirmez. Doğrulama istenirse burada tamamlayın ve bağlantıyı yeniden kontrol edin.</string>
+    <string name="connection_site_only">Bu pencerede yalnızca resmi HTTPS sitesi açılabilir.</string>
+    <string name="connection_web_error">Doğrulama sayfası yüklenemedi. Bağlantıyı yeniden kontrol edin.</string>
+</resources>

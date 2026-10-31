@@ -167,6 +167,11 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
     @SuppressLint("ApplySharedPref")
     private void mainMenu() {
         addPreferencesFromResource(R.xml.settings);
+        Preference connection = findPreference("site_connection");
+        Objects.requireNonNull(connection).setOnPreferenceClickListener(preference -> {
+            startActivity(new Intent(act, com.maxwai.nclientv3.SiteConnectionActivity.class));
+            return true;
+        });
         Preference accent = findPreference(getString(R.string.preference_key_accent));
         if (accent != null) accent.setOnPreferenceChangeListener((preference, value) -> {
             act.getSharedPreferences("Settings", 0).edit().putString("accent_color", (String) value).apply();
@@ -361,7 +366,11 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         {
             Preference cookie = Objects.requireNonNull(findPreference(getString(R.string.preference_key_cookie)));
             cookie.setOnPreferenceClickListener(preference -> {
-                CookieManager.getInstance().removeAllCookies(null);
+                CookieManager.getInstance().removeAllCookies(removed -> {
+                    CookieManager.getInstance().flush();
+                    com.maxwai.nclientv3.settings.SiteSession.clear(act);
+                    com.maxwai.nclientv3.utility.ImageHttpClient.verificationCompleted();
+                });
                 return true;
             });
         }

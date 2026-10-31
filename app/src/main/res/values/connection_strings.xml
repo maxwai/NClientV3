@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">Connection</string>
+    <string name="connection_summary">Check site access and complete website verification if needed.</string>
+    <string name="connection_check">Check connection</string>
+    <string name="connection_verify">Website verification</string>
+    <string name="connection_checking">Checking the public gallery API and image-server configuration…</string>
+    <string name="connection_verified">The gallery API and image-server configuration responded successfully.</string>
+    <string name="connection_continue">Return to browsing</string>
+    <string name="connection_help">Public browsing does not need an account. If the site shows a verification challenge, complete it here, then check the connection again.</string>
+    <string name="connection_site_only">Only the official HTTPS website can open in this verification window.</string>
+    <string name="connection_web_error">The verification page could not load. Check the connection again for details.</string>
+</resources>

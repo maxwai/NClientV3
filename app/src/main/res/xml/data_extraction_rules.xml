@@ -1,0 +1,14 @@
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="sharedpref" path="." />
+        <exclude domain="sharedpref" path="Auth.xml" />
+        <exclude domain="sharedpref" path="Login.xml" />
+        <exclude domain="sharedpref" path="SiteSession.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="." />
+        <exclude domain="sharedpref" path="Auth.xml" />
+        <exclude domain="sharedpref" path="Login.xml" />
+        <exclude domain="sharedpref" path="SiteSession.xml" />
+    </device-transfer>
+</data-extraction-rules>

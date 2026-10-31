@@ -33,6 +33,9 @@
             app:iconSpaceReserved="false"
             app:isPreferenceVisible="false" />
         <Preference android:layout="@layout/preference_premium"
+            android:key="site_connection" android:title="@string/site_connection"
+            android:summary="@string/connection_summary" app:iconSpaceReserved="false"/>
+        <Preference android:layout="@layout/preference_premium"
             android:key="@string/preference_key_api_key"
             android:title="@string/setting_api_key_title"
             app:iconSpaceReserved="false" />

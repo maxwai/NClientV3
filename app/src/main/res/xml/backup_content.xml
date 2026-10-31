@@ -7,4 +7,7 @@
     <include
         domain="sharedpref"
         path="." />
+    <exclude domain="sharedpref" path="Auth.xml" />
+    <exclude domain="sharedpref" path="Login.xml" />
+    <exclude domain="sharedpref" path="SiteSession.xml" />
 </full-backup-content>

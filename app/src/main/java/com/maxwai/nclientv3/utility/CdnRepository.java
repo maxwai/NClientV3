@@ -10,7 +10,7 @@ public final class CdnRepository {
     public static final class Unavailable extends IOException {
         public Unavailable(String message, Throwable cause) { super(message, cause); }
     }
-    private final OkHttpClient client;
+    private final Supplier<OkHttpClient> client;
     private final Supplier<String> endpoint;
     private final String userAgent;
     private final LongSupplier clock;
@@ -23,7 +23,10 @@ public final class CdnRepository {
         this(client, endpoint, userAgent, System::currentTimeMillis);
     }
     public CdnRepository(OkHttpClient client, Supplier<String> endpoint, String userAgent, LongSupplier clock) {
-        this.client = client; this.endpoint = endpoint; this.userAgent = userAgent; this.clock = clock;
+        this.client = () -> client; this.endpoint = endpoint; this.userAgent = userAgent; this.clock = clock;
+    }
+    public CdnRepository(Supplier<OkHttpClient> client, Supplier<String> endpoint, String userAgent) {
+        this.client = client; this.endpoint = endpoint; this.userAgent = userAgent; this.clock = System::currentTimeMillis;
     }
     public synchronized CdnServers get() throws IOException {
         long now = clock.getAsLong();
@@ -31,11 +34,9 @@ public final class CdnRepository {
         if (!address.equals(cachedEndpoint)) { cached = null; lastFailure = null; retryAfter = 0; preferredImage = preferredThumb = null; cachedEndpoint = address; }
         if (cached != null && now < validUntil) return cached;
         if (lastFailure != null && now < retryAfter) throw lastFailure;
-        try (Response response = client.newCall(new Request.Builder().url(address)
+        try (Response response = client.get().newCall(new Request.Builder().url(address)
             .header("User-Agent", userAgent).header("Accept", "application/json").build()).execute()) {
-            if (!response.isSuccessful()) throw new IOException("CDN discovery failed (HTTP " + response.code() + ")");
-            if (response.body() == null) throw new IOException("CDN discovery returned no configuration");
-            CdnServers servers = CdnServers.parse(response.body().string());
+            CdnServers servers = CdnServers.parse(com.maxwai.nclientv3.api.ApiResponse.read(response));
             cached = servers; lastFetch = clock.getAsLong(); validUntil = lastFetch + 10 * 60_000L;
             lastFailure = null; retryAfter = 0;
             return servers;
@@ -62,5 +63,10 @@ public final class CdnRepository {
     }
     public synchronized void invalidate() {
         validUntil = Math.min(validUntil, lastFetch + 30_000);
+    }
+    public synchronized void verificationCompleted() {
+        validUntil = 0;
+        lastFailure = null;
+        retryAfter = 0;
     }
 }

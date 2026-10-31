@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">З’єднання</string>
+    <string name="connection_summary">Перевірте доступ до сайту та за потреби пройдіть перевірку.</string>
+    <string name="connection_check">Перевірити з’єднання</string>
+    <string name="connection_verify">Перевірка на сайті</string>
+    <string name="connection_checking">Перевіряємо загальнодоступний API та налаштування серверів зображень…</string>
+    <string name="connection_verified">API галерей і налаштування серверів зображень успішно отримано.</string>
+    <string name="connection_continue">Повернутися до перегляду</string>
+    <string name="connection_help">Для загальнодоступного перегляду обліковий запис не потрібен. Якщо сайт вимагає перевірку, пройдіть її тут і перевірте з’єднання знову.</string>
+    <string name="connection_site_only">У цьому вікні можна відкрити лише офіційний сайт через HTTPS.</string>
+    <string name="connection_web_error">Не вдалося завантажити сторінку перевірки. Перевірте з’єднання знову.</string>
+</resources>

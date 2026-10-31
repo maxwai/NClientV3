@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">Conexión</string>
+    <string name="connection_summary">Comprueba el acceso y completa la verificación del sitio si es necesario.</string>
+    <string name="connection_check">Comprobar conexión</string>
+    <string name="connection_verify">Verificación del sitio</string>
+    <string name="connection_checking">Comprobando la API pública y la configuración de servidores de imágenes…</string>
+    <string name="connection_verified">La API de galerías y la configuración de servidores respondieron correctamente.</string>
+    <string name="connection_continue">Volver a explorar</string>
+    <string name="connection_help">La navegación pública no requiere una cuenta. Si aparece una verificación, complétala aquí y comprueba la conexión de nuevo.</string>
+    <string name="connection_site_only">Esta ventana solo permite abrir el sitio oficial mediante HTTPS.</string>
+    <string name="connection_web_error">No se pudo cargar la verificación. Comprueba la conexión de nuevo.</string>
+</resources>

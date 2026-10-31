@@ -59,7 +59,7 @@ public class CustomCookieJar implements ClearableCookieJar {
                 cookiesToRemove.add(currentCookie);
                 it.remove();
 
-            } else {
+            } else if (currentCookie.matches(url)) {
                 validCookies.add(currentCookie);
             }
         }

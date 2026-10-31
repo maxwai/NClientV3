@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">連線</string>
+    <string name="connection_summary">檢查網站連線，並在需要時完成網站驗證。</string>
+    <string name="connection_check">檢查連線</string>
+    <string name="connection_verify">網站驗證</string>
+    <string name="connection_checking">正在檢查公開畫廊 API 與圖片伺服器設定…</string>
+    <string name="connection_verified">畫廊 API 與圖片伺服器設定均已成功回應。</string>
+    <string name="connection_continue">返回瀏覽</string>
+    <string name="connection_help">瀏覽公開內容不需要帳號。如果網站顯示驗證，請在此完成，然後再次檢查連線。</string>
+    <string name="connection_site_only">此驗證視窗僅允許開啟官方 HTTPS 網站。</string>
+    <string name="connection_web_error">無法載入驗證頁面。請再次檢查連線以查看詳情。</string>
+</resources>

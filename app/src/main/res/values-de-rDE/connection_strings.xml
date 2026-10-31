@@ -1,0 +1,12 @@
+<resources>
+    <string name="site_connection">Verbindung</string>
+    <string name="connection_summary">Website-Zugriff prüfen und bei Bedarf die Verifizierung abschließen.</string>
+    <string name="connection_check">Verbindung prüfen</string>
+    <string name="connection_verify">Website-Verifizierung</string>
+    <string name="connection_checking">Galerie-API und Bildserver-Konfiguration werden geprüft…</string>
+    <string name="connection_verified">Galerie-API und Bildserver-Konfiguration haben erfolgreich geantwortet.</string>
+    <string name="connection_continue">Zurück zum Lesen</string>
+    <string name="connection_help">Öffentliches Lesen benötigt kein Konto. Falls eine Verifizierung erscheint, schließe sie hier ab und prüfe die Verbindung erneut.</string>
+    <string name="connection_site_only">Hier kann nur die offizielle HTTPS-Website geöffnet werden.</string>
+    <string name="connection_web_error">Die Verifizierungsseite konnte nicht geladen werden. Prüfe die Verbindung erneut.</string>
+</resources>

@@ -306,7 +306,8 @@ public class MainActivity extends BaseActivity
             snackbar = Snackbar.make(masterLayout, text, Snackbar.LENGTH_SHORT);
         } else {
             snackbar = Snackbar.make(masterLayout, text, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(R.string.retry, listener);
+            snackbar.setAction(R.string.site_connection, listener);
+            snackbar.setTextMaxLines(4);
         }
         snackbar.show();
     }
@@ -810,11 +811,10 @@ public class MainActivity extends BaseActivity
         @Override
         public void onFailure(Exception e) {
             super.onFailure(e);
-            showError(e instanceof com.maxwai.nclientv3.api.ApiResponse.Failure
-                ? e.getMessage() : getString(R.string.unable_to_connect_to_the_site), v -> {
+            showError(com.maxwai.nclientv3.utility.ConnectionFailure.describe(e), v -> openSiteConnection(() -> {
                 inspector = inspector.cloneInspector(MainActivity.this, inspector.getResponse());
                 inspector.start();
-            });
+            }));
         }
 
         @Override
