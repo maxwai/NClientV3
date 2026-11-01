@@ -4,4 +4,5 @@
     <string name="reading_file_missing">儲存的資料夾中已找不到此下載的畫廊。</string>
     <string name="reading_clear_confirm">清除閱讀紀錄？已下載的畫廊會保留在裝置上。</string>
     <string name="image_cache_summary">已快取 %1$.0f MB · 上限 512 MB。舊快取圖片會自動刪除，已下載內容仍會保留。</string>
+    <string name="history_details">詳情</string>
 </resources>

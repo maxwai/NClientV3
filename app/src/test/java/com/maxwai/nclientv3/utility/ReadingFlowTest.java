@@ -96,4 +96,38 @@ public class ReadingFlowTest {
             assertTrue(ReadingHistoryStore.get(context).list().isEmpty()); // Opening details alone is not a reading visit.
         }
     }
+    @Test public void historyDetailsButtonOpensArtistMetadataWithoutChangingSavedPage() throws Exception {
+        ReadingHistoryStore.get(context).record(ReadingFixtures.gallery(context, 1, true), 6);
+        ActivityController<HistoryActivity> controller = Robolectric.buildActivity(HistoryActivity.class);
+        controller.get().setTheme(R.style.AppTheme);
+        try (ActivityController<HistoryActivity> running = controller.setup()) {
+            drain(); measure(running.get());
+            running.get().getRecycler().getChildAt(0).findViewById(R.id.history_details).performClick(); drain();
+            Intent launched = Shadows.shadowOf(running.get()).getNextStartedActivity();
+            assertEquals(GalleryActivity.class.getName(), launched.getComponent().getClassName());
+            Gallery restored = launched.getParcelableExtra(context.getPackageName()+".GALLERY");
+            assertTrue(restored.getTags().getAllTagsSet().stream().anyMatch(tag -> tag.getName().equals("Fixture Artist")));
+            assertFalse(launched.getBooleanExtra(context.getPackageName()+".ISLOCAL", true));
+            assertTrue(launched.getBooleanExtra(context.getPackageName()+".EXPAND_DETAILS", false));
+            assertEquals(6, ReadingHistoryStore.get(context).list().get(0).page);
+        }
+    }
+    @Test public void readerDetailsActionPreservesPositionAndReturnsToReader() throws Exception {
+        Intent intent = new Intent(context, ZoomActivity.class).putExtra(context.getPackageName()+".GALLERY", ReadingFixtures.gallery(context, 1))
+            .putExtra(context.getPackageName()+".PAGE", 6);
+        ActivityController<ZoomActivity> controller = Robolectric.buildActivity(ZoomActivity.class, intent);
+        controller.get().setTheme(R.style.AppTheme);
+        try (ActivityController<ZoomActivity> running = controller.setup()) {
+            measure(running.get()); drain();
+            android.widget.PopupMenu menu = new android.widget.PopupMenu(running.get(), running.get().findViewById(R.id.toolbar));
+            running.get().onCreateOptionsMenu(menu.getMenu());
+            assertTrue(running.get().onOptionsItemSelected(menu.getMenu().findItem(R.id.gallery_details)));
+            Intent launched = Shadows.shadowOf(running.get()).getNextStartedActivity();
+            assertEquals(GalleryActivity.class.getName(), launched.getComponent().getClassName());
+            assertFalse(running.get().isFinishing());
+            running.pause().resume(); drain();
+            assertEquals(5, running.get().getCurrentPage());
+            assertEquals(6, ReadingHistoryStore.get(context).list().get(0).page);
+        }
+    }
 }

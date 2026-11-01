@@ -54,39 +54,42 @@ public class HistoryActivity extends BaseActivity {
             });
         });
     }
-    private void open(Entry entry) {
+    private void open(Entry entry) { open(entry, false); }
+    private void open(Entry entry, boolean details) {
         if (!opening.add(entry.key)) return;
         adapter.notifyDataSetChanged();
         ReadingHistoryStore.IO.execute(() -> {
             try {
                 GenericGallery gallery = entry.restore(this);
-                if (gallery != null) launch(entry, gallery);
+                if (gallery != null) launch(entry, gallery, details);
                 else InspectorV3.galleryInspector(this, entry.id, new InspectorV3.DefaultInspectorResponse() {
                     @Override public void onSuccess(List<GenericGallery> galleries) {
-                        if (galleries.size() == 1) launch(entry, galleries.get(0)); else failed(entry, new java.io.IOException());
+                        if (galleries.size() == 1) launch(entry, galleries.get(0), details); else failed(entry, new java.io.IOException(), details);
                     }
-                    @Override public void onFailure(Exception error) { failed(entry, error); }
+                    @Override public void onFailure(Exception error) { failed(entry, error, details); }
                 }).start();
-            } catch (Exception error) { failed(entry, error); }
+            } catch (Exception error) { failed(entry, error, details); }
         });
     }
-    private void launch(Entry entry, GenericGallery gallery) {
+    private void launch(Entry entry, GenericGallery gallery, boolean details) {
         runOnUiThread(() -> {
             opening.remove(entry.key); adapter.notifyDataSetChanged();
             if (isFinishing() || isDestroyed()) return;
-            Intent intent = new Intent(this, ZoomActivity.class);
+            Intent intent = new Intent(this, details ? GalleryActivity.class : ZoomActivity.class);
             intent.putExtra(getPackageName() + ".GALLERY", gallery);
+            intent.putExtra(getPackageName() + ".ISLOCAL", gallery.isLocal());
+            intent.putExtra(getPackageName() + ".EXPAND_DETAILS", details);
             intent.putExtra(getPackageName() + ".PAGE", ReadingHistoryStore.clampPage(entry.page, gallery.getPageCount()));
             startActivity(intent);
         });
     }
-    private void failed(Entry entry, Exception error) {
+    private void failed(Entry entry, Exception error, boolean details) {
         runOnUiThread(() -> {
             opening.remove(entry.key);
             if (isFinishing() || isDestroyed()) return;
             adapter.notifyDataSetChanged();
             Snackbar.make(masterLayout, entry.localPath.isEmpty() ? ConnectionFailure.describe(error) : getString(R.string.reading_file_missing), Snackbar.LENGTH_LONG)
-                .setTextMaxLines(4).setAction(R.string.retry, v -> open(entry)).show();
+                .setTextMaxLines(4).setAction(R.string.retry, v -> open(entry, details)).show();
         });
     }
     private void remove(Entry entry) {
@@ -124,6 +127,7 @@ public class HistoryActivity extends BaseActivity {
             holder.itemView.findViewById(R.id.reading_opening).setVisibility(opening.contains(entry.key) ? View.VISIBLE : View.GONE);
             ImageDownloadUtility.loadImage(HistoryActivity.this, Uri.parse(entry.cover), holder.itemView.findViewById(R.id.image));
             holder.itemView.setOnClickListener(v -> open(entry));
+            holder.itemView.findViewById(R.id.history_details).setOnClickListener(v -> open(entry, true));
             holder.itemView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(HistoryActivity.this).setTitle(entry.title).setMessage(progress)
                     .setPositiveButton(R.string.resume, (d, w) -> open(entry))

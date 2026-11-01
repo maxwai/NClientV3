@@ -4,4 +4,5 @@
     <string name="reading_file_missing">Esta galería descargada ya no está disponible en su carpeta.</string>
     <string name="reading_clear_confirm">¿Borrar el historial de lectura? Las galerías descargadas permanecerán en el dispositivo.</string>
     <string name="image_cache_summary">%1$.0f MB en caché · Límite de 512 MB. Las imágenes antiguas se eliminan automáticamente; las descargas se conservan.</string>
+    <string name="history_details">Detalles</string>
 </resources>

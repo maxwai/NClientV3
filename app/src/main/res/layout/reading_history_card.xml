@@ -16,6 +16,12 @@
             <TextView android:id="@+id/reading_date" android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" android:textColor="?android:attr/textColorSecondary" android:textSize="12sp"/>
             <ProgressBar android:id="@+id/reading_opening" android:layout_width="24dp" android:layout_height="24dp" android:visibility="gone"/>
+            <com.google.android.material.button.MaterialButton android:id="@+id/history_details"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:minHeight="48dp" android:layout_marginTop="4dp"
+                android:text="@string/history_details" android:contentDescription="@string/gallery_details"
+                android:textAllCaps="false" android:paddingStart="0dp" android:paddingEnd="12dp"/>
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -64,6 +64,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public GalleryAdapter(GalleryActivity cont, GenericGallery gallery, int colCount) {
         this.context = cont;
         this.gallery = gallery;
+        detailsExpanded = cont.getIntent().getBooleanExtra(cont.getPackageName() + ".EXPAND_DETAILS", false);
         setColCount(colCount);
         try {
             if (gallery instanceof LocalGallery) {

@@ -4,4 +4,5 @@
     <string name="reading_file_missing">لم يعد هذا المعرض المحمّل متاحًا في مجلده المحفوظ.</string>
     <string name="reading_clear_confirm">مسح سجل القراءة؟ ستبقى المعارض المحمّلة على جهازك.</string>
     <string name="image_cache_summary">%1$.0f ميغابايت مخزنة مؤقتًا · الحد 512 ميغابايت. تُحذف الصور القديمة تلقائيًا وتبقى التنزيلات محفوظة.</string>
+    <string name="history_details">التفاصيل</string>
 </resources>

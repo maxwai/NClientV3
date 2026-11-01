@@ -4,4 +4,5 @@
     <string name="reading_file_missing">このダウンロード済みギャラリーは保存先のフォルダーにありません。</string>
     <string name="reading_clear_confirm">読書履歴を消去しますか？ダウンロード済みの作品は端末に残ります。</string>
     <string name="image_cache_summary">キャッシュ %1$.0f MB · 上限 512 MB。古いキャッシュ画像は自動削除されます。ダウンロード済みの作品は保持されます。</string>
+    <string name="history_details">詳細</string>
 </resources>

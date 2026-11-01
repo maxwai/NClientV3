@@ -23,6 +23,9 @@ final class ReadingFixtures {
         field.setAccessible(true); field.set(null, value);
     }
     static Gallery gallery(Context context, int id) throws Exception {
+        return gallery(context, id, false);
+    }
+    static Gallery gallery(Context context, int id, boolean withArtist) throws Exception {
         JSONArray pages = new JSONArray();
         for (int i = 1; i <= 8; i++) pages.put(new JSONObject()
             .put("path", "/galleries/fixture-" + id + "/opaque-" + i + ".webp?revision=2")
@@ -32,7 +35,9 @@ final class ReadingFixtures {
         JSONObject object = new JSONObject().put("id", id).put("media_id", Integer.toString(1000 + id))
             .put("title", new JSONObject().put("pretty", "After the Rain " + id).put("english", "After the Rain " + id).put("japanese", ""))
             .put("cover", image).put("thumbnail", image).put("num_pages", 8).put("pages", pages)
-            .put("tags", new JSONArray()).put("upload_date", 1).put("num_favorites", 0);
+            .put("tags", withArtist ? new JSONArray().put(new JSONObject().put("id", 90001).put("type", "artist")
+                .put("name", "Fixture Artist").put("slug", "fixture-artist").put("count", 1)) : new JSONArray())
+            .put("upload_date", 1).put("num_favorites", 0);
         return new Gallery(context, object.toString(), null, false);
     }
 }

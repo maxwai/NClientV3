@@ -4,4 +4,5 @@
     <string name="reading_file_missing">Esta galeria baixada não está mais disponível na pasta salva.</string>
     <string name="reading_clear_confirm">Limpar o histórico de leitura? As galerias baixadas continuarão no dispositivo.</string>
     <string name="image_cache_summary">%1$.0f MB em cache · Limite de 512 MB. Imagens antigas são removidas automaticamente; os downloads são mantidos.</string>
+    <string name="history_details">Detalhes</string>
 </resources>

@@ -4,4 +4,5 @@
     <string name="reading_file_missing">Ця завантажена галерея більше недоступна в збереженій папці.</string>
     <string name="reading_clear_confirm">Очистити історію читання? Завантажені галереї залишаться на пристрої.</string>
     <string name="image_cache_summary">У кеші %1$.0f МБ · Ліміт 512 МБ. Старі зображення кешу видаляються автоматично; завантаження зберігаються.</string>
+    <string name="history_details">Докладніше</string>
 </resources>

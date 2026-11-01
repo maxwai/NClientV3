@@ -1,5 +1,7 @@
 package com.maxwai.nclientv3;
 
+import android.content.Intent;
+
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -317,7 +319,15 @@ public class ZoomActivity extends GeneralActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.rotate) {
+        if (id == R.id.gallery_details) {
+            saveReadingProgress();
+            Intent details = new Intent(this, GalleryActivity.class);
+            details.putExtra(getPackageName() + ".GALLERY", gallery);
+            details.putExtra(getPackageName() + ".ISLOCAL", gallery.isLocal());
+            details.putExtra(getPackageName() + ".EXPAND_DETAILS", true);
+            startActivity(details);
+            return true;
+        } else if (id == R.id.rotate) {
             getActualFragment().rotate();
         } else if (id == R.id.save_page) {
             if (Global.hasStoragePermission(this)) {

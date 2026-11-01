@@ -4,4 +4,5 @@
     <string name="reading_file_missing">Questa galleria scaricata non è più disponibile nella sua cartella.</string>
     <string name="reading_clear_confirm">Cancellare la cronologia di lettura? Le gallerie scaricate rimarranno sul dispositivo.</string>
     <string name="image_cache_summary">%1$.0f MB in cache · Limite 512 MB. Le immagini meno recenti vengono rimosse automaticamente; i download rimangono salvati.</string>
+    <string name="history_details">Dettagli</string>
 </resources>

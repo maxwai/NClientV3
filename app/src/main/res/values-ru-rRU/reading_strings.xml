@@ -4,4 +4,5 @@
     <string name="reading_file_missing">Эта скачанная галерея больше недоступна в сохранённой папке.</string>
     <string name="reading_clear_confirm">Очистить историю чтения? Скачанные галереи останутся на устройстве.</string>
     <string name="image_cache_summary">В кэше %1$.0f МБ · Лимит 512 МБ. Старые изображения кэша удаляются автоматически; загрузки сохраняются.</string>
+    <string name="history_details">Подробнее</string>
 </resources>
