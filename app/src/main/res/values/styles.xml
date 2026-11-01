@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="surfaceRaised">@color/surface_raised</item><item name="surfaceOutline">@color/outline_soft</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="colorPrimary">@color/colorPrimary</item><item name="colorPrimaryContainer">@color/gold_container</item><item name="colorPrimaryVariant">@color/canvas</item>
         <item name="colorPrimarySurface">@color/surface</item><item name="colorOnPrimary">@color/on_gold</item>
@@ -31,7 +32,7 @@
     </style>
     <style name="ModernCardView" parent="CardView">
         <item name="cardCornerRadius">20dp</item><item name="cardElevation">0dp</item>
-        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
     </style>
     <style name="BlackCardView" parent="ModernCardView"><item name="cardBackgroundColor">#111411</item></style>
     <style name="ShapeAppearance.NClient.Small" parent="ShapeAppearance.MaterialComponents.SmallComponent"><item name="cornerSize">14dp</item></style>
@@ -39,12 +40,12 @@
     <style name="ShapeAppearance.NClient.Large" parent="ShapeAppearance.MaterialComponents.LargeComponent"><item name="cornerSize">28dp</item></style>
     <style name="TextAppearance.NClient.Display" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="fontFamily">serif</item><item name="android:fontFamily">serif</item>
-        <item name="android:textSize">36sp</item><item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">36sp</item><item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:letterSpacing">-0.025</item><item name="android:lineSpacingExtra">3dp</item>
     </style>
     <style name="TextAppearance.NClient.Title" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">serif</item><item name="android:fontFamily">serif</item>
-        <item name="android:textSize">24sp</item><item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">24sp</item><item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
     <style name="TextAppearance.NClient.Eyebrow" parent="TextAppearance.MaterialComponents.Overline">
         <item name="android:textSize">11sp</item><item name="android:letterSpacing">0.16</item>
@@ -52,15 +53,15 @@
     </style>
     <style name="TextAppearance.NClient.Body" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textSize">15sp</item><item name="android:lineSpacingExtra">4dp</item>
-        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
     <style name="TextAppearance.NClient.CardTitle" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:fontFamily">sans-serif-medium</item><item name="android:textSize">14sp</item>
-        <item name="android:lineSpacingExtra">3dp</item><item name="android:textColor">@color/text_primary</item>
+        <item name="android:lineSpacingExtra">3dp</item><item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
     <style name="Widget.NClient.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">?android:attr/colorBackground</item><item name="titleTextAppearance">@style/TextAppearance.NClient.CardTitle</item>
-        <item name="titleTextColor">@color/text_primary</item><item name="subtitleTextColor">@color/text_secondary</item>
+        <item name="titleTextColor">?android:attr/textColorPrimary</item><item name="subtitleTextColor">?android:attr/textColorSecondary</item>
         <item name="contentInsetStartWithNavigation">12dp</item>
     </style>
     <style name="Widget.NClient.Button" parent="Widget.MaterialComponents.Button">
@@ -70,18 +71,18 @@
         <item name="android:paddingLeft">20dp</item><item name="android:paddingRight">20dp</item>
     </style>
     <style name="Widget.NClient.Chip" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipBackgroundColor">@color/surface_raised</item><item name="chipStrokeColor">?attr/colorPrimaryContainer</item>
+        <item name="chipBackgroundColor">?attr/surfaceRaised</item><item name="chipStrokeColor">?attr/colorPrimaryContainer</item>
         <item name="chipStrokeWidth">1dp</item><item name="android:textColor">?attr/colorPrimary</item>
         <item name="chipMinHeight">36dp</item><item name="chipCornerRadius">12dp</item>
         <item name="ensureMinTouchTargetSize">true</item>
     </style>
     <style name="Widget.NClient.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">24dp</item><item name="cardElevation">0dp</item>
-        <item name="strokeWidth">1dp</item><item name="strokeColor">@color/outline_soft</item>
-        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="strokeWidth">1dp</item><item name="strokeColor">?attr/surfaceOutline</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
     </style>
     <style name="Widget.NClient.BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="android:background">@color/surface</item><item name="elevation">0dp</item>
+        <item name="android:background">?attr/colorSurface</item><item name="elevation">0dp</item>
         <item name="itemIconTint">@color/nav_tint</item><item name="itemTextColor">@color/nav_tint</item>
         <item name="itemRippleColor">?attr/colorPrimaryContainer</item><item name="itemHorizontalTranslationEnabled">false</item>
         <item name="itemTextAppearanceActive">@style/TextAppearance.NClient.Nav</item>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="reading_history_subtitle">Pick up exactly where you left off.</string>
+    <string name="reading_history_empty">Stories appear here as you read. Tap one to continue from your saved page.</string>
+    <string name="reading_file_missing">This downloaded gallery is no longer available in its saved folder.</string>
+    <string name="reading_clear_confirm">Clear reading history? Downloaded galleries will stay on your device.</string>
+    <string name="image_cache_summary">%1$.0f MB cached · 512 MB limit. Older cached images are removed automatically; downloads stay saved.</string>
+</resources>

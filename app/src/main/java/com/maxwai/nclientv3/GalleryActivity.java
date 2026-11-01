@@ -94,9 +94,6 @@ public class GalleryActivity extends BaseActivity {
             return;
         }
         if (gal != null) this.gallery = gal;
-        if (gallery.getType() != GenericGallery.Type.LOCAL) {
-            Queries.HistoryTable.addGallery(((Gallery) gallery).toSimpleGallery());
-        }
         LogUtility.d("" + gallery);
         if (Global.useRtl()) recycler.setRotationY(180);
         isLocal = getIntent().getBooleanExtra(getPackageName() + ".ISLOCAL", false);
@@ -162,7 +159,7 @@ public class GalleryActivity extends BaseActivity {
         adapter = new GalleryAdapter(this, gallery, Global.getColumnCount());
         recycler.setAdapter(adapter);
         lookup();
-        if (zoom > 0 && Global.getDownloadPolicy() != Global.DataUsageType.NONE) {
+        if (zoom > 0) {
             Intent intent = new Intent(this, ZoomActivity.class);
             intent.putExtra(getPackageName() + ".GALLERY", this.gallery);
             intent.putExtra(getPackageName() + ".DIRECTORY", adapter.getDirectory());
@@ -298,10 +295,6 @@ public class GalleryActivity extends BaseActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.read_gallery) {
-            if (!gallery.isLocal() && Global.getDownloadPolicy() == Global.DataUsageType.NONE) {
-                Toast.makeText(this, R.string.enable_network_to_continue, Toast.LENGTH_SHORT).show();
-                return true;
-            }
             int resume = Queries.ResumeTable.pageFromId(gallery.getId());
             int page = Math.max(1, Math.min(resume, gallery.getPageCount()));
             Intent reader = new Intent(this, ZoomActivity.class);

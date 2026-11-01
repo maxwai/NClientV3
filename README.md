@@ -4,6 +4,10 @@
 
 An unofficial NHentai Android Client. This is a fork of the original Project by [@Dar9586](https://github.com/Dar9586) found [here](https://github.com/Dar9586/NClientV2)
 
+**This fork's latest APK:** [Download and installation instructions](apks/README.md).
+The reading update adds automatic history/resume, image caching, and seven themes
+including Glass. [Details and previews](docs/reading-update.md).
+
 This app works for devices from API 26 (Android 8) and above.
 
 For Devices Running Android 8 (SDK 26 and 27) there is a separate APK with `pre28` in the name. Support for this Version of the app will be reduced.

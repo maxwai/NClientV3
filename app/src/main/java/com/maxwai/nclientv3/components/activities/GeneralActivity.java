@@ -21,6 +21,7 @@ import java.lang.ref.WeakReference;
 public abstract class GeneralActivity extends AppCompatActivity {
     private static WeakReference<GeneralActivity> lastActivity;
     private String appliedAccent;
+    private String appliedAppearance;
     private boolean isFastScrollerApplied = false;
     private CFTokenView tokenView = null;
     private Runnable connectionRetry;
@@ -95,12 +96,14 @@ public abstract class GeneralActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         Global.initActivity(this);
         appliedAccent = com.maxwai.nclientv3.utility.AccentTheme.selected(this);
+        appliedAppearance = com.maxwai.nclientv3.utility.AppearanceTheme.selected(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (appliedAccent != null && !appliedAccent.equals(com.maxwai.nclientv3.utility.AccentTheme.selected(this))) {
+        if (appliedAccent != null && (!appliedAccent.equals(com.maxwai.nclientv3.utility.AccentTheme.selected(this))
+            || !appliedAppearance.equals(com.maxwai.nclientv3.utility.AppearanceTheme.selected(this)))) {
             recreate();
             return;
         }
@@ -120,6 +123,7 @@ public abstract class GeneralActivity extends AppCompatActivity {
             theme.applyStyle(R.style.AppTheme_Black, true);
         }
         com.maxwai.nclientv3.utility.AccentTheme.apply(theme, com.maxwai.nclientv3.utility.AccentTheme.selected(this));
+        com.maxwai.nclientv3.utility.AppearanceTheme.apply(theme, com.maxwai.nclientv3.utility.AppearanceTheme.selected(this));
         return theme;
     }
 }

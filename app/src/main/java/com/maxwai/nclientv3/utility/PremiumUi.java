@@ -37,7 +37,7 @@ public final class PremiumUi {
         } else if (activity instanceof SettingsActivity) {
             heading = R.string.settings; subtitle = R.string.settings_subtitle; selected = R.id.nav_settings;
         } else if (activity instanceof HistoryActivity) {
-            heading = R.string.recent_reads; subtitle = R.string.library_subtitle; selected = R.id.nav_library;
+            heading = R.string.history; subtitle = R.string.reading_history_subtitle; selected = R.id.nav_history;
         } else if (activity instanceof BookmarkActivity) {
             heading = R.string.manage_bookmarks; subtitle = R.string.library_subtitle; selected = R.id.nav_library;
         }
@@ -57,6 +57,7 @@ public final class PremiumUi {
             navigation.setOnItemSelectedListener(item -> {
                 Class<? extends Activity> target;
                 if (item.getItemId() == R.id.nav_library) target = FavoriteActivity.class;
+                else if (item.getItemId() == R.id.nav_history) target = HistoryActivity.class;
                 else if (item.getItemId() == R.id.nav_downloads) target = LocalActivity.class;
                 else if (item.getItemId() == R.id.nav_settings) target = SettingsActivity.class;
                 else target = MainActivity.class;
@@ -78,12 +79,13 @@ public final class PremiumUi {
         SwipeRefreshLayout refresh = activity.findViewById(R.id.refresher);
         if (refresh != null) {
             refresh.setColorSchemeColors(AccentTheme.color(activity));
-            refresh.setProgressBackgroundColorSchemeResource(R.color.surface);
+            refresh.setProgressBackgroundColorSchemeColor(AppearanceTheme.color(activity, com.google.android.material.R.attr.colorSurface));
         }
         if (recycler != null) {
             recycler.setItemAnimator(null);
             if (primary) watchEmptyState(activity, recycler, refresh);
         }
+        AppearanceTheme.decorate(activity);
     }
 
     private static void watchEmptyState(Activity activity, RecyclerView recycler, SwipeRefreshLayout refresh) {

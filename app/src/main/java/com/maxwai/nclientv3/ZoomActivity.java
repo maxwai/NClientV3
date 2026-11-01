@@ -53,6 +53,8 @@ public class ZoomActivity extends GeneralActivity {
     private static final String SCROLL_TYPE_KEY = "zoomScrollType";
     private GenericGallery gallery;
     private int actualPage = 0;
+    private boolean readingReady;
+    private String readingKey;
     private boolean isHidden = false;
     private ViewPager2 mViewPager;
     private TextView pageManagerLabel, cornerPageViewer;
@@ -79,7 +81,14 @@ public class ZoomActivity extends GeneralActivity {
         } else {
             gallery = getIntent().getParcelableExtra(getPackageName() + ".GALLERY");
         }
-        final int page = Objects.requireNonNull(getIntent().getExtras()).getInt(getPackageName() + ".PAGE", 1) - 1;
+        if (gallery == null || gallery.getPageCount() < 1) { finish(); return; }
+        final int page = com.maxwai.nclientv3.settings.ReadingHistoryStore.clampPage(
+            savedInstanceState == null ? getIntent().getIntExtra(getPackageName() + ".PAGE", 1) : savedInstanceState.getInt("reading_page", 1), gallery.getPageCount()) - 1;
+        readingKey = com.maxwai.nclientv3.settings.ReadingHistoryStore.key(gallery);
+        com.maxwai.nclientv3.settings.ReadingHistoryStore.IO.execute(() -> {
+            try { com.maxwai.nclientv3.settings.ReadingHistoryStore.get(this).record(gallery, page + 1); }
+            catch (Exception error) { LogUtility.e("Unable to save reading history", error); }
+        });
         directory = gallery.getGalleryFolder();
         //toolbar setup
         toolbar = findViewById(R.id.toolbar);
@@ -103,7 +112,7 @@ public class ZoomActivity extends GeneralActivity {
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOrientation(preferences.getInt(SCROLL_TYPE_KEY, ScrollType.HORIZONTAL.ordinal()));
-        mViewPager.setOffscreenPageLimit(Global.getOffscreenLimit());
+        mViewPager.setOffscreenPageLimit(Math.max(1, Math.min(2, Global.getOffscreenLimit())));
         pageSwitcher = findViewById(R.id.page_switcher);
         pageManagerLabel = findViewById(R.id.pages);
         cornerPageViewer = findViewById(R.id.page_text);
@@ -127,6 +136,7 @@ public class ZoomActivity extends GeneralActivity {
             public void onPageSelected(int newPage) {
                 int oldPage = actualPage;
                 actualPage = newPage;
+                saveReadingProgress();
                 LogUtility.d("Page selected: " + newPage + " from page " + oldPage);
                 setPageText(newPage + 1);
                 seekBar.setProgress(newPage);
@@ -170,6 +180,24 @@ public class ZoomActivity extends GeneralActivity {
         changePage(page);
         setPageText(page + 1);
         seekBar.setProgress(page);
+        readingReady = true;
+        saveReadingProgress();
+    }
+
+    private void saveReadingProgress() {
+        if (!readingReady || gallery == null) return;
+        int page = getCurrentPage() + 1;
+        com.maxwai.nclientv3.settings.ReadingHistoryStore.IO.execute(() -> {
+            try {
+                com.maxwai.nclientv3.settings.ReadingHistoryStore.get(this).updatePage(readingKey, page);
+                if (gallery.getId() > 0) Queries.ResumeTable.insert(gallery.getId(), page);
+            } catch (Exception error) { LogUtility.e("Unable to save reading progress", error); }
+        });
+    }
+    @Override protected void onPause() { saveReadingProgress(); super.onPause(); }
+    @Override protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle state) {
+        state.putInt("reading_page", getCurrentPage() + 1);
+        saveReadingProgress(); super.onSaveInstanceState(state);
     }
 
     private void setUserInput(boolean enabled) {
@@ -363,7 +391,7 @@ public class ZoomActivity extends GeneralActivity {
             if (i >= newPage - offScreenLimit && i <= newPage + offScreenLimit) continue;
             fragment = getActualFragment(i);
             if (fragment == null) continue;
-            fragment.cancelRequest();
+            fragment.releaseImage();
         }
 
     }

@@ -1,6 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/nav_explore" android:icon="@drawable/ic_explore" android:title="@string/nav_explore"/>
-    <item android:id="@+id/nav_library" android:icon="@drawable/ic_bookmark_border" android:title="@string/nav_library"/>
-    <item android:id="@+id/nav_downloads" android:icon="@drawable/ic_file" android:title="@string/nav_downloads"/>
-    <item android:id="@+id/nav_settings" android:icon="@drawable/ic_settings" android:title="@string/settings"/>
+    <item android:id="@+id/nav_history" android:orderInCategory="2" android:icon="@drawable/ic_history" android:title="@string/history"/>
+    <item android:id="@+id/nav_explore" android:orderInCategory="0" android:icon="@drawable/ic_explore" android:title="@string/nav_explore"/>
+    <item android:id="@+id/nav_library" android:orderInCategory="1" android:icon="@drawable/ic_bookmark_border" android:title="@string/nav_library"/>
+    <item android:id="@+id/nav_downloads" android:orderInCategory="3" android:icon="@drawable/ic_file" android:title="@string/nav_downloads"/>
+    <item android:id="@+id/nav_settings" android:orderInCategory="4" android:icon="@drawable/ic_settings" android:title="@string/settings"/>
 </menu>

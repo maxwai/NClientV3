@@ -1,0 +1,34 @@
+<resources>
+    <attr name="surfaceRaised" format="color"/>
+    <attr name="surfaceOutline" format="color"/>
+    <string-array name="appearance_values" translatable="false"><item>dark</item><item>midnight</item><item>forest</item><item>amethyst</item><item>light</item><item>black</item><item>glass</item></string-array>
+    <string-array name="appearance_labels" translatable="false"><item>Warm</item><item>Midnight</item><item>Forest</item><item>Amethyst</item><item>Paper</item><item>OLED Black</item><item>Glass</item></string-array>
+    <style name="Appearance.Midnight" parent="">
+        <item name="android:colorBackground">#101827</item><item name="android:windowBackground">#101827</item>
+        <item name="android:statusBarColor">#101827</item><item name="android:navigationBarColor">#101827</item>
+        <item name="colorSurface">#1A2638</item><item name="surfaceRaised">#243349</item><item name="surfaceOutline">#38485F</item>
+    </style>
+    <style name="Appearance.Forest" parent="">
+        <item name="android:colorBackground">#101D18</item><item name="android:windowBackground">#101D18</item>
+        <item name="android:statusBarColor">#101D18</item><item name="android:navigationBarColor">#101D18</item>
+        <item name="colorSurface">#1B2B23</item><item name="surfaceRaised">#273A2F</item><item name="surfaceOutline">#40584A</item>
+    </style>
+    <style name="Appearance.Amethyst" parent="">
+        <item name="android:colorBackground">#1B1626</item><item name="android:windowBackground">#1B1626</item>
+        <item name="android:statusBarColor">#1B1626</item><item name="android:navigationBarColor">#1B1626</item>
+        <item name="colorSurface">#2A2238</item><item name="surfaceRaised">#382D48</item><item name="surfaceOutline">#51445F</item>
+    </style>
+    <style name="Appearance.Oled" parent="">
+        <item name="android:colorBackground">#000000</item><item name="android:windowBackground">#000000</item>
+        <item name="android:statusBarColor">#000000</item><item name="android:navigationBarColor">#000000</item>
+        <item name="colorSurface">#101010</item><item name="surfaceRaised">#1C1C1C</item><item name="surfaceOutline">#333333</item>
+    </style>
+    <style name="Appearance.Glass" parent="Appearance.Midnight">
+        <item name="colorSurface">#B3213045</item><item name="surfaceRaised">#BB32435D</item><item name="surfaceOutline">#537C91AF</item>
+        <item name="cardViewStyle">@style/GlassCardView</item>
+    </style>
+    <style name="GlassCardView" parent="ModernCardView">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+</resources>

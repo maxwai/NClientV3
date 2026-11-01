@@ -16,7 +16,7 @@ val keystoreProperties = Properties().apply {
 val majorVersion = 4
 val minorVersion = 2
 val patchVersion = 7
-val buildVersion = 7
+val buildVersion = 8
 val version = "${majorVersion}.${minorVersion}.${patchVersion}"
 
 android {
@@ -64,7 +64,7 @@ android {
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug7"
+            versionNameSuffix = "-debug8"
             resValue("string", "app_name", "NClientV3 Debug")
         }
         create("RelWithDebInfo") {
@@ -158,6 +158,7 @@ androidComponents {
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
+    testImplementation("com.squareup.okhttp3:mockwebserver:5.4.0")
     testImplementation("org.json:json:20250517")
     testImplementation("org.robolectric:robolectric:4.16.1")
 // Android

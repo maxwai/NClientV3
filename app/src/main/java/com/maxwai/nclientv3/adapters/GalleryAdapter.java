@@ -359,12 +359,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     private void startGallery(int page) {
-        if (!gallery.isLocal() && Global.getDownloadPolicy() == Global.DataUsageType.NONE) {
-            context.runOnUiThread(() ->
-                Toast.makeText(context, R.string.enable_network_to_continue, Toast.LENGTH_SHORT).show()
-            );
-            return;
-        }
         Intent intent = new Intent(context, ZoomActivity.class);
         intent.putExtra(context.getPackageName() + ".GALLERY", gallery);
         intent.putExtra(context.getPackageName() + ".DIRECTORY", directory);

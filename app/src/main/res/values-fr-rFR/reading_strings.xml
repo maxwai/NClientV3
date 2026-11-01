@@ -1,0 +1,7 @@
+<resources>
+    <string name="reading_history_subtitle">Reprenez là où vous vous êtes arrêté.</string>
+    <string name="reading_history_empty">Vos lectures apparaissent ici. Touchez une histoire pour reprendre à la page enregistrée.</string>
+    <string name="reading_file_missing">Cette galerie téléchargée n’est plus disponible dans son dossier.</string>
+    <string name="reading_clear_confirm">Effacer l’historique de lecture ? Les galeries téléchargées resteront sur votre appareil.</string>
+    <string name="image_cache_summary">%1$.0f Mo en cache · Limite de 512 Mo. Les anciennes images en cache sont supprimées automatiquement ; les téléchargements sont conservés.</string>
+</resources>

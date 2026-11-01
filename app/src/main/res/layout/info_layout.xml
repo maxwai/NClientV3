@@ -3,5 +3,5 @@
         <TextView android:id="@+id/page_count" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textAppearance="@style/TextAppearance.NClient.Body"/>
         <TextView android:id="@+id/favorite_count" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="end" android:textAppearance="@style/TextAppearance.NClient.Body"/>
     </LinearLayout>
-    <TextView android:id="@+id/upload_date" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" android:textColor="@color/text_secondary"/>
+    <TextView android:id="@+id/upload_date" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" android:textColor="?android:attr/textColorSecondary"/>
 </LinearLayout>

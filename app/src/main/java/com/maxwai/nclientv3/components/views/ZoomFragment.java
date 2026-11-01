@@ -1,6 +1,5 @@
 package com.maxwai.nclientv3.components.views;
 
-import static com.bumptech.glide.request.target.Target.SIZE_ORIGINAL;
 
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -285,16 +284,19 @@ public class ZoomFragment extends Fragment {
         RequestManager glide = GlideX.with(photoView);
         if (glide == null) return null;
         if (pageFile != null && pageFile.isFile() && pageFile.length() > 0) {
-            request = glide.load(pageFile);
+            request = glide.load(pageFile).diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE);
             LogUtility.d("Requested file glide: " + pageFile);
         } else {
             if (url == null) request = glide.load(R.mipmap.ic_launcher);
             else {
                 LogUtility.d("Requested url glide: " + url);
-                request = glide.load(url);
+                request = glide.load(url).apply(com.maxwai.nclientv3.utility.ImageCache.options(url))
+                    .onlyRetrieveFromCache(Global.getDownloadPolicy() == Global.DataUsageType.NONE);
             }
         }
-        return request.override(SIZE_ORIGINAL);
+        android.util.DisplayMetrics display = getResources().getDisplayMetrics();
+        return request.override(Math.min(2048, Math.max(1, display.widthPixels * 2)),
+            Math.min(4096, Math.max(1, display.heightPixels * 2)));
     }
 
     private void openImageInBrowser() {
@@ -356,6 +358,12 @@ public class ZoomFragment extends Fragment {
             RequestManager manager = GlideX.with(photoView);
             if (manager != null) manager.clear(target);
         }
+    }
+
+    public void releaseImage() {
+        completedDownload = false;
+        cancelRequest();
+        if (photoView != null) photoView.setImageDrawable(null);
     }
 
     private void updateDegree() {

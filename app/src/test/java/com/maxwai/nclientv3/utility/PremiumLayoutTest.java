@@ -103,7 +103,7 @@ public class PremiumLayoutTest {
             ImageView image = card.findViewById(R.id.image); TextView title = card.findViewById(R.id.title);
             assertTrue(image.getWidth() >= 144);
             assertTrue(title.getTop() >= image.getBottom() + 8);
-            assertEquals(4, ((BottomNavigationView) activity.findViewById(R.id.bottom_navigation)).getMenu().size());
+            assertEquals(5, ((BottomNavigationView) activity.findViewById(R.id.bottom_navigation)).getMenu().size());
             assertTrue(activity.findViewById(R.id.bottom_navigation).getBottom() <= 892);
             screenshot(root, "01-explore-dark");
         }

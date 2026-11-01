@@ -264,7 +264,7 @@ public class Global {
         infiniteScrollMain = shared.getBoolean(context.getString(R.string.key_infinite_scroll_main), false);
         maxId = shared.getInt(context.getString(R.string.key_max_id), 300000);
         offscreenLimit = Math.max(1, shared.getInt(context.getString(R.string.preference_key_offscreen_limit), 2));
-        maxHistory = shared.getInt(context.getString(R.string.preference_key_max_history_size), 2);
+        maxHistory = shared.getInt(context.getString(R.string.preference_key_max_history_size), 100);
         defaultZoom = shared.getInt(context.getString(R.string.preference_key_default_zoom), 100);
         colPortMain = shared.getInt(context.getString(R.string.key_column_port_main), 2);
         colLandMain = shared.getInt(context.getString(R.string.key_column_land_main), 4);

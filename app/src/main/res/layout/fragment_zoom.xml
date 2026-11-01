@@ -11,7 +11,7 @@
         android:id="@+id/reader_state" android:layout_width="0dp" android:layout_height="wrap_content"
         android:layout_margin="24dp" android:clickable="true" android:focusable="false"
         app:cardCornerRadius="24dp" app:cardElevation="0dp" app:strokeWidth="1dp"
-        app:strokeColor="@color/outline_soft"
+        app:strokeColor="?attr/surfaceOutline"
         app:layout_constraintWidth_max="420dp" app:layout_constrainedHeight="true"
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent">

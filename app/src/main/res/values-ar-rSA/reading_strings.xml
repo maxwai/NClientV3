@@ -1,0 +1,7 @@
+<resources>
+    <string name="reading_history_subtitle">تابع من حيث توقفت.</string>
+    <string name="reading_history_empty">تظهر هنا القصص التي تقرؤها. اضغط على قصة للمتابعة من الصفحة المحفوظة.</string>
+    <string name="reading_file_missing">لم يعد هذا المعرض المحمّل متاحًا في مجلده المحفوظ.</string>
+    <string name="reading_clear_confirm">مسح سجل القراءة؟ ستبقى المعارض المحمّلة على جهازك.</string>
+    <string name="image_cache_summary">%1$.0f ميغابايت مخزنة مؤقتًا · الحد 512 ميغابايت. تُحذف الصور القديمة تلقائيًا وتبقى التنزيلات محفوظة.</string>
+</resources>

@@ -678,6 +678,8 @@ public class Queries {
             db.delete(TABLE_NAME, null, null);
         }
 
+        public static void remove(int id) { db.delete(TABLE_NAME, ID + "=?", new String[]{Integer.toString(id)}); }
+
         private static void cleanHistory() {
             //noinspection StatementWithEmptyBody
             while (db.delete(TABLE_NAME, "(SELECT COUNT(*) FROM " + TABLE_NAME + ")>? AND " + TIME + "=(SELECT MIN(" + TIME + ") FROM " + TABLE_NAME + ")", new String[]{"" + Global.getMaxHistory()}) == 1)

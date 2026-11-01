@@ -31,14 +31,14 @@ public class ImageDownloadUtility {
         if (Global.getDownloadPolicy() == Global.DataUsageType.NONE) return;
         RequestManager manager = GlideX.with(context);
         LogUtility.d("Requested url glide: " + url);
-        if (manager != null) manager.load(url).preload();
+        if (manager != null) manager.load(url).apply(ImageCache.options(url)).preload();
     }
 
     public static void loadImageOp(Context context, ImageView view, File file, int angle) {
         RequestManager glide = GlideX.with(context);
         if (glide == null) return;
         Drawable logo = Global.getLogo(context.getResources());
-        glide.load(file).transform(new Rotate(angle)).error(logo).placeholder(logo).into(view);
+        glide.load(file).diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE).transform(new Rotate(angle)).error(logo).placeholder(logo).into(view);
         LogUtility.d("Requested file glide: " + file);
     }
 
@@ -56,14 +56,11 @@ public class ImageDownloadUtility {
     }
 
     private static void loadImageOp(Context context, ImageView view, @Nullable Gallery gallery, Supplier<Uri> url, int angle, boolean priority) {
-        if (Global.getDownloadPolicy() == Global.DataUsageType.NONE) {
-            loadLogo(view);
-            return;
-        }
         RequestManager glide = GlideX.with(view);
         if (glide == null) return;
         Uri imageUrl = url.get();
-        RequestBuilder<Drawable> request = glide.load(imageUrl);
+        RequestBuilder<Drawable> request = glide.load(imageUrl).apply(ImageCache.options(imageUrl))
+            .onlyRetrieveFromCache(Global.getDownloadPolicy() == Global.DataUsageType.NONE && ImageCache.isRemote(imageUrl));
         if (angle != 0) request = request.transform(new Rotate(angle));
         android.view.ViewGroup parent = view.getParent() instanceof android.view.ViewGroup
             ? (android.view.ViewGroup) view.getParent() : null;

@@ -18,8 +18,8 @@
 
         <ListPreference android:layout="@layout/preference_premium"
             android:defaultValue="dark"
-            android:entries="@array/theme"
-            android:entryValues="@array/theme_data"
+            android:entries="@array/appearance_labels"
+            android:entryValues="@array/appearance_values"
             android:key="@string/preference_key_theme_select"
             app:useSimpleSummaryProvider="true"
             android:title="@string/change_theme"
@@ -90,9 +90,9 @@
             android:title="@string/title_change_page_buttons"
             app:iconSpaceReserved="false" />
         <SeekBarPreference
-            android:defaultValue="25"
+            android:defaultValue="100"
             android:key="@string/preference_key_max_history_size"
-            android:max="100"
+            android:max="200"
             android:summary="@string/history_size_summary"
             android:title="@string/history_size"
             app:iconSpaceReserved="false"

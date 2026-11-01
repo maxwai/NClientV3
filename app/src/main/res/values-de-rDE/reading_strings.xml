@@ -1,0 +1,7 @@
+<resources>
+    <string name="reading_history_subtitle">Lies dort weiter, wo du aufgehört hast.</string>
+    <string name="reading_history_empty">Hier erscheinen gelesene Geschichten. Tippe darauf, um auf der gespeicherten Seite weiterzulesen.</string>
+    <string name="reading_file_missing">Diese heruntergeladene Galerie ist im gespeicherten Ordner nicht mehr verfügbar.</string>
+    <string name="reading_clear_confirm">Leseverlauf löschen? Heruntergeladene Galerien bleiben auf deinem Gerät.</string>
+    <string name="image_cache_summary">%1$.0f MB im Cache · Limit 512 MB. Ältere Cache-Bilder werden automatisch entfernt; Downloads bleiben gespeichert.</string>
+</resources>

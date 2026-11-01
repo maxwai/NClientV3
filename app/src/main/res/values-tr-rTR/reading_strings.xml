@@ -1,0 +1,7 @@
+<resources>
+    <string name="reading_history_subtitle">Kaldığınız yerden devam edin.</string>
+    <string name="reading_history_empty">Okuduğunuz hikâyeler burada görünür. Kayıtlı sayfadan devam etmek için birine dokunun.</string>
+    <string name="reading_file_missing">İndirilen bu galeri artık kayıtlı klasörde bulunmuyor.</string>
+    <string name="reading_clear_confirm">Okuma geçmişi temizlensin mi? İndirilen galeriler cihazınızda kalacak.</string>
+    <string name="image_cache_summary">%1$.0f MB önbellek · 512 MB sınır. Eski önbellek görselleri otomatik silinir; indirilenler korunur.</string>
+</resources>

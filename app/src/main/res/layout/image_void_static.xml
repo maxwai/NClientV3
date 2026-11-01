@@ -43,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="@id/image" />
         <TextView
             android:id="@+id/page_number"
-            android:padding="10dp" android:textColor="@color/text_secondary" android:textSize="12sp"
+            android:padding="10dp" android:textColor="?android:attr/textColorSecondary" android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"

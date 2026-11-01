@@ -1,0 +1,7 @@
+<resources>
+    <string name="reading_history_subtitle">Продовжуйте з того місця, де зупинилися.</string>
+    <string name="reading_history_empty">Тут з’являються ваші історії. Натисніть історію, щоб відкрити збережену сторінку.</string>
+    <string name="reading_file_missing">Ця завантажена галерея більше недоступна в збереженій папці.</string>
+    <string name="reading_clear_confirm">Очистити історію читання? Завантажені галереї залишаться на пристрої.</string>
+    <string name="image_cache_summary">У кеші %1$.0f МБ · Ліміт 512 МБ. Старі зображення кешу видаляються автоматично; завантаження зберігаються.</string>
+</resources>

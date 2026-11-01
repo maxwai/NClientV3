@@ -1,0 +1,7 @@
+<resources>
+    <string name="reading_history_subtitle">从上次停下的地方继续阅读。</string>
+    <string name="reading_history_empty">阅读过的作品会显示在这里。点击作品即可从保存的页面继续。</string>
+    <string name="reading_file_missing">保存的文件夹中已找不到此下载的画廊。</string>
+    <string name="reading_clear_confirm">清除阅读历史？已下载的画廊会保留在设备上。</string>
+    <string name="image_cache_summary">已缓存 %1$.0f MB · 上限 512 MB。旧缓存图片会自动删除，已下载内容仍会保留。</string>
+</resources>

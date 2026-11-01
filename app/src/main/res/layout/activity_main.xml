@@ -20,7 +20,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         android:background="?attr/colorSurface"
-        app:itemIconTint="?attr/colorPrimary" app:itemTextColor="@color/text_primary" app:itemVerticalPadding="12dp" app:itemHorizontalPadding="24dp"
+        app:itemIconTint="?attr/colorPrimary" app:itemTextColor="?android:attr/textColorPrimary" app:itemVerticalPadding="12dp" app:itemHorizontalPadding="24dp"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
 

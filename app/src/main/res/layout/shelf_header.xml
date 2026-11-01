@@ -7,8 +7,8 @@
     <LinearLayout android:id="@+id/browse_tools" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
         <com.google.android.material.button.MaterialButton android:id="@+id/home_search" style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginTop="24dp" android:gravity="start|center_vertical" android:insetTop="0dp" android:insetBottom="0dp"
-            android:text="@string/search_hint_modern" android:textColor="@color/text_secondary" android:textAllCaps="false"
-            app:icon="@drawable/ic_search" app:iconTint="?attr/colorPrimary" app:strokeColor="@color/outline_soft" app:backgroundTint="@color/surface" app:cornerRadius="18dp"/>
+            android:text="@string/search_hint_modern" android:textColor="?android:attr/textColorSecondary" android:textAllCaps="false"
+            app:icon="@drawable/ic_search" app:iconTint="?attr/colorPrimary" app:strokeColor="?attr/surfaceOutline" app:backgroundTint="?attr/colorSurface" app:cornerRadius="18dp"/>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="horizontal">
             <com.google.android.material.button.MaterialButton android:id="@+id/home_sort" style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp" android:layout_weight="1" android:minWidth="0dp" android:textSize="13sp" android:paddingStart="8dp" android:paddingEnd="8dp" android:layout_height="48dp" android:text="@string/sort_recent" android:textAllCaps="false" android:insetTop="0dp" android:insetBottom="0dp" app:icon="@drawable/ic_sort"/>

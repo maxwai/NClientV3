@@ -250,29 +250,23 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
             Preference themeSelect = Objects.requireNonNull(findPreference(getString(R.string.preference_key_theme_select)));
             themeSelect.setOnPreferenceChangeListener((preference, newValue) -> {
                 String newTheme = (String) newValue;
-                String[] availableThemes = getResources().getStringArray(R.array.theme_data);
-                assert availableThemes.length == 3;
+                String[] availableThemes = getResources().getStringArray(R.array.appearance_values);
                 if (Arrays.stream(availableThemes).noneMatch(newTheme::equals)) {
                     return false;
                 }
                 act.getSharedPreferences("Settings", 0)
                     .edit()
-                    .putBoolean(getString(R.string.preference_key_black_theme), newTheme.equals(availableThemes[2])) // black
+                    .putString(getString(R.string.preference_key_theme_select), newTheme)
+                    .putBoolean(getString(R.string.preference_key_black_theme), newTheme.equals("black"))
                     .apply();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    int theme;
-                    if (newTheme.equals(availableThemes[0])) { // light
-                        theme = UiModeManager.MODE_NIGHT_NO;
-                    } else if (newTheme.equals(availableThemes[1]) || newTheme.equals(availableThemes[2])) { // dark / black
-                        theme = UiModeManager.MODE_NIGHT_YES;
-                    } else {
-                        return false;
-                    }
+                    int theme = newTheme.equals("light") ? UiModeManager.MODE_NIGHT_NO : UiModeManager.MODE_NIGHT_YES;
                     UiModeManager uim = (UiModeManager) act.getSystemService(Context.UI_MODE_SERVICE);
                     uim.setApplicationNightMode(theme);
                 } else {
                     CrashApplication.setDarkLightTheme(newTheme, act);
                 }
+                act.recreate();
                 return true;
             });
         }
@@ -343,18 +337,20 @@ public class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         }
         {
             //clear cache if pressed
-            double cacheSize = Global.recursiveSize(act.getCacheDir()) / ((double) (1 << 20));
+            double cacheSize = Global.recursiveSize(com.maxwai.nclientv3.utility.ImageCache.directory(act)) / ((double) (1 << 20));
             Preference cache = Objects.requireNonNull(findPreference(getString(R.string.preference_key_cache)));
-            cache.setSummary(getString(R.string.cache_size_formatted, cacheSize));
+            cache.setSummary(getString(R.string.image_cache_summary, cacheSize));
             cache.setOnPreferenceClickListener(preference -> {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(act);
                 builder.setTitle(R.string.clear_cache);
                 builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-                    Global.recursiveDelete(act.getCacheDir());
-                    act.runOnUiThread(() -> {
+                    cache.setEnabled(false);
+                    com.maxwai.nclientv3.utility.ImageCache.clear(act, () -> {
+                        if (act.isFinishing() || act.isDestroyed()) return;
+                        cache.setEnabled(true);
                         Toast.makeText(act, act.getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show();
-                        double cSize = Global.recursiveSize(act.getCacheDir()) / ((double) (2 << 20));
-                        cache.setSummary(getString(R.string.cache_size_formatted, cSize));
+                        double cSize = Global.recursiveSize(com.maxwai.nclientv3.utility.ImageCache.directory(act)) / ((double) (1 << 20));
+                        cache.setSummary(getString(R.string.image_cache_summary, cSize));
                     });
 
                 }).setNegativeButton(R.string.no, null).setCancelable(true);
