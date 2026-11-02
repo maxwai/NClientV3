@@ -44,6 +44,14 @@ public final class PremiumUi {
         TextView title = activity.findViewById(R.id.screen_heading), body = activity.findViewById(R.id.screen_subtitle);
         if (title != null) title.setText(heading);
         if (body != null) body.setText(subtitle);
+        android.widget.Button source = activity.findViewById(R.id.reading_source);
+        if (source != null) {
+            source.setVisibility(primary ? View.VISIBLE : View.GONE);
+            boolean local = activity instanceof LocalActivity && ReadingSource.downloadedOnly(activity);
+            source.setText(local ? R.string.browse_online : R.string.read_downloads);
+            source.setOnClickListener(v -> { if (local) ReadingSource.online(activity); else ReadingSource.downloads(activity); });
+            if (local && body != null) body.setText(R.string.downloaded_reading_summary);
+        }
         View header = activity.findViewById(R.id.shelf_header);
         if (header != null) header.setVisibility(primary && (!browse || rootBrowse)
             && activity.getResources().getConfiguration().screenHeightDp >= 500 ? View.VISIBLE : View.GONE);
@@ -62,6 +70,7 @@ public final class PremiumUi {
                 else if (item.getItemId() == R.id.nav_settings) target = SettingsActivity.class;
                 else target = MainActivity.class;
                 if (activity.getClass() == target) return true;
+                if (target == MainActivity.class) ReadingSource.remember(activity, false);
                 if (target == LocalActivity.class && !com.maxwai.nclientv3.settings.Global.hasStoragePermission(activity)) {
                     activity.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         android.Manifest.permission.READ_EXTERNAL_STORAGE}, DOWNLOAD_PERMISSION);

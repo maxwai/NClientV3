@@ -76,6 +76,11 @@ public abstract class GeneralActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int code, @androidx.annotation.NonNull String[] permissions,
                                           @androidx.annotation.NonNull int[] results) {
         super.onRequestPermissionsResult(code, permissions, results);
+        if (code == com.maxwai.nclientv3.utility.ReadingSource.PERMISSION && results.length > 0
+            && results[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            Global.initStorage(this);
+            com.maxwai.nclientv3.utility.ReadingSource.downloads(this);
+        }
         if (code == com.maxwai.nclientv3.utility.PremiumUi.DOWNLOAD_PERMISSION && results.length > 0
             && results[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
             Global.initStorage(this);

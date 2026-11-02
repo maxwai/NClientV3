@@ -146,7 +146,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
                 LogUtility.d(l);
                 sortElements();
             }
-            context.runOnUiThread(() -> notifyItemRangeChanged(0, getItemCount()));
+            context.runOnUiThread(() -> notifyDataSetChanged());
         }
 
         @Override
@@ -156,7 +156,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
 
         @Override
         public void triggerPauseDownload(GalleryDownloaderV2 downloader) {
-            context.runOnUiThread(() -> notifyItemChanged(filter.indexOf(downloader)));
+            updatePosition(downloader);
         }
     };
     private int colCount;
@@ -191,7 +191,7 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
             dataset.removeAll(gallery);
             dataset.addAll(gallery);
             sortElements();
-            context.runOnUiThread(() -> notifyItemRangeChanged(0, getItemCount()));
+            context.runOnUiThread(() -> notifyDataSetChanged());
         }
     }
 
@@ -213,6 +213,10 @@ public class LocalAdapter extends MultichoiceAdapter<Object, LocalAdapter.ViewHo
         }
 
         for (GalleryDownloaderV2 gall : galleryDownloaders) {
+            if (gall != null && com.maxwai.nclientv3.utility.ReadingSource.downloadedOnly(context)) {
+                hashMap.remove(gall.getTruePathTitle());
+                continue;
+            }
             if (gall != null && gall.getPathTitle().toLowerCase(Locale.US).contains(lastQuery))
                 hashMap.put(gall.getTruePathTitle(), gall);
         }

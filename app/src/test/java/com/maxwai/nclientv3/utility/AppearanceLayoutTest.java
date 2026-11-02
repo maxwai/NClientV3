@@ -27,6 +27,7 @@ public class AppearanceLayoutTest {
         ((TextView) activity.findViewById(R.id.screen_subtitle)).setText(R.string.reading_history_subtitle);
         ((androidx.appcompat.widget.Toolbar) activity.findViewById(R.id.toolbar)).setTitle(R.string.ui_brand);
         activity.findViewById(R.id.browse_tools).setVisibility(View.GONE);
+        activity.findViewById(R.id.reading_source).setVisibility(View.VISIBLE);
         ((BottomNavigationView) activity.findViewById(R.id.bottom_navigation)).setSelectedItemId(R.id.nav_history);
         RecyclerView list = activity.findViewById(R.id.recycler); list.setLayoutManager(new LinearLayoutManager(activity));
         list.setAdapter(new RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -1,0 +1,11 @@
+<resources>
+    <string name="history_search_hint">البحث بالعنوان أو الفنان أو المعرّف</string>
+    <string name="history_filter_title">تصفية السجل</string>
+    <string name="history_no_matches">لا توجد نتائج. غيّر البحث أو التصفية.</string>
+    <string name="history_all">كل القصص</string>
+    <string name="history_progress">قيد القراءة</string>
+    <string name="history_finished">تم الوصول إلى آخر صفحة</string>
+    <string name="read_downloads">قراءة القصص المحمّلة</string>
+    <string name="browse_online">تصفح عبر الإنترنت</string>
+    <string name="downloaded_reading_summary">القصص المحمّلة فقط. جاهزة للقراءة دون اتصال.</string>
+</resources>

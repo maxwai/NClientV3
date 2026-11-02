@@ -1,0 +1,11 @@
+<resources>
+    <string name="history_search_hint">タイトル・作者・IDで検索</string>
+    <string name="history_filter_title">履歴を絞り込む</string>
+    <string name="history_no_matches">一致する作品がありません。検索や条件を変更してください。</string>
+    <string name="history_all">すべての作品</string>
+    <string name="history_progress">読書中</string>
+    <string name="history_finished">最終ページに到達</string>
+    <string name="read_downloads">ダウンロード済み作品を読む</string>
+    <string name="browse_online">オンラインで探す</string>
+    <string name="downloaded_reading_summary">ダウンロード済みの作品のみ。オフラインで読めます。</string>
+</resources>

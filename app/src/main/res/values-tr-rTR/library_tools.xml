@@ -1,0 +1,11 @@
+<resources>
+    <string name="history_search_hint">Başlık, sanatçı veya ID ara</string>
+    <string name="history_filter_title">Geçmişi filtrele</string>
+    <string name="history_no_matches">Sonuç yok. Aramayı veya filtreyi değiştirin.</string>
+    <string name="history_all">Tüm hikâyeler</string>
+    <string name="history_progress">Devam ediyor</string>
+    <string name="history_finished">Son sayfaya ulaşıldı</string>
+    <string name="read_downloads">İndirilen hikâyeleri oku</string>
+    <string name="browse_online">Çevrimiçi göz at</string>
+    <string name="downloaded_reading_summary">Yalnızca indirilen hikâyeler. Bağlantısız okunabilir.</string>
+</resources>

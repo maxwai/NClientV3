@@ -1,0 +1,11 @@
+<resources>
+    <string name="history_search_hint">Поиск по названию, автору или ID</string>
+    <string name="history_filter_title">Фильтр истории</string>
+    <string name="history_no_matches">Ничего не найдено. Измените поиск или фильтр.</string>
+    <string name="history_all">Все истории</string>
+    <string name="history_progress">В процессе</string>
+    <string name="history_finished">Последняя страница</string>
+    <string name="read_downloads">Читать загруженные истории</string>
+    <string name="browse_online">Смотреть онлайн</string>
+    <string name="downloaded_reading_summary">Только загруженные истории. Чтение без подключения.</string>
+</resources>

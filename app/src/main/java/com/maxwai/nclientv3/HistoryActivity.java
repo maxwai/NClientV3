@@ -21,11 +21,16 @@ import java.util.*;
 
 public class HistoryActivity extends BaseActivity {
     private final List<Entry> entries = new ArrayList<>();
+    private final List<Entry> allEntries = new ArrayList<>();
+    private final Map<String, String> searchIndex = new HashMap<>();
+    private String query = "";
+    private int filter;
     private final Set<String> opening = new HashSet<>();
     private final HistoryCards adapter = new HistoryCards();
     private int generation;
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state); setContentView(R.layout.app_bar_main);
+        if (state != null) { query = state.getString("history_query", ""); filter = state.getInt("history_filter", 0); }
         Toolbar toolbar = findViewById(R.id.toolbar); setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.history);
         recycler = findViewById(R.id.recycler); masterLayout = findViewById(R.id.master_layout);
@@ -48,9 +53,12 @@ public class HistoryActivity extends BaseActivity {
                 if (known.add(gallery.getId())) rows.add(new Entry("online:" + gallery.getId(), gallery.getId(), gallery.getTitle(),
                     gallery.getThumbnail().toString(), Math.max(1, Queries.ResumeTable.pageFromId(gallery.getId())), 0, 0, "", ""));
             }
+            Map<String,String> index = new HashMap<>();
+            for (Entry entry : rows) index.put(entry.key, HistoryFilter.searchText(entry));
             runOnUiThread(() -> {
                 if (isFinishing() || isDestroyed() || request != generation) return;
-                entries.clear(); entries.addAll(rows); adapter.notifyDataSetChanged(); refresher.setRefreshing(false);
+                allEntries.clear(); allEntries.addAll(rows); searchIndex.clear(); searchIndex.putAll(index);
+                refresher.setRefreshing(false); applyFilter();
             });
         });
     }
@@ -98,8 +106,34 @@ public class HistoryActivity extends BaseActivity {
             runOnUiThread(this::reload);
         });
     }
-    @Override public boolean onCreateOptionsMenu(Menu menu) { getMenuInflater().inflate(R.menu.history, menu); Utility.tintMenu(this, menu); return true; }
+    private void applyFilter() {
+        entries.clear();
+        for (Entry entry : allEntries) if (HistoryFilter.matches(entry, searchIndex.getOrDefault(entry.key, ""), query, filter)) entries.add(entry);
+        ((TextView)findViewById(R.id.empty_subtitle)).setText(query.isEmpty() && filter == 0 ? R.string.reading_history_empty : R.string.history_no_matches);
+        adapter.notifyDataSetChanged();
+    }
+    @Override protected void onSaveInstanceState(@NonNull Bundle state) {
+        state.putString("history_query", query); state.putInt("history_filter", filter); super.onSaveInstanceState(state);
+    }
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.history, menu);
+        androidx.appcompat.widget.SearchView search = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.history_search).getActionView();
+        search.setQueryHint(getString(R.string.history_search_hint));
+        if (!query.isEmpty()) { menu.findItem(R.id.history_search).expandActionView(); search.setQuery(query, false); search.clearFocus(); }
+        search.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override public boolean onQueryTextSubmit(String value) { search.clearFocus(); return true; }
+            @Override public boolean onQueryTextChange(String value) { query = value; applyFilter(); return true; }
+        });
+        menu.findItem(R.id.history_filter).setTitle(getResources().getStringArray(R.array.history_filters)[filter]);
+        Utility.tintMenu(this, menu); return true;
+    }
     @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.history_filter) {
+            new MaterialAlertDialogBuilder(this).setTitle(R.string.history_filter_title)
+                .setSingleChoiceItems(R.array.history_filters, filter, (dialog, which) -> {
+                    filter = which; item.setTitle(getResources().getStringArray(R.array.history_filters)[filter]); applyFilter(); dialog.dismiss();
+                }).setNegativeButton(R.string.cancel, null).show(); return true;
+        }
         if (item.getItemId() == R.id.cancelAll) {
             new MaterialAlertDialogBuilder(this).setTitle(R.string.history).setMessage(R.string.reading_clear_confirm)
                 .setNegativeButton(R.string.cancel, null).setPositiveButton(R.string.delete, (d, w) -> ReadingHistoryStore.IO.execute(() -> {

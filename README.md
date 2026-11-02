@@ -7,6 +7,7 @@ An unofficial NHentai Android Client. This is a fork of the original Project by 
 **This fork's latest APK:** [Download and installation instructions](apks/README.md).
 The reading update adds automatic history/resume, image caching, and seven themes
 including Glass. [Details and previews](docs/reading-update.md).
+The latest build adds [History search and a downloaded-reading switch](docs/library-tools.md).
 
 This app works for devices from API 26 (Android 8) and above.
 

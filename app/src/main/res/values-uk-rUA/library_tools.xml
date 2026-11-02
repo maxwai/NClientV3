@@ -1,0 +1,11 @@
+<resources>
+    <string name="history_search_hint">Пошук за назвою, автором чи ID</string>
+    <string name="history_filter_title">Фільтр історії</string>
+    <string name="history_no_matches">Нічого не знайдено. Змініть пошук або фільтр.</string>
+    <string name="history_all">Усі історії</string>
+    <string name="history_progress">У процесі</string>
+    <string name="history_finished">Остання сторінка</string>
+    <string name="read_downloads">Читати завантажені історії</string>
+    <string name="browse_online">Перегляд онлайн</string>
+    <string name="downloaded_reading_summary">Лише завантажені історії. Читання без підключення.</string>
+</resources>

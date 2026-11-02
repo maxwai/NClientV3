@@ -8,5 +8,9 @@
         </com.google.android.material.appbar.AppBarLayout>
         <include layout="@layout/content_main"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.button.MaterialButton android:id="@+id/reading_source"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="match_parent"
+        android:layout_height="48dp" android:layout_marginStart="24dp" android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp" android:visibility="gone" android:text="@string/read_downloads" android:textAllCaps="false"/>
     <include layout="@layout/bottom_navigation"/>
 </LinearLayout>

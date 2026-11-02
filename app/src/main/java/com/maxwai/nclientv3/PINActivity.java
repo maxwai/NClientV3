@@ -80,7 +80,7 @@ public class PINActivity extends GeneralActivity {
 
     @Override
     public void finish() {
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, com.maxwai.nclientv3.utility.ReadingSource.startup(this));
         if (!hasPin() || authSuccess) startActivity(i);
         authSuccess = false;
         super.finish();

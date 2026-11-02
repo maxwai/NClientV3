@@ -1,0 +1,11 @@
+<resources>
+    <string name="history_search_hint">搜尋標題、作者或 ID</string>
+    <string name="history_filter_title">篩選歷史</string>
+    <string name="history_no_matches">沒有符合的作品。請更改搜尋或篩選條件。</string>
+    <string name="history_all">全部作品</string>
+    <string name="history_progress">閱讀中</string>
+    <string name="history_finished">已到最後一頁</string>
+    <string name="read_downloads">閱讀已下載作品</string>
+    <string name="browse_online">線上瀏覽</string>
+    <string name="downloaded_reading_summary">僅顯示已下載作品，無需網路即可閱讀。</string>
+</resources>

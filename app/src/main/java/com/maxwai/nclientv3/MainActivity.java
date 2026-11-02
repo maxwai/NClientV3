@@ -126,6 +126,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.maxwai.nclientv3.utility.ReadingSource.remember(this, false);
         setContentView(R.layout.activity_main);
         //load inspector
         selectStartMode(getIntent(), getPackageName());

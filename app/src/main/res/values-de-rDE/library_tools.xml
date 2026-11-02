@@ -1,0 +1,11 @@
+<resources>
+    <string name="history_search_hint">Titel, Künstler oder ID suchen</string>
+    <string name="history_filter_title">Verlauf filtern</string>
+    <string name="history_no_matches">Keine Treffer. Suche oder Filter ändern.</string>
+    <string name="history_all">Alle Geschichten</string>
+    <string name="history_progress">In Bearbeitung</string>
+    <string name="history_finished">Letzte Seite erreicht</string>
+    <string name="read_downloads">Heruntergeladene Geschichten lesen</string>
+    <string name="browse_online">Online stöbern</string>
+    <string name="downloaded_reading_summary">Nur heruntergeladene Geschichten. Ohne Verbindung lesbar.</string>
+</resources>

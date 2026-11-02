@@ -1,0 +1,12 @@
+<resources>
+    <string name="history_search_hint">Search title, artist or ID</string>
+    <string name="history_filter_title">Filter history</string>
+    <string name="history_no_matches">No matching stories. Try another search or filter.</string>
+    <string name="history_all">All stories</string>
+    <string name="history_progress">In progress</string>
+    <string name="history_finished">Reached last page</string>
+    <string name="read_downloads">Read downloaded stories</string>
+    <string name="browse_online">Browse online</string>
+    <string name="downloaded_reading_summary">Downloaded stories only. Ready to read without a connection.</string>
+    <string-array name="history_filters"><item>@string/history_all</item><item>@string/history_progress</item><item>@string/history_finished</item></string-array>
+</resources>
