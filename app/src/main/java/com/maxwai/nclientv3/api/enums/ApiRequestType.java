@@ -9,8 +9,9 @@ public class ApiRequestType {
     public static final ApiRequestType FAVORITE = new ApiRequestType(5, false);
     public static final ApiRequestType RANDOM = new ApiRequestType(6, true);
     public static final ApiRequestType RANDOM_FAVORITE = new ApiRequestType(7, true);
+    public static final ApiRequestType HANIME_COMMUNITY = new ApiRequestType(8, false);
     public static final ApiRequestType[] values = {
-        BYALL, BYTAG, BYSEARCH, BYSINGLE, RELATED, FAVORITE, RANDOM, RANDOM_FAVORITE
+        BYALL, BYTAG, BYSEARCH, BYSINGLE, RELATED, FAVORITE, RANDOM, RANDOM_FAVORITE, HANIME_COMMUNITY
     };
     private final byte id;
     private final boolean single;

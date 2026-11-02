@@ -41,6 +41,6 @@ public abstract class GenericGallery implements Parcelable {
 
     public abstract GalleryData getGalleryData();
 
-    public enum Type {COMPLETE, LOCAL, SIMPLE}
+    public enum Type {COMPLETE, LOCAL, SIMPLE, HANIME_COMMUNITY}
 
 }

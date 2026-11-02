@@ -35,6 +35,10 @@
             android:id="@+id/history"
             android:icon="@drawable/ic_access_time"
             android:title="@string/view_history" />
+        <item
+            android:id="@+id/hanime_images"
+            android:icon="@drawable/ic_burst_mode"
+            android:title="@string/hanime_images" />
     </group>
     <item android:title="@string/settings">
         <menu>

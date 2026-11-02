@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.maxwai.nclientv3.api.components.Gallery;
 import com.maxwai.nclientv3.api.components.GenericGallery;
+import com.maxwai.nclientv3.api.components.HanimeCommunityGallery;
 import com.maxwai.nclientv3.api.components.Ranges;
 import com.maxwai.nclientv3.api.components.Tag;
 import com.maxwai.nclientv3.api.enums.ApiRequestType;
@@ -34,6 +35,7 @@ import java.lang.ref.WeakReference;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -67,6 +70,8 @@ public class InspectorV3 extends Thread implements Parcelable {
     private InspectorResponse response;
     private WeakReference<Context> context;
     private String jsonResponse;
+    private ArrayList<String> hanimeChannels;
+    private static final String HANIME_COMMUNITY_API = "https://community-uploads.highwinds-cdn.com/api/v9/community_uploads";
 
     protected InspectorV3(Parcel in) {
         sortType = SortType.values()[in.readByte()];
@@ -87,6 +92,9 @@ public class InspectorV3 extends Thread implements Parcelable {
                 break;
             case COMPLETE:
                 tmpList = in.createTypedArrayList(Gallery.CREATOR);
+                break;
+            case HANIME_COMMUNITY:
+                tmpList = in.createTypedArrayList(HanimeCommunityGallery.CREATOR);
                 break;
         }
         if (tmpList != null)
@@ -260,6 +268,7 @@ public class InspectorV3 extends Thread implements Parcelable {
         inspectorV3.id = id;
         inspectorV3.custom = custom;
         inspectorV3.ranges = ranges;
+        inspectorV3.hanimeChannels = hanimeChannels;
         return inspectorV3;
     }
 
@@ -325,7 +334,13 @@ public class InspectorV3 extends Thread implements Parcelable {
 
     public boolean createDocument() throws IOException {
         if (jsonResponse != null) return true;
-        try (Response response = Global.getClient(context.get()).newCall(new Request.Builder().url(url).build()).execute()) {
+        Request.Builder request = new Request.Builder().url(url);
+        if (requestType == ApiRequestType.HANIME_COMMUNITY) {
+            request.header("Origin", "https://hanime.tv")
+                .header("Referer", "https://hanime.tv/")
+                .header("Accept", "application/json, text/plain, */*");
+        }
+        try (Response response = Global.getClient(context.get()).newCall(request.build()).execute()) {
             jsonResponse = ApiResponse.read(response);
             return true;
         }
@@ -333,7 +348,8 @@ public class InspectorV3 extends Thread implements Parcelable {
 
     public void parseDocument() throws IOException, InvalidResponseException {
         try {
-            if (requestType.isSingle()) doSingleV2();
+            if (requestType == ApiRequestType.HANIME_COMMUNITY) doHanimeCommunity();
+            else if (requestType.isSingle()) doSingleV2();
             else doSearchV2();
         } catch (JSONException e) {
             LogUtility.e("JSON parse error: " + e.getMessage(), e);
@@ -432,6 +448,19 @@ public class InspectorV3 extends Thread implements Parcelable {
             filterDocumentTags();
     }
 
+    private void doHanimeCommunity() throws JSONException {
+        JSONObject json = new JSONObject(jsonResponse);
+        JSONArray results = json.optJSONArray("data");
+        galleries = new ArrayList<>(results == null ? 0 : results.length());
+        if (results != null) {
+            for (int i = 0; i < results.length(); i++) {
+                HanimeCommunityGallery gallery = new HanimeCommunityGallery(results.getJSONObject(i));
+                if (gallery.isValid()) galleries.add(gallery);
+            }
+        }
+        pageCount = galleries.size() >= 24 ? page + 100 : page;
+    }
+
     public void setSortType(SortType sortType) {
         this.sortType = sortType;
         if (this.requestType == ApiRequestType.BYALL)
@@ -515,5 +544,17 @@ public class InspectorV3 extends Thread implements Parcelable {
         public void onFailure(Exception e) {
             LogUtility.e(e.getLocalizedMessage(), e);
         }
+    }
+
+    public static InspectorV3 hanimeCommunityInspector(Context context, int page, InspectorResponse response) {
+        InspectorV3 inspector = new InspectorV3(context, response);
+        inspector.page = Math.max(1, page);
+        inspector.pageCount = 0;
+        inspector.requestType = ApiRequestType.HANIME_COMMUNITY;
+        inspector.tags = new HashSet<>();
+        inspector.hanimeChannels = new ArrayList<>(Arrays.asList(
+            "media", "nsfw-general", "furry", "futa", "yaoi", "yuri", "traps", "irl-3d"));
+        inspector.createUrl();
+        return inspector;
     }
 }

@@ -186,6 +186,10 @@
             android:label="@string/title_activity_api_key">
         </activity>
 
+        <activity
+            android:name=".HanimeImagesActivity"
+            android:parentActivityName=".MainActivity" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

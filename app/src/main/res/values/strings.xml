@@ -140,6 +140,12 @@
     <string name="prev">Previous</string>
     <string name="share">Share</string>
     <string name="image">Image</string>
+    <string name="hanime_images">Hanime Images</string>
+    <string name="open_image">Open image</string>
+    <string name="download_image">Download image</string>
+    <string name="copy_image_link">Copy image link</string>
+    <string name="link_copied">Link copied to clipboard</string>
+    <string name="download_started">Download started</string>
     <string name="next">Next</string>
     <string name="create_pdf">Create PDF</string>
     <string name="created_pdf">Successful created PDF</string>

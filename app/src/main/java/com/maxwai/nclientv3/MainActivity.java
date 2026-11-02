@@ -753,6 +753,9 @@ public class MainActivity extends BaseActivity
         } else if (item.getItemId() == R.id.status_manager) {
             intent = new Intent(this, StatusViewerActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.hanime_images) {
+            intent = new Intent(this, HanimeImagesActivity.class);
+            startActivity(intent);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
